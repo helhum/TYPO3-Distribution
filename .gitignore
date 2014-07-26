@@ -3,6 +3,7 @@
 #############################
 .DS_Store
 .idea
+index.php
 nbproject
 Packages
 typo3
