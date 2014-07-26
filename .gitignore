@@ -1,6 +1,9 @@
 #############################
 # TYPO3 CMS Base Distribution
 #############################
-.idea
 .DS_Store
+.idea
 nbproject
+Packages
+typo3
+typo3_src
