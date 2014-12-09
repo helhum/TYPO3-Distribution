@@ -10,6 +10,6 @@
 		"bin-dir": "bin"
 	},
 	"require": {
-		"typo3/cms": "6.2.7"
+		"typo3/cms": "6.2.8"
 	}
 }
