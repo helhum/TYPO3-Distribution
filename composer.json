@@ -2,15 +2,20 @@
 	"repositories": [
 		{ "type": "composer", "url": "http://composer.typo3.org/" }
 	],
-	"name": "typo3/cms-base-distribution",
-	"description" : "TYPO3 CMS Base Distribution",
+	"name": "helhum/typo3-cms-console-distribution",
+	"description" : "TYPO3 CMS Distribution including typo3 console",
 	"license": "GPL-2.0+",
 	"config": {
 		"vendor-dir": "Packages/Libraries",
 		"bin-dir": "bin"
 	},
+	"scripts": {
+		"post-update-cmd": "Helhum\\Typo3Console\\Composer\\InstallerScripts::postUpdateAndInstall",
+		"post-install-cmd": "Helhum\\Typo3Console\\Composer\\InstallerScripts::postUpdateAndInstall"
+	},
 	"require": {
-		"typo3/cms": "6.2.x-dev"
+		"typo3/cms": "6.2.x-dev",
+		"typo3-ter/typo3-console": "~1.0.2"
 	},
 	"require-dev": {
 		"mikey179/vfsStream": "1.3.*@dev",
