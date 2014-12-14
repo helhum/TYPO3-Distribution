@@ -15,7 +15,7 @@
 		"post-install-cmd": "Helhum\\Typo3Console\\Composer\\InstallerScripts::postUpdateAndInstall"
 	},
 	"require": {
-		"typo3/cms": "~6.2.0",
+		"typo3/cms": "6.2.x-dev",
 		"helhum/typo3-console": "~1.0.2"
 	},
 	"require-dev": {
