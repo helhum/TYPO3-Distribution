@@ -11,6 +11,7 @@
 		"bin-dir": "bin"
 	},
 	"scripts": {
+		"post-autoload-dump": "Helhum\\ClassAliasLoader\\Composer\\ClassAliasGenerator::generateAliasMap",
 		"post-update-cmd": "Helhum\\Typo3Console\\Composer\\InstallerScripts::postUpdateAndInstall",
 		"post-install-cmd": "Helhum\\Typo3Console\\Composer\\InstallerScripts::postUpdateAndInstall"
 	},
