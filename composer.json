@@ -1,7 +1,6 @@
 {
 	"repositories": [
-		{ "type": "composer", "url": "http://composer.typo3.org/" },
-		{ "type": "vcs", "url": "https://github.com/helhum/typo3_console.git" }
+		{ "type": "composer", "url": "http://typo3-ter.helmut-hummel.de/" }
 	],
 	"name": "helhum/typo3-cms-console-distribution",
 	"description" : "TYPO3 CMS Distribution including typo3 console",
@@ -11,7 +10,6 @@
 		"bin-dir": "bin"
 	},
 	"scripts": {
-		"post-autoload-dump": "Helhum\\ClassAliasLoader\\Composer\\ClassAliasGenerator::generateAliasMap",
 		"post-update-cmd": "Helhum\\Typo3Console\\Composer\\InstallerScripts::postUpdateAndInstall",
 		"post-install-cmd": "Helhum\\Typo3Console\\Composer\\InstallerScripts::postUpdateAndInstall"
 	},
