@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "56432f4cc0d90705021ecdf2183564a3",
-    "content-hash": "94f6558d59eb2365105eb57dfa9ab417",
+    "hash": "38961d48e988d8a019c8c0f7a84f516f",
+    "content-hash": "6a3387c15111e3ad211f5a2e29ec3bff",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -118,12 +118,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/helhum/dotenv-connector.git",
-                "reference": "4941c476c361b5fa90b6a30f364352cf2584a30a"
+                "reference": "af15dd90381b76925953e9f1f67b984b59a59951"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/helhum/dotenv-connector/zipball/4941c476c361b5fa90b6a30f364352cf2584a30a",
-                "reference": "4941c476c361b5fa90b6a30f364352cf2584a30a",
+                "url": "https://api.github.com/repos/helhum/dotenv-connector/zipball/af15dd90381b76925953e9f1f67b984b59a59951",
+                "reference": "af15dd90381b76925953e9f1f67b984b59a59951",
                 "shasum": ""
             },
             "require": {
@@ -159,7 +159,7 @@
                     "email": "info@helhum.io"
                 }
             ],
-            "description": "Makes it possible to set environment variables for composer projects using dotenv",
+            "description": "Makes it possible to set environment variables for composer projects.",
             "homepage": "http://github.com/helhum/dotenv-connector",
             "keywords": [
                 "12factor",
@@ -167,7 +167,7 @@
                 "dotenv",
                 "env"
             ],
-            "time": "2016-03-23 22:28:15"
+            "time": "2016-03-24 18:42:54"
         },
         {
             "name": "helhum/typo3-console",
