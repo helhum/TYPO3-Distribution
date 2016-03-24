@@ -1,4 +1,7 @@
 {
+    "repositories": [
+        { "type": "composer", "url": "https://composer.typo3.org/" }
+    ],
     "name": "helhum/typo3-cms-console-distribution",
     "description" : "TYPO3 CMS Distribution including typo3 console",
     "license": "GPL-2.0+",
