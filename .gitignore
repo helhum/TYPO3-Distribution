@@ -2,8 +2,10 @@
 /.idea
 /nbproject
 /vendor/*
-/Data/Logs/*
-!/Data/Logs/.gitkeep
+/var/log/*
+!/var/log/.gitkeep
+/var/cache/*
+!/var/cache/.gitkeep
 /typo3cms
 /.env
 

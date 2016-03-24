@@ -33,5 +33,5 @@ if (getenv('TYPO3__BE__adminOnly')) {
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['syslogErrorReporting'] = 1;
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['belogErrorReporting'] = 0;
 $GLOBALS['TYPO3_CONF_VARS']['LOG']['writerConfiguration'][\TYPO3\CMS\Core\Log\LogLevel::WARNING][\TYPO3\CMS\Core\Log\Writer\FileWriter::class] = array(
-    'logFile' => PATH_site . '../Data/Logs/typo3-default.log'
+    'logFile' => PATH_site . '../var/log/typo3-default.log'
 );

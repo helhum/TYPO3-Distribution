@@ -36,9 +36,9 @@ $cacheConfigurations['l10n']['backend'] = 'TYPO3\CMS\Core\Cache\Backend\NullBack
 
 // Mail
 $GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport'] = 'mbox';
-$GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport_mbox_file'] = PATH_site . '../Data/Logs/sent-mails.log';
+$GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport_mbox_file'] = PATH_site . '../var/log/sent-mails.log';
 
 // Logging
 $GLOBALS['TYPO3_CONF_VARS']['LOG']['writerConfiguration'][\TYPO3\CMS\Core\Log\LogLevel::DEBUG][\TYPO3\CMS\Core\Log\Writer\FileWriter::class] = array(
-    'logFile' => PATH_site . '../Data/Logs/typo3-default.log'
+    'logFile' => PATH_site . '../var/log/typo3-default.log'
 );
