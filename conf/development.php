@@ -1,7 +1,4 @@
 <?php
-namespace Helhum\TYPO3\CMS\Base\Distribution;
-includeIfExists(__DIR__ . '/../Settings.php');
-
 // Debug
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['displayErrors'] = 1;
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = '*';

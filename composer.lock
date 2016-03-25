@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "38961d48e988d8a019c8c0f7a84f516f",
+    "hash": "13bbf2be178c291276f6ae9d87239e1b",
     "content-hash": "6a3387c15111e3ad211f5a2e29ec3bff",
     "packages": [
         {
@@ -118,12 +118,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/helhum/dotenv-connector.git",
-                "reference": "af15dd90381b76925953e9f1f67b984b59a59951"
+                "reference": "c82743ecc81be9a78b68ebb2e71bc39e3fe58c49"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/helhum/dotenv-connector/zipball/af15dd90381b76925953e9f1f67b984b59a59951",
-                "reference": "af15dd90381b76925953e9f1f67b984b59a59951",
+                "url": "https://api.github.com/repos/helhum/dotenv-connector/zipball/c82743ecc81be9a78b68ebb2e71bc39e3fe58c49",
+                "reference": "c82743ecc81be9a78b68ebb2e71bc39e3fe58c49",
                 "shasum": ""
             },
             "require": {
@@ -167,7 +167,7 @@
                 "dotenv",
                 "env"
             ],
-            "time": "2016-03-24 18:42:54"
+            "time": "2016-03-25 16:44:31"
         },
         {
             "name": "helhum/typo3-console",
