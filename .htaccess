@@ -1,0 +1,43 @@
+# Asset Caching
+<FilesMatch '\.(js|css|jpg|jpeg|png|svg|woff)$'>
+  <IfModule mod_expires.c>
+    ExpiresActive on
+    ExpiresDefault "access plus 30 days"
+  </IfModule>
+  FileETag MTime Size
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# Version Numbered Filenames
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.+)\.(\d+)\.(php|js|css|png|jpg|gif|gzip)$ $1.$3 [L]
+
+# Basic security checks
+RewriteRule _(?:recycler|temp)_/ - [F]
+RewriteRule (?:typo3conf/ext|typo3/sysext|typo3/ext)/[^/]+/(?:Configuration|Resources/Private|Tests?)/ - [F]
+RewriteCond %{REQUEST_URI} "!(^|/)\.well-known/([^./]+./?)+$" [NC]
+RewriteCond %{SCRIPT_FILENAME} -d [OR]
+RewriteCond %{SCRIPT_FILENAME} -f
+RewriteRule (?:^|/)\. - [F]
+
+# Stop rewrite processing, if we are in the typo3/ directory.
+RewriteRule ^(typo3/|fileadmin/|typo3conf/|typo3temp/|uploads/|favicon\.ico) - [L]
+
+# If the file/symlink/directory does not exist => Redirect to index.php.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-l
+RewriteRule .* /index.php [L]
+
+</IfModule>
+
+# gzip compression of all assets
+<IfModule mod_deflate.c>
+SetOutputFilter DEFLATE
+</IfModule>
+
+# Redirects
+#Redirect 301 /news/aktuell http://project.tld/news/aktuelles/
