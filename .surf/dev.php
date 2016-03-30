@@ -4,7 +4,7 @@
 use TYPO3\Surf\Domain\Model\Node;
 use TYPO3\Surf\Domain\Model\SimpleWorkflow;
 
-$projectName = 'PROJECTID - Dev';
+$projectName = 'PROJECTNAME - Dev';
 $repositoryUrl = 'PROJECTREPOURL';
 $deploymentPath = '/path/to/deploy';
 $deploymentHost = 'PROJECTID-dev';
