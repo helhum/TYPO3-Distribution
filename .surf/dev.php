@@ -4,10 +4,10 @@
 use TYPO3\Surf\Domain\Model\Node;
 use TYPO3\Surf\Domain\Model\SimpleWorkflow;
 
-$projectName = 'PROJECTID - Live';
+$projectName = 'PROJECTID - Dev';
 $repositoryUrl = 'PROJECTREPOURL';
 $deploymentPath = '/path/to/deploy';
-$deploymentHost = 'PROJECTID-live';
+$deploymentHost = 'PROJECTID-dev';
 
 $application = new \TYPO3\Surf\Application\TYPO3\CMS();
 $deployment->addApplication($application);
