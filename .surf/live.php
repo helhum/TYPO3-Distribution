@@ -7,7 +7,7 @@ use TYPO3\Surf\Domain\Model\SimpleWorkflow;
 $projectName = 'PROJECTID - Live';
 $repositoryUrl = 'PROJECTREPOURL';
 $deploymentPath = '/path/to/deploy';
-$deploymentHost = 'target-hostname';
+$deploymentHost = 'PROJECTID-live';
 
 $application = new \TYPO3\Surf\Application\TYPO3\CMS();
 $deployment->addApplication($application);
