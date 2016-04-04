@@ -18,36 +18,6 @@
 # !/web/typo3conf/ext/<your_site_package>
 
 /web/typo3temp/*
-!/web/typo3temp/_processed_
-/web/typo3temp/_processed_/*
-!/web/typo3temp/_processed_/.gitkeep
-!/web/typo3temp/Cache
-/web/typo3temp/Cache/*
-!/web/typo3temp/Cache/.gitkeep
-!/web/typo3temp/compressor
-/web/typo3temp/compressor/*
-!/web/typo3temp/compressor/.gitkeep
-!/web/typo3temp/cs
-/web/typo3temp/cs/*
-!/web/typo3temp/cs/.gitkeep
-!/web/typo3temp/GB
-/web/typo3temp/GB/*
-!/web/typo3temp/GB/.gitkeep
-!/web/typo3temp/llxml
-/web/typo3temp/llxml/*
-!/web/typo3temp/llxml/.gitkeep
-!/web/typo3temp/locks
-/web/typo3temp/locks/*
-!/web/typo3temp/locks/.gitkeep
-!/web/typo3temp/pics
-/web/typo3temp/pics/*
-!/web/typo3temp/pics/.gitkeep
-!/web/typo3temp/sprites
-/web/typo3temp/sprites/*
-!/web/typo3temp/sprites/.gitkeep
-!/web/typo3temp/temp
-/web/typo3temp/temp/*
-!/web/typo3temp/temp/.gitkeep
 !/web/typo3temp/index.html
 
 /web/FIRST_INSTALL
