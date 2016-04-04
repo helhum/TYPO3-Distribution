@@ -6,6 +6,8 @@
 !/var/log/.gitkeep
 /var/cache/*
 !/var/cache/.gitkeep
+/var/storage/*
+!/var/storage/.gitkeep
 /typo3cms
 /.env
 
