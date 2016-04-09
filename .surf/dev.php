@@ -30,6 +30,11 @@ $application->setOption('branch', $repositoryBranch);
 $application->setDeploymentPath($deploymentPath);
 $application->setOption('keepReleases', 1);
 $application->setOption('TYPO3\\Surf\\Task\\TYPO3\\CMS\\SymlinkDataTask[applicationRootDirectory]', 'web');
+$application->setOption('TYPO3\\Surf\\Task\\Transfer\\RsyncTask[rsyncExcludes]', array(
+    '.git',
+    'web/fileadmin',
+    'web/uploads',
+));
 $application->setOption('applicationWebDirectory', 'web');
 $application->setOption('composerCommandPath', $composerCommandPath);
 // Not sure if we really need this or not
