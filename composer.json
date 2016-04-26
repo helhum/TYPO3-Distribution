@@ -26,8 +26,18 @@
         }
     },
     "scripts": {
-        "post-autoload-dump": [
+        "package-states": [
+            "rm -f web/typo3conf/PackageStates.php && TYPO3_ACTIVE_FRAMEWORK_EXTENSIONS=\"belog,beuser,context_help,fluid_styled_content,extra_page_cm_options,felogin,filelist,impexp,info,info_pagetsconfig,lowlevel,perm,reports,rsaauth,rtehtmlarea,scheduler,setup,tstemplate,viewpage\" ./typo3cms install:generatepackagestates"
+        ],
+        "folder-structure": [
             "./typo3cms install:fixfolderstructure"
+        ],
+        "pre-deploy": [
+            "composer run package-states",
+            "composer run folder-structure"
+        ],
+        "post-autoload-dump": [
+            "composer run pre-deploy"
         ]
     },
     "extra": {
