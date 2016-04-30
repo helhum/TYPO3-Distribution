@@ -33,11 +33,11 @@
             "./typo3cms install:fixfolderstructure"
         ],
         "pre-deploy": [
-            "composer run package-states",
-            "composer run folder-structure"
+            "@composer package-states",
+            "@composer folder-structure"
         ],
         "post-autoload-dump": [
-            "composer run pre-deploy"
+            "@composer pre-deploy"
         ]
     },
     "extra": {
