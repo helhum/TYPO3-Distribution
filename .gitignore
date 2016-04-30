@@ -19,12 +19,10 @@
 /web/typo3conf/ext/*
 # !/web/typo3conf/ext/<your_site_package>
 
-/web/typo3temp/*
-!/web/typo3temp/index.html
-
 /web/FIRST_INSTALL
 /web/fileadmin
 /web/uploads
+/web/typo3temp
 /web/typo3
 /web/index.php
 
