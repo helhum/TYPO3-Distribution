@@ -16,11 +16,6 @@
         "phpunit/phpunit": "~4.8.0",
         "mikey179/vfsStream": "~1.6.0"
     },
-    "autoload": {
-        "psr-4": {
-            "Helhum\\TYPO3\\Distribution\\": "src"
-        }
-    },
     "autoload-dev": {
         "psr-4": {
             "TYPO3\\CMS\\Core\\Tests\\": "vendor/typo3/cms/typo3/sysext/core/Tests"
@@ -28,7 +23,8 @@
     },
     "scripts": {
         "package-states": [
-            "rm -f web/typo3conf/PackageStates.php && TYPO3_ACTIVE_FRAMEWORK_EXTENSIONS=\"belog,beuser,context_help,fluid_styled_content,extra_page_cm_options,felogin,filelist,impexp,info,info_pagetsconfig,lowlevel,perm,reports,rsaauth,rtehtmlarea,scheduler,setup,tstemplate,viewpage\" ./typo3cms install:generatepackagestates"
+            "rm -f web/typo3conf/PackageStates.php",
+             "TYPO3_ACTIVE_FRAMEWORK_EXTENSIONS=belog,beuser,context_help,fluid_styled_content,extra_page_cm_options,felogin,filelist,impexp,info,info_pagetsconfig,lowlevel,perm,reports,rsaauth,rtehtmlarea,scheduler,setup,tstemplate,viewpage ./typo3cms install:generatepackagestates"
         ],
         "folder-structure": [
             "./typo3cms install:fixfolderstructure"
