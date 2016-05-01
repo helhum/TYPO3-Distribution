@@ -5,7 +5,13 @@ $context = \TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext()->isPr
 $rootDir = dirname(dirname(__DIR__));
 $confDir = $rootDir . '/conf';
 $cacheDir = $rootDir . '/var/cache';
-$cacheIdentifier = file_exists($rootDir . '/.env') ? md5($context . filemtime($rootDir . '/.env') . filemtime($rootDir . '/web/typo3conf/LocalConfiguration.php')) :  null;
+if ((string)\TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext() === 'Production/Live') {
+    // Freeze configuration on live system
+    $cacheIdentifier = 'production-live';
+} else {
+    $cacheIdentifier = file_exists($rootDir . '/.env') ? md5($context . filemtime($rootDir . '/.env') . filemtime($rootDir . '/web/typo3conf/LocalConfiguration.php')) :  null;
+}
+
 $GLOBALS['TYPO3_CONF_VARS'] = (new \Helhum\ConfigLoader\CachedConfigurationLoader(
     $GLOBALS['TYPO3_CONF_VARS'],
     $cacheDir,
