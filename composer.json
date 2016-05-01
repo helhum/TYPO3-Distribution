@@ -45,5 +45,8 @@
         "helhum/dotenv-connector": {
             "cache-dir": "var/cache"
         }
+    },
+    "config": {
+        "bin-dir": "bin"
     }
 }
