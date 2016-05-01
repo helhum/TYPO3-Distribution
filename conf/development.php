@@ -70,7 +70,7 @@ return [
     ],
     'MAIL' => [
         'transport' => 'mbox',
-        'transport_mbox_file' => PATH_site . '../var/log/sent-mails.log',
+        'transport_mbox_file' => dirname(PATH_site) . '/var/log/sent-mails.log',
     ],
     'LOG' => [
         'writerConfiguration' => [
