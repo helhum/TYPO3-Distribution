@@ -5,9 +5,9 @@ $context = \TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext()->isPr
 $rootDir = dirname(dirname(__DIR__));
 $confDir = $rootDir . '/conf';
 $cacheDir = $rootDir . '/var/cache';
-if ((string)\TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext() === 'Production/Live') {
-    // Freeze configuration on live system
-    $cacheIdentifier = 'production-live';
+if (getenv('CONFIGURATION_CACHE_IDENTIFIER')) {
+    // Freeze configuration with fixed identifier if requested
+    $cacheIdentifier = getenv('CONFIGURATION_CACHE_IDENTIFIER');
 } else {
     $cacheIdentifier = file_exists($rootDir . '/.env') ? md5($context . filemtime($rootDir . '/.env') . filemtime($rootDir . '/web/typo3conf/LocalConfiguration.php')) :  null;
 }
