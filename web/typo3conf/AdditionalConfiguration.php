@@ -11,17 +11,20 @@ if (getenv('CONFIGURATION_CACHE_IDENTIFIER')) {
 } else {
     $cacheIdentifier = file_exists($rootDir . '/.env') ? md5($context . filemtime($rootDir . '/.env') . filemtime($rootDir . '/web/typo3conf/LocalConfiguration.php')) :  null;
 }
-
-$GLOBALS['TYPO3_CONF_VARS'] = (new \Helhum\ConfigLoader\CachedConfigurationLoader(
+$GLOBALS['TYPO3_CONF_VARS'] = array_replace_recursive(
     $GLOBALS['TYPO3_CONF_VARS'],
-    $cacheDir,
-    $cacheIdentifier,
-    function() use ($confDir, $context) {
-        return new \Helhum\ConfigLoader\ConfigurationLoader(array(
-                new \Helhum\ConfigLoader\Reader\PhpFileReader($confDir . '/default.php'),
-                new \Helhum\ConfigLoader\Reader\PhpFileReader($confDir . '/' . $context . '.php'),
-                new \Helhum\ConfigLoader\Reader\EnvironmentReader('TYPO3'),
-                new \Helhum\ConfigLoader\Reader\PhpFileReader($confDir . '/override.php'),
-            ));
-    }
-))->load();
+    (new \Helhum\ConfigLoader\CachedConfigurationLoader(
+        $cacheDir,
+        $cacheIdentifier,
+        function() use ($confDir, $context) {
+            return new \Helhum\ConfigLoader\ConfigurationLoader(
+                array(
+                    new \Helhum\ConfigLoader\Reader\PhpFileReader($confDir . '/default.php'),
+                    new \Helhum\ConfigLoader\Reader\PhpFileReader($confDir . '/' . $context . '.php'),
+                    new \Helhum\ConfigLoader\Reader\EnvironmentReader('TYPO3'),
+                    new \Helhum\ConfigLoader\Reader\PhpFileReader($confDir . '/override.php'),
+                )
+            );
+        }
+    ))->load()
+);
