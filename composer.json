@@ -18,6 +18,7 @@
     },
     "autoload-dev": {
         "psr-4": {
+            "Helhum\\TYPO3\\Distribution\\": "src",
             "TYPO3\\CMS\\Core\\Tests\\": "vendor/typo3/cms/typo3/sysext/core/Tests"
         }
     },
