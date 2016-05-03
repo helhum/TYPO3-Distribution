@@ -6,8 +6,7 @@ return [
         'devIPmask' => '*',
         'sqlDebug' => 1,
         'enableDeprecationLog' => 'file',
-        'errorHandlerErrors' => E_STRICT | E_WARNING | E_USER_ERROR | E_USER_WARNING | E_USER_NOTICE | E_RECOVERABLE_ERROR | E_DEPRECATED | E_USER_DEPRECATED,
-        'exceptionalErrors' => E_STRICT | E_WARNING | E_RECOVERABLE_ERROR | E_DEPRECATED | E_USER_DEPRECATED,
+        'exceptionalErrors' => E_WARNING | E_USER_ERROR | E_RECOVERABLE_ERROR | E_DEPRECATED | E_USER_DEPRECATED,
         'systemLogLevel' => 0,
         'caching' => [
             'cacheConfigurations' => [
