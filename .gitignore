@@ -8,6 +8,7 @@
 !/var/cache/.gitkeep
 /var/storage/*
 !/var/storage/.gitkeep
+/bin
 /typo3cms
 /.env
 
