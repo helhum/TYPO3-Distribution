@@ -1,4 +1,8 @@
 <?php
+if (!class_exists(\Helhum\TYPO3\Distribution\ConfigLoaderFactory::class)) {
+    // we're in early stage, composer never dumped autoload info
+    return;
+}
 // We let the loader load context and environment specific configuration
 // No other code must go in here!
 $configLoader = \Helhum\TYPO3\Distribution\ConfigLoaderFactory::buildLoader(
