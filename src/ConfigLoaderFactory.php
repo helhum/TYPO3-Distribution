@@ -59,7 +59,9 @@ class ConfigLoaderFactory
     {
         $identifier = $context;
         foreach ($fileWatches as $fileWatch) {
-            $identifier .= filemtime($fileWatch);
+            if (file_exists($fileWatch)) {
+                $identifier .= filemtime($fileWatch);
+            }
         }
         return md5($identifier);
     }
