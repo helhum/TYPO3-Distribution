@@ -10,7 +10,7 @@
         "symfony/process": "~2.7.0",
         "helhum/dotenv-connector": "^1.0.0",
         "helhum/config-loader": "1.0.*@dev",
-        "helhum/typo3-console": "3.x@dev"
+        "helhum/typo3-console": "^3.0.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.8.0",
@@ -28,21 +28,43 @@
     },
     "scripts": {
         "package-states": [
-            "rm -f web/typo3conf/PackageStates.php",
-             "TYPO3_ACTIVE_FRAMEWORK_EXTENSIONS=belog,beuser,context_help,fluid_styled_content,extra_page_cm_options,felogin,filelist,impexp,info,info_pagetsconfig,lowlevel,perm,reports,rsaauth,rtehtmlarea,scheduler,setup,tstemplate,viewpage ./typo3cms install:generatepackagestates"
+            "./typo3cms install:generatepackagestates"
         ],
         "folder-structure": [
             "./typo3cms install:fixfolderstructure"
         ],
         "pre-deploy": [
-            "@composer package-states",
-            "@composer folder-structure"
+            "@package-states",
+            "@folder-structure"
         ],
         "post-autoload-dump": [
-            "@composer pre-deploy"
+            "@pre-deploy"
         ]
     },
     "extra": {
+        "helhum/typo3-console": {
+            "active-typo3-extensions": [
+                "belog",
+                "beuser",
+                "context_help",
+                "fluid_styled_content",
+                "extra_page_cm_options",
+                "felogin",
+                "filelist",
+                "impexp",
+                "info",
+                "info_pagetsconfig",
+                "lowlevel",
+                "perm",
+                "reports",
+                "rsaauth",
+                "rtehtmlarea",
+                "scheduler",
+                "setup",
+                "tstemplate",
+                "viewpage"
+            ]
+        },
         "typo3/cms": {
             "cms-package-dir": "{$vendor-dir}/typo3/cms",
             "web-dir": "web"
