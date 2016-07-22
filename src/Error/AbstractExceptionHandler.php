@@ -6,10 +6,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * An abstract exception handler
- *
- * This file is a backport from TYPO3 Flow
  */
-abstract class AbstractExceptionHandler implements ExceptionHandlerInterface
+abstract class AbstractExceptionHandler
 {
     const CONTEXT_WEB = 'WEB';
     const CONTEXT_CLI = 'CLI';
