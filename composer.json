@@ -47,11 +47,11 @@
             "./typo3cms install:fixfolderstructure"
         ],
         "pre-deploy": [
-            "@package-states",
-            "@folder-structure"
+            "# Scripts here will be executed by Surf after composer install"
         ],
         "post-autoload-dump": [
-            "@pre-deploy"
+            "@package-states",
+            "@folder-structure"
         ]
     },
     "extra": {
