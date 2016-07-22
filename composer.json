@@ -6,7 +6,25 @@
     "description" : "TYPO3 CMS Distribution with console and .env support",
     "license": "GPL-2.0+",
     "require": {
-        "typo3/cms": "^7.6.0",
+        "typo3/cms": "^7.6",
+
+        "typo3/cms-belog": "^7.6",
+        "typo3/cms-beuser": "^7.6",
+        "typo3/cms-context-help": "^7.6",
+        "typo3/cms-fluid-styled-content": "^7.6",
+        "typo3/cms-felogin": "^7.6",
+        "typo3/cms-filelist": "^7.6",
+        "typo3/cms-impexp": "^7.6",
+        "typo3/cms-info": "^7.6",
+        "typo3/cms-info-pagetsconfig": "^7.6",
+        "typo3/cms-lowlevel": "^7.6",
+        "typo3/cms-reports": "^7.6",
+        "typo3/cms-rsaauth": "^7.6",
+        "typo3/cms-rtehtmlarea": "^7.6",
+        "typo3/cms-setup": "^7.6",
+        "typo3/cms-tstemplate": "^7.6",
+        "typo3/cms-viewpage": "^7.6",
+
         "symfony/process": "~2.7.0",
         "helhum/dotenv-connector": "^1.0.0",
         "helhum/config-loader": "1.0.*@dev",
@@ -43,27 +61,6 @@
     },
     "extra": {
         "helhum/typo3-console": {
-            "active-typo3-extensions": [
-                "belog",
-                "beuser",
-                "context_help",
-                "fluid_styled_content",
-                "extra_page_cm_options",
-                "felogin",
-                "filelist",
-                "impexp",
-                "info",
-                "info_pagetsconfig",
-                "lowlevel",
-                "perm",
-                "reports",
-                "rsaauth",
-                "rtehtmlarea",
-                "scheduler",
-                "setup",
-                "tstemplate",
-                "viewpage"
-            ]
         },
         "typo3/cms": {
             "cms-package-dir": "{$vendor-dir}/typo3/cms",
