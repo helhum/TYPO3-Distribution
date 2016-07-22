@@ -27,7 +27,7 @@
 
         "symfony/process": "~2.7.0",
         "helhum/dotenv-connector": "^1.0.0",
-        "helhum/config-loader": "1.0.*@dev",
+        "helhum/config-loader": "^0.1",
         "helhum/typo3-console": "^3.0.0"
     },
     "require-dev": {
