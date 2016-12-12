@@ -9,7 +9,10 @@ $deploymentPath = '/path/to/deploy';
 $deploymentHost = 'PROJECTID-dev';
 $repositoryUrl = 'PROJECTREPOURL';
 $repositoryBranch = getenv('DEPLOY_BRANCH') ?: 'master';
-$composerCommandPath = 'composer';
+
+// Set this if your composer command is not available in PATH
+//$composerCommandPath = 'composer';
+
 // Set this, if on remote host the correct PHP binary is not available in PATH
 //$deployment->setOption('phpBinaryPathAndFilename', '/usr/local/bin/php5-56LATEST-CLI');
 
@@ -29,16 +32,10 @@ $application->setOption('branch', $repositoryBranch);
 
 $application->setDeploymentPath($deploymentPath);
 $application->setOption('keepReleases', 1);
-$application->setOption('TYPO3\\Surf\\Task\\TYPO3\\CMS\\SymlinkDataTask[applicationRootDirectory]', 'web');
-$application->setOption('TYPO3\\Surf\\Task\\Transfer\\RsyncTask[rsyncExcludes]', array(
-    '.git',
-    'web/fileadmin',
-    'web/uploads',
-));
-$application->setOption('applicationWebDirectory', 'web');
 $application->setOption('composerCommandPath', $composerCommandPath);
-// Not sure if we really need this or not
-//$application->setOption('TYPO3\\Surf\\Task\\Package\\GitTask[hardClean]', true);
+
+// Make sure we build from a clean state
+$application->setOption('TYPO3\\Surf\\Task\\Package\\GitTask[hardClean]', true);
 $application->setContext('Production');
 
 $deployment->onInitialize(function() use ($deployment) {
@@ -60,7 +57,7 @@ $deployment->onInitialize(function() use ($deployment) {
     ));
 
     $workflow->afterStage('transfer', 'Helhum\\TYPO3\\Distribution\\DefinedTask\\CopyIndexPhp');
-    $workflow->beforeTask('TYPO3\\Surf\\Task\\TYPO3\\CMS\\CreatePackageStatesTask', 'Helhum\\TYPO3\\Distribution\\DefinedTask\\EnvAwareTask');
-    $workflow->removeTask('TYPO3\\Surf\\Task\\TYPO3\\CMS\\FlushCachesTask');
+    $workflow->afterTask('TYPO3\\Surf\\Task\\Generic\\CreateSymlinksTask', 'Helhum\\TYPO3\\Distribution\\DefinedTask\\EnvAwareTask');
+    $workflow->removeTask('TYPO3\\Surf\\Task\\TYPO3\\CMS\\CreatePackageStatesTask');
     $workflow->forStage('finalize', 'TYPO3\\Surf\\Task\\TYPO3\\CMS\\FlushCachesTask');
 });
