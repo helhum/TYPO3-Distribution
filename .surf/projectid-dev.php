@@ -7,8 +7,12 @@ use TYPO3\Surf\Domain\Model\SimpleWorkflow;
 $projectName = 'PROJECTNAME - Dev';
 $deploymentPath = '/path/to/deploy';
 $deploymentHost = 'PROJECTID-dev';
-$repositoryUrl = 'PROJECTREPOURL';
-$repositoryBranch = getenv('DEPLOY_BRANCH') ?: 'master';
+
+// Set this if you do not have a remote repository
+// $repositoryUrl = 'PROJECTREPOURL';
+
+// Set this if you want to deploy a different branch than master
+//$repositoryBranch = 'master';
 
 // Set this if your composer command is not available in PATH
 //$composerCommandPath = 'composer';
@@ -17,9 +21,23 @@ $repositoryBranch = getenv('DEPLOY_BRANCH') ?: 'master';
 //$deployment->setOption('phpBinaryPathAndFilename', '/usr/local/bin/php5-56LATEST-CLI');
 
 
+
 // No changes are required in the default case below this point.
 $application = new \TYPO3\Surf\Application\TYPO3\CMS();
 $deployment->addApplication($application);
+
+
+// Set default config values
+if (!isset($repositoryUrl)) {
+    $repositoryUrl = 'file://' . dirname(__DIR__);
+}
+if (!isset($repositoryBranch)) {
+    $repositoryBranch = getenv('DEPLOY_BRANCH') ?: 'master';
+}
+if (!isset($composerCommandPath)) {
+    $composerCommandPath = 'composer';
+}
+
 
 $node = new Node($deploymentHost);
 $node->setHostname($deploymentHost);
