@@ -28,7 +28,7 @@
         "symfony/process": "~2.7.0",
         "helhum/dotenv-connector": "^1.0.0",
         "helhum/config-loader": "^0.1",
-        "helhum/typo3-console": "^3.0.0"
+        "helhum/typo3-console": "^4.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^4.8.0",
@@ -41,10 +41,10 @@
     },
     "scripts": {
         "package-states": [
-            "./typo3cms install:generatepackagestates"
+            "@php vendor/bin/typo3cms install:generatepackagestates"
         ],
         "folder-structure": [
-            "./typo3cms install:fixfolderstructure"
+            "@php vendor/bin/typo3cms install:fixfolderstructure"
         ],
         "pre-deploy": [
             "# Scripts here will be executed by Surf after composer install"
@@ -56,7 +56,7 @@
     },
     "extra": {
         "helhum/typo3-console": {
-            "install-binary": false
+            "install-extension-dummy": false
         },
         "typo3/cms": {
             "cms-package-dir": "{$vendor-dir}/typo3/cms",
@@ -65,8 +65,5 @@
         "helhum/dotenv-connector": {
             "cache-dir": "var/cache"
         }
-    },
-    "config": {
-        "bin-dir": "."
     }
 }
