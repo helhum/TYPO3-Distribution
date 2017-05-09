@@ -1,0 +1,14 @@
+{
+    "name": "helhum/typo3-config-handling",
+    "description" : "Configuration handling for TYPO3 CMS",
+    "license": "GPL-2.0+",
+    "require": {
+        "typo3/cms-core": "^7.6 || ^8.7",
+        "helhum/config-loader": "^0.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Helhum\\TYPO3\\ConfigHandling\\": "src"
+        }
+    }
+}

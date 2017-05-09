@@ -1,57 +1,63 @@
 {
     "repositories": [
-        { "type": "composer", "url": "https://composer.typo3.org/" }
+        { "type": "composer", "url": "https://composer.typo3.org/" },
+        { "type": "vcs", "url": "/Users/helmut/Developer/Console/typo3_console" },
+        { "type": "path", "url": "packages/*" }
     ],
-    "name": "helhum/typo3-distribution",
+    "name": "helhum/awesome-typo3-distribution",
     "description" : "TYPO3 CMS Distribution with console and .env support",
     "license": "GPL-2.0+",
     "require": {
-        "typo3/cms": "^7.6",
+        "typo3/cms": "^8.7",
+        "helhum/typo3-config-handling": "@dev",
 
-        "typo3/cms-belog": "^7.6",
-        "typo3/cms-beuser": "^7.6",
-        "typo3/cms-context-help": "^7.6",
-        "typo3/cms-fluid-styled-content": "^7.6",
-        "typo3/cms-felogin": "^7.6",
-        "typo3/cms-filelist": "^7.6",
-        "typo3/cms-impexp": "^7.6",
-        "typo3/cms-info": "^7.6",
-        "typo3/cms-info-pagetsconfig": "^7.6",
-        "typo3/cms-lowlevel": "^7.6",
-        "typo3/cms-reports": "^7.6",
-        "typo3/cms-rsaauth": "^7.6",
-        "typo3/cms-rtehtmlarea": "^7.6",
-        "typo3/cms-setup": "^7.6",
-        "typo3/cms-tstemplate": "^7.6",
-        "typo3/cms-viewpage": "^7.6",
+        "typo3/cms-belog": "^8.7",
+        "typo3/cms-beuser": "^8.7",
+        "typo3/cms-context-help": "^8.7",
+        "typo3/cms-fluid-styled-content": "^8.7",
+        "typo3/cms-felogin": "^8.7",
+        "typo3/cms-filelist": "^8.7",
+        "typo3/cms-impexp": "^8.7",
+        "typo3/cms-info": "^8.7",
+        "typo3/cms-info-pagetsconfig": "^8.7",
+        "typo3/cms-lowlevel": "^8.7",
+        "typo3/cms-reports": "^8.7",
+        "typo3/cms-rsaauth": "^8.7",
+        "typo3/cms-rte-ckeditor": "^8.7",
+        "typo3/cms-setup": "^8.7",
+        "typo3/cms-tstemplate": "^8.7",
+        "typo3/cms-viewpage": "^8.7",
 
-        "symfony/process": "~2.7.0",
-        "helhum/dotenv-connector": "^1.0.0",
-        "helhum/config-loader": "^0.1",
-        "helhum/typo3-console": "^4.0"
+        "helhum/typo3-console": "dev-master",
+        "roave/security-advisories": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "^4.8.0",
         "mikey179/vfsStream": "^1.6.0"
     },
-    "autoload": {
-        "psr-4": {
-            "Helhum\\TYPO3\\Distribution\\": "src"
-        }
-    },
     "scripts": {
+        "dot-env": [
+            "[ -f .env ] || cp .env.dist .env"
+        ],
         "package-states": [
-            "@php vendor/bin/typo3cms install:generatepackagestates"
+            "typo3cms install:generatepackagestates"
         ],
         "folder-structure": [
-            "@php vendor/bin/typo3cms install:fixfolderstructure"
+            "typo3cms install:fixfolderstructure"
+        ],
+        "extension-setup": [
+            "typo3cms install:extensionsetupifpossible"
         ],
         "pre-deploy": [
             "# Scripts here will be executed by Surf after composer install"
         ],
+        "pre-autoload-dump": [
+            "@dot-env"
+        ],
         "post-autoload-dump": [
             "@package-states",
-            "@folder-structure"
+            "@folder-structure",
+            "@extension-setup"
         ]
     },
     "extra": {

@@ -1,5 +1,5 @@
 <?php
-namespace Helhum\TYPO3\Distribution;
+namespace Helhum\TYPO3\ConfigHandling;
 
 /**
  * Class ConfigLoaderFactory

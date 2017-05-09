@@ -1,7 +1,7 @@
 <?php
 // We let the loader load context and environment specific configuration
 // No other code must go in here!
-$configLoader = \Helhum\TYPO3\Distribution\ConfigLoaderFactory::buildLoader(
+$configLoader = \Helhum\TYPO3\ConfigHandling\ConfigLoaderFactory::buildLoader(
     $context = \TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext()->isProduction() ? 'production' : 'development',
     $rootDir = dirname(dirname(__DIR__)),
     $fixedCacheIdentifier = getenv('CONFIGURATION_CACHE_IDENTIFIER')
