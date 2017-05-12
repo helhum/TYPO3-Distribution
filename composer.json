@@ -1,15 +1,15 @@
 {
     "repositories": [
         { "type": "composer", "url": "https://composer.typo3.org/" },
-        { "type": "vcs", "url": "/Users/helmut/Developer/Console/typo3_console" },
         { "type": "path", "url": "packages/*" }
     ],
-    "name": "helhum/awesome-typo3-distribution",
+    "name": "helhum/typo3-distribution",
     "description" : "TYPO3 CMS Distribution with console and .env support",
     "license": "GPL-2.0+",
     "require": {
         "typo3/cms": "^8.7",
         "helhum/typo3-config-handling": "@dev",
+        "helhum/typo3-setup-handling": "@dev",
 
         "typo3/cms-belog": "^8.7",
         "typo3/cms-beuser": "^8.7",
@@ -36,28 +36,8 @@
         "mikey179/vfsStream": "^1.6.0"
     },
     "scripts": {
-        "dot-env": [
-            "[ -f .env ] || cp .env.dist .env"
-        ],
-        "package-states": [
-            "typo3cms install:generatepackagestates"
-        ],
-        "folder-structure": [
-            "typo3cms install:fixfolderstructure"
-        ],
-        "extension-setup": [
-            "typo3cms install:extensionsetupifpossible"
-        ],
         "pre-deploy": [
             "# Scripts here will be executed by Surf after composer install"
-        ],
-        "pre-autoload-dump": [
-            "@dot-env"
-        ],
-        "post-autoload-dump": [
-            "@package-states",
-            "@folder-structure",
-            "@extension-setup"
         ]
     },
     "extra": {

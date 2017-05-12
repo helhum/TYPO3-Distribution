@@ -1,0 +1,23 @@
+{
+    "name": "helhum/typo3-setup-handling",
+    "type": "composer-plugin",
+    "description" : "Setup handling for TYPO3 CMS",
+    "license": "GPL-2.0+",
+    "require": {
+        "php": ">=5.5.0",
+        "composer-plugin-api": "^1.0",
+        "helhum/typo3-console": "^4.5.3",
+        "helhum/dotenv-connector": "^1.1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Helhum\\TYPO3\\SetupHandling\\": "src"
+        }
+    },
+    "extra": {
+        "class": "Helhum\\TYPO3\\SetupHandling\\Composer\\Plugin",
+        "branch-alias": {
+            "dev-master": "0.1.x-dev"
+        }
+    }
+}
