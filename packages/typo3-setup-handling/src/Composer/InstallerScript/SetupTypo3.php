@@ -57,12 +57,11 @@ class SetupTypo3 implements InstallerScriptInterface
     public function run(ScriptEvent $event)
     {
         $io = new ConsoleIo($event->getIO());
-        $composerConfig = $event->getComposer()->getConfig();
 
         $this->ensureTypo3Booted($event);
 
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $commandDispatcher = CommandDispatcher::createFromComposerRun([$composerConfig->get('bin-dir'), realpath('./Scripts')]);
+        $commandDispatcher = CommandDispatcher::createFromComposerRun($event);
         $setup = new CliSetupRequestHandler(
             $objectManager,
             $objectManager->get(CommandManager::class),

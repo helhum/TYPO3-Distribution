@@ -47,8 +47,7 @@ class PrepareTypo3 implements InstallerScriptInterface
      */
     public function run(ScriptEvent $event)
     {
-        $composerConfig = $event->getComposer()->getConfig();
-        $commandDispatcher = CommandDispatcher::createFromComposerRun([$composerConfig->get('bin-dir'), realpath('./Scripts')]);
+        $commandDispatcher = CommandDispatcher::createFromComposerRun($event);
         $commandDispatcher->executeCommand('install:generatepackagestates');
         $commandDispatcher->executeCommand('install:fixfolderstructure');
         $commandDispatcher->executeCommand('install:extensionsetupifpossible');

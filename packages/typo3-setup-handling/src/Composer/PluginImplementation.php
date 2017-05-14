@@ -46,9 +46,9 @@ class PluginImplementation
 
     public function preAutoloadDump()
     {
-        ScriptDispatcher::addInstallerScript(SetupDotEnv::class, 10);
+        ScriptDispatcher::addInstallerScript(PrepareTypo3::class, 21);
         ScriptDispatcher::addInstallerScript(SetupTypo3::class, 20);
-        ScriptDispatcher::addInstallerScript(PrepareTypo3::class, 30);
+        ScriptDispatcher::addInstallerScript(SetupDotEnv::class, 10);
     }
 
     /**
