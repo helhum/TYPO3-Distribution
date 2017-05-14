@@ -71,6 +71,10 @@ class SetupDotEnv implements InstallerScriptInterface
 
         file_put_contents($this->dotEnvFile, $envConfig);
 
+        $commandDispatcher = CommandDispatcher::createFromComposerRun($event);
+        $commandDispatcher->executeCommand('configuration:remove', ['--paths' => 'DB', '--force' => true]);
+        $commandDispatcher->executeCommand('configuration:remove', ['--paths' => 'SYS/sitename', '--force' => true]);
+
         return true;
     }
 }
