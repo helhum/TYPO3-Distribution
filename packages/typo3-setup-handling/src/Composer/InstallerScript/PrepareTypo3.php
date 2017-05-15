@@ -33,6 +33,7 @@ class PrepareTypo3 implements InstallerScriptInterface
      */
     public function shouldRun(ScriptEvent $event)
     {
+        return false;
         $command = $_SERVER['argv'][1];
         return $command !== 'create-project';
     }

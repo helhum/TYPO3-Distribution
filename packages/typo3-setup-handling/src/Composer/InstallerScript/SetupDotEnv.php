@@ -22,8 +22,13 @@ namespace Helhum\TYPO3\SetupHandling\Composer\InstallerScript;
  ***************************************************************/
 
 use Composer\Script\Event as ScriptEvent;
+use Dotenv\Dotenv;
+use Helhum\DotEnvConnector\Cache;
+use Helhum\DotEnvConnector\DotEnvReader;
 use Helhum\Typo3Console\Mvc\Cli\CommandDispatcher;
 use Helhum\Typo3ConsolePlugin\InstallerScriptInterface;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 class SetupDotEnv implements InstallerScriptInterface
 {
@@ -37,14 +42,21 @@ class SetupDotEnv implements InstallerScriptInterface
      */
     private $dotEnvDistFile;
 
+    public function __construct()
+    {
+        $this->dotEnvFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/.env';
+        $this->dotEnvDistFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/.env.dist';
+    }
+
     /**
      * @param ScriptEvent $event
      * @return bool
      */
     public function shouldRun(ScriptEvent $event)
     {
-        return !file_exists($this->dotEnvFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/.env')
-            && file_exists($this->dotEnvDistFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/.env.dist');
+        return class_exists(DotEnvReader::class)
+            && !file_exists($this->dotEnvFile)
+            && file_exists($this->dotEnvDistFile);
     }
 
     /**
@@ -57,24 +69,86 @@ class SetupDotEnv implements InstallerScriptInterface
      */
     public function run(ScriptEvent $event)
     {
-        copy($this->dotEnvDistFile, $this->dotEnvFile);
+        $envConfig = file_get_contents($this->dotEnvDistFile);
 
-        $envConfig = file_get_contents($this->dotEnvFile);
+        $envBackup = $_ENV;
+        $dotEnvReader = new DotEnvReader(new Dotenv(dirname($this->dotEnvDistFile), basename($this->dotEnvDistFile)), new Cache(null, ''));
+        $dotEnvReader->read();
+        $modifiedEnvVars = array_diff_assoc($_ENV, $envBackup);
+        $envConfig = $this->removePromptValues($envConfig);
+        $envConfig = $this->removeAutoInstallValues($envConfig);
+
         $localConfiguration = require getenv('TYPO3_PATH_ROOT') . '/typo3conf/LocalConfiguration.php';
+        $configPathsToRemove = [];
+        foreach ($modifiedEnvVars as $envName => $envValue) {
+            if (StringUtility::beginsWith($envName, 'TYPO3_INSTALL_PROMPT_')
+                && !StringUtility::endsWith($envName, '_DEFAULT')
+            ) {
+                $defaultValue = getenv($envName . '_DEFAULT') ?: null;
+                do {
+                    $answer = $event->getIO()->ask($envValue . ($defaultValue ? sprintf(' (%s) :', $defaultValue) : ': '), $defaultValue);
+                } while ($answer === null);
+                $envConfig = str_replace('${' . $envName . '}', $answer, $envConfig);
+            } elseif (StringUtility::beginsWith($envName, 'TYPO3__')) {
+                try {
+                    $configPath = str_replace(['TYPO3__', '__'], ['', '/'], $envName);
+                    $answer = ArrayUtility::getValueByPath($localConfiguration, $configPath);
+                    $envConfig = str_replace($envName . '=""', $envName . '="' . $answer . '"', $envConfig);
+                    $configPathsToRemove[] = $configPath;
+                } catch (\RuntimeException $e) {
 
-        $envConfig = str_replace('${TYPO3_INSTALL_DB_USER}', $localConfiguration['DB']['Connections']['Default']['user'], $envConfig);
-        $envConfig = str_replace('${TYPO3_INSTALL_DB_PASSWORD}', $localConfiguration['DB']['Connections']['Default']['password'], $envConfig);
-        $envConfig = str_replace('${TYPO3_INSTALL_DB_HOST}', $localConfiguration['DB']['Connections']['Default']['host'], $envConfig);
-        $envConfig = str_replace('${TYPO3_INSTALL_DB_PORT}', $localConfiguration['DB']['Connections']['Default']['port'], $envConfig);
-        $envConfig = str_replace('${TYPO3_INSTALL_DB_DBNAME}', $localConfiguration['DB']['Connections']['Default']['dbname'], $envConfig);
-        $envConfig = str_replace('${TYPO3_INSTALL_SITE_NAME}', $localConfiguration['SYS']['sitename'], $envConfig);
+                }
+            }
+        }
 
         file_put_contents($this->dotEnvFile, $envConfig);
-
         $commandDispatcher = CommandDispatcher::createFromComposerRun($event);
-        $commandDispatcher->executeCommand('configuration:remove', ['--paths' => 'DB', '--force' => true]);
-        $commandDispatcher->executeCommand('configuration:remove', ['--paths' => 'SYS/sitename', '--force' => true]);
+        $commandDispatcher->executeCommand('configuration:remove', ['--paths' => $configPathsToRemove, '--force' => true]);
 
         return true;
+    }
+
+    /**
+     * @param string $envConfig
+     * @return string
+     * @throws \RuntimeException
+     */
+    private function removeAutoInstallValues($envConfig)
+    {
+        $cleanedConfig = preg_replace(
+            '/(# ### TYPO3 AUTO INSTALL VALUES ###).*(# ### TYPO3 AUTO INSTALL VALUES ###)/is',
+            '',
+            $envConfig
+        );
+        if ($cleanedConfig === null) {
+            throw new \RuntimeException('Failed to remove install values from .env.dist file', 1494850058);
+        }
+        return $cleanedConfig;
+    }
+
+    /**
+     * @param string $envConfig
+     * @return string
+     * @throws \RuntimeException
+     */
+    private function removePromptValues($envConfig)
+    {
+        $cleanedConfig = preg_replace(
+            '/(# ### INPUT VALUES ###).*(# ### INPUT VALUES ###)/is',
+            '',
+            $envConfig
+        );
+        if ($cleanedConfig === null) {
+            throw new \RuntimeException('Failed to remove prompt values from .env.dist file', 1494850059);
+        }
+        return $cleanedConfig;
+    }
+
+    private function restoreEnvVars()
+    {
+        foreach ($this->modifiedEnvVars as $name) {
+            putenv($name);
+            unset($_ENV[$name], $_SERVER[$name]);
+        }
     }
 }

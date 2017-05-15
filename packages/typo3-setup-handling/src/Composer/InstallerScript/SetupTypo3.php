@@ -22,6 +22,9 @@ namespace Helhum\TYPO3\SetupHandling\Composer\InstallerScript;
  ***************************************************************/
 
 use Composer\Script\Event as ScriptEvent;
+use Dotenv\Dotenv;
+use Helhum\DotEnvConnector\Cache;
+use Helhum\DotEnvConnector\DotEnvReader;
 use Helhum\TYPO3\SetupHandling\Composer\ConsoleIo;
 use Helhum\Typo3Console\Core\Booting\RunLevel;
 use Helhum\Typo3Console\Core\ConsoleBootstrap;
@@ -36,6 +39,11 @@ use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
 class SetupTypo3 implements InstallerScriptInterface
 {
+    /**
+     * @var array
+     */
+    private $modifiedEnvVars = [];
+
     /**
      * @param ScriptEvent $event
      * @return bool
@@ -78,6 +86,7 @@ class SetupTypo3 implements InstallerScriptInterface
      */
     protected function populateCommandArgumentsFromEnvironment()
     {
+        $this->loadDotEnvIfPossible();
         $arguments = [
             'databaseUserName' => getenv('TYPO3_INSTALL_DB_USER'),
             'databaseUserPassword' => getenv('TYPO3_INSTALL_DB_PASSWORD'),
@@ -85,15 +94,38 @@ class SetupTypo3 implements InstallerScriptInterface
             'databasePort' => getenv('TYPO3_INSTALL_DB_PORT'),
             'databaseSocket' => getenv('TYPO3_INSTALL_DB_UNIX_SOCKET'),
             'databaseName' => getenv('TYPO3_INSTALL_DB_DBNAME'),
-            'useExistingDatabase' => getenv('TYPO3_INSTALL_DB_USE_EXISTING') !== false ? (bool)getenv('TYPO3_INSTALL_DB_USE_EXISTING') : null,
             'adminUserName' => getenv('TYPO3_INSTALL_ADMIN_USER'),
             'adminPassword' => getenv('TYPO3_INSTALL_ADMIN_PASSWORD'),
             'siteName' => getenv('TYPO3_INSTALL_SITE_NAME'),
             'siteSetupType' => getenv('TYPO3_INSTALL_SITE_SETUP_TYPE'),
         ];
-        return array_filter($arguments, function($value) {
+        $commandArguments = array_filter($arguments, function($value) {
             return $value !== false;
         });
+        if (getenv('TYPO3_INSTALL_DB_USE_EXISTING') !== false) {
+            $commandArguments['useExistingDatabase'] = (bool)getenv('TYPO3_INSTALL_DB_USE_EXISTING');
+        }
+        $this->restoreEnvVars();
+
+        return $commandArguments;
+    }
+
+    private function loadDotEnvIfPossible()
+    {
+        if (class_exists(DotEnvReader::class) && file_exists($envDistFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/.env.dist')) {
+            $envBackup = $_ENV;
+            $dotEnvReader = new DotEnvReader(new Dotenv(dirname($envDistFile), basename($envDistFile)), new Cache(null, ''));
+            $dotEnvReader->read();
+            $this->modifiedEnvVars = array_keys(array_diff_assoc($_ENV, $envBackup));
+        }
+    }
+
+    private function restoreEnvVars()
+    {
+        foreach ($this->modifiedEnvVars as $name) {
+            putenv($name);
+            unset($_ENV[$name], $_SERVER[$name]);
+        }
     }
 
     /**
