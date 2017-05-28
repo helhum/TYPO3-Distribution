@@ -30,7 +30,7 @@ use Helhum\Typo3ConsolePlugin\InstallerScriptInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
-class SetupDotEnv implements InstallerScriptInterface
+class SetupConfiguration implements InstallerScriptInterface
 {
     /**
      * @var string
@@ -42,10 +42,16 @@ class SetupDotEnv implements InstallerScriptInterface
      */
     private $dotEnvDistFile;
 
+    /**
+     * @var string
+     */
+    private $dotEnvInstallFile;
+
     public function __construct()
     {
         $this->dotEnvFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/.env';
         $this->dotEnvDistFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/.env.dist';
+        $this->dotEnvInstallFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/.env.install';
     }
 
     /**
@@ -54,10 +60,7 @@ class SetupDotEnv implements InstallerScriptInterface
      */
     public function shouldRun(ScriptEvent $event)
     {
-        return false;
-        return class_exists(DotEnvReader::class)
-            && !file_exists($this->dotEnvFile)
-            && file_exists($this->dotEnvDistFile);
+        return getenv('TYPO3_IS_SET_UP');
     }
 
     /**
@@ -72,84 +75,85 @@ class SetupDotEnv implements InstallerScriptInterface
     {
         $envConfig = file_get_contents($this->dotEnvDistFile);
 
-        $envBackup = $_ENV;
-        $dotEnvReader = new DotEnvReader(new Dotenv(dirname($this->dotEnvDistFile), basename($this->dotEnvDistFile)), new Cache(null, ''));
-        $dotEnvReader->read();
-        $modifiedEnvVars = array_diff_assoc($_ENV, $envBackup);
-        $envConfig = $this->removePromptValues($envConfig);
-        $envConfig = $this->removeAutoInstallValues($envConfig);
-
-        $localConfiguration = require getenv('TYPO3_PATH_ROOT') . '/typo3conf/LocalConfiguration.php';
-        $configPathsToRemove = [];
-        foreach ($modifiedEnvVars as $envName => $envValue) {
+        foreach ($this->getParsedEnvFileValues($this->dotEnvInstallFile) as $envName => $envValue) {
             if (StringUtility::beginsWith($envName, 'TYPO3_INSTALL_PROMPT_')
                 && !StringUtility::endsWith($envName, '_DEFAULT')
             ) {
                 $defaultValue = getenv($envName . '_DEFAULT') ?: null;
                 do {
-                    $answer = $event->getIO()->ask($envValue . ($defaultValue ? sprintf(' (%s) :', $defaultValue) : ': '), $defaultValue);
+                    $answer = $event->getIO()->ask('<comment>' . $envValue . ($defaultValue ? sprintf(' (%s) :', $defaultValue): ':') . '</comment> ', $defaultValue);
                 } while ($answer === null);
                 $envConfig = str_replace('${' . $envName . '}', $answer, $envConfig);
-            } elseif (StringUtility::beginsWith($envName, 'TYPO3__')) {
+            }
+        }
+
+        $settings = $this->getSettings();
+        foreach ($this->getParsedEnvFileValues($this->dotEnvDistFile) as $envName => $envValue) {
+            if (StringUtility::beginsWith($envName, 'TYPO3__')) {
                 try {
                     $configPath = str_replace(['TYPO3__', '__'], ['', '/'], $envName);
-                    $answer = ArrayUtility::getValueByPath($localConfiguration, $configPath);
-                    $envConfig = str_replace($envName . '=""', $envName . '="' . $answer . '"', $envConfig);
-                    $configPathsToRemove[] = $configPath;
+                    $value = ArrayUtility::getValueByPath($settings, $configPath);
+                    $envConfig = str_replace($envName . '=""', $envName . '="' . $value . '"', $envConfig);
+                    $settings = ArrayUtility::removeByPath($settings, $configPath);
                 } catch (\RuntimeException $e) {
-
                 }
             }
         }
 
         file_put_contents($this->dotEnvFile, $envConfig);
+        $this->storeSettings($settings);
+
         $commandDispatcher = CommandDispatcher::createFromComposerRun($event);
-        $commandDispatcher->executeCommand('configuration:remove', ['--paths' => $configPathsToRemove, '--force' => true]);
+        $commandDispatcher->executeCommand('settings:dump', ['dev' => $event->isDevMode()]);
 
         return true;
     }
 
     /**
-     * @param string $envConfig
-     * @return string
-     * @throws \RuntimeException
+     * @param string $dotEnvFile
+     * @return array
      */
-    private function removeAutoInstallValues($envConfig)
+    private function getParsedEnvFileValues($dotEnvFile)
     {
-        $cleanedConfig = preg_replace(
-            '/(# ### TYPO3 AUTO INSTALL VALUES ###).*(# ### TYPO3 AUTO INSTALL VALUES ###)/is',
-            '',
-            $envConfig
-        );
-        if ($cleanedConfig === null) {
-            throw new \RuntimeException('Failed to remove install values from .env.dist file', 1494850058);
+        if (!file_exists($dotEnvFile)) {
+            return [];
         }
-        return $cleanedConfig;
-    }
-
-    /**
-     * @param string $envConfig
-     * @return string
-     * @throws \RuntimeException
-     */
-    private function removePromptValues($envConfig)
-    {
-        $cleanedConfig = preg_replace(
-            '/(# ### INPUT VALUES ###).*(# ### INPUT VALUES ###)/is',
-            '',
-            $envConfig
-        );
-        if ($cleanedConfig === null) {
-            throw new \RuntimeException('Failed to remove prompt values from .env.dist file', 1494850059);
-        }
-        return $cleanedConfig;
-    }
-
-    private function restoreEnvVars()
-    {
-        foreach ($this->modifiedEnvVars as $name) {
+        $envBackup = $_ENV;
+        $dotEnvReader = new DotEnvReader(new Dotenv(dirname($dotEnvFile), basename($dotEnvFile)), new Cache(null, ''));
+        $dotEnvReader->read();
+        $modifiedEnvVars = array_diff_assoc($_ENV, $envBackup);
+        foreach ($modifiedEnvVars as $name => $_) {
             putenv($name);
             unset($_ENV[$name], $_SERVER[$name]);
         }
+        return $modifiedEnvVars;
+    }
+
+    private function getSettings()
+    {
+        $localConfValues = [];
+        if (
+            file_exists($localConfFile = getenv('TYPO3_PATH_ROOT') . '/typo3conf/LocalConfiguration.php')
+            && false === strpos(file_get_contents($localConfFile), 'Auto generated by helhum/typo3-config-handling')
+        ) {
+            $localConfValues = require $localConfFile;
+        }
+        $settingsFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/conf/settings.php';
+        $settings = require $settingsFile;
+
+        return array_replace_recursive($localConfValues, $settings);
+    }
+
+    private function storeSettings(array $settings)
+    {
+        $settingsFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/conf/settings.php';
+        file_put_contents(
+            $settingsFile,
+            '<?php return'
+                . chr(10)
+                . ArrayUtility::arrayExport($settings)
+                . ';'
+                . chr(10)
+        );
     }
 }

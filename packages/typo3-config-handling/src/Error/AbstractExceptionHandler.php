@@ -21,7 +21,6 @@ namespace Helhum\Typo3ConfigHandling\Error;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\Error\ExceptionHandlerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -110,7 +109,7 @@ Uncaught TYPO3 Exception ' . $exceptionCodeNumber . $exception->getMessage() . L
         if (method_exists($exception, 'getStatusHeaders')) {
             $headers = $exception->getStatusHeaders();
         } else {
-            $headers = array(\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_500);
+            $headers = [\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_500];
         }
         if (!headers_sent()) {
             foreach ($headers as $header) {

@@ -9,5 +9,5 @@ return [
         'exceptionalErrors' => E_USER_ERROR | E_RECOVERABLE_ERROR,
         'systemLogLevel' => 2,
         'systemLog' => 'error_log',
-    ]
+    ],
 ];

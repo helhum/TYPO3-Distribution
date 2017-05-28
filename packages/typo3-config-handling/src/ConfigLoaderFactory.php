@@ -28,7 +28,8 @@ class ConfigLoaderFactory
      * @param string $confDir
      * @return \Helhum\ConfigLoader\ConfigurationLoader
      */
-    public static function buildLoader($context, $confDir = null) {
+    public static function buildLoader($context, $confDir = null)
+    {
         $confDir = $confDir ?: getenv('TYPO3_PATH_COMPOSER_ROOT') . '/conf';
         return new \Helhum\ConfigLoader\ConfigurationLoader(
             [

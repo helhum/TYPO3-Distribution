@@ -10,58 +10,58 @@ return [
         'systemLogLevel' => 0,
         'caching' => [
             'cacheConfigurations' => [
-                'cache_core' => array(
+                'cache_core' => [
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\NullBackend::class,
-                ),
-                'fluid_template' => array(
+                ],
+                'fluid_template' => [
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\NullBackend::class,
-                ),
-                'cache_hash' => array(
+                ],
+                'cache_hash' => [
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\NullBackend::class,
-                ),
-                'cache_pages' => array(
+                ],
+                'cache_pages' => [
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\NullBackend::class,
-                ),
-                'cache_pagesection' => array(
+                ],
+                'cache_pagesection' => [
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\NullBackend::class,
-                ),
-                'cache_phpcode' => array(
+                ],
+                'cache_phpcode' => [
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\NullBackend::class,
-                ),
-                'cache_runtime' => array(
+                ],
+                'cache_runtime' => [
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend::class,
-                ),
-                'cache_rootline' => array(
+                ],
+                'cache_rootline' => [
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\NullBackend::class,
-                ),
-                'cache_imagesizes' => array(
+                ],
+                'cache_imagesizes' => [
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\NullBackend::class,
-                ),
-                'l10n' => array(
+                ],
+                'l10n' => [
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\NullBackend::class,
-                ),
-                'extbase_object' => array(
+                ],
+                'extbase_object' => [
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\NullBackend::class,
-                ),
-                'extbase_reflection' => array(
+                ],
+                'extbase_reflection' => [
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\NullBackend::class,
-                ),
-                'extbase_typo3dbbackend_tablecolumns' => array(
+                ],
+                'extbase_typo3dbbackend_tablecolumns' => [
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\NullBackend::class,
-                ),
-                'extbase_typo3dbbackend_queries' => array(
+                ],
+                'extbase_typo3dbbackend_queries' => [
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\NullBackend::class,
-                ),
-                'extbase_datamapfactory_datamap' => array(
+                ],
+                'extbase_datamapfactory_datamap' => [
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\NullBackend::class,
-                ),
-            ]
-        ]
+                ],
+            ],
+        ],
     ],
     'BE' => [
         'debug' => true,
-        // Convenience
-        'sessionTimeout' => 60 * 60 * 24 * 365 // One year!
+        // One year!
+        'sessionTimeout' => 31536000,
     ],
     'FE' => [
         'debug' => true,
@@ -74,9 +74,9 @@ return [
         'writerConfiguration' => [
             \TYPO3\CMS\Core\Log\LogLevel::DEBUG => [
                 \TYPO3\CMS\Core\Log\Writer\FileWriter::class => [
-                    dirname(PATH_site) . '/var/log/typo3-default.log'
-                ]
-            ]
-        ]
+                    dirname(PATH_site) . '/var/log/typo3-default.log',
+                ],
+            ],
+        ],
     ],
 ];

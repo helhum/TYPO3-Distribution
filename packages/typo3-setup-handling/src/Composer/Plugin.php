@@ -38,17 +38,17 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     /**
      * @var array
      */
-    private $handledEvents = array();
+    private $handledEvents = [];
 
     /**
      * {@inheritDoc}
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            ScriptEvents::PRE_AUTOLOAD_DUMP => array('listen'),
-            ScriptEvents::POST_AUTOLOAD_DUMP => array('listen')
-        );
+        return [
+            ScriptEvents::PRE_AUTOLOAD_DUMP => ['listen'],
+            ScriptEvents::POST_AUTOLOAD_DUMP => ['listen'],
+        ];
     }
 
     /**

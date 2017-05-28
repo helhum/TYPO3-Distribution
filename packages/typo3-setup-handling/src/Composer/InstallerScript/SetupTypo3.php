@@ -40,9 +40,14 @@ use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 class SetupTypo3 implements InstallerScriptInterface
 {
     /**
-     * @var array
+     * @var string
      */
-    private $modifiedEnvVars = [];
+    private $dotEnvFile;
+
+    public function __construct()
+    {
+        $this->dotEnvFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/.env';
+    }
 
     /**
      * @param ScriptEvent $event
@@ -50,8 +55,7 @@ class SetupTypo3 implements InstallerScriptInterface
      */
     public function shouldRun(ScriptEvent $event)
     {
-        $command = $_SERVER['argv'][1];
-        return $command === 'create-project';
+        return $event->isDevMode() && !file_exists($this->dotEnvFile);
     }
 
     /**
@@ -78,6 +82,8 @@ class SetupTypo3 implements InstallerScriptInterface
             new ConsoleOutput($io->getOutput(), $io->getInput())
         );
         $setup->setup($io->isInteractive(), $this->populateCommandArgumentsFromEnvironment());
+        putenv('TYPO3_IS_SET_UP=1');
+
         return true;
     }
 
@@ -86,46 +92,52 @@ class SetupTypo3 implements InstallerScriptInterface
      */
     protected function populateCommandArgumentsFromEnvironment()
     {
-        $this->loadDotEnvIfPossible();
+        $envValues = [];
+        if (file_exists($envInstallFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/.env.install')) {
+            $envValues = $this->getParsedEnvFileValues($envInstallFile);
+        }
+
         $arguments = [
-            'databaseUserName' => getenv('TYPO3_INSTALL_DB_USER'),
-            'databaseUserPassword' => getenv('TYPO3_INSTALL_DB_PASSWORD'),
-            'databaseHostName' => getenv('TYPO3_INSTALL_DB_HOST'),
-            'databasePort' => getenv('TYPO3_INSTALL_DB_PORT'),
-            'databaseSocket' => getenv('TYPO3_INSTALL_DB_UNIX_SOCKET'),
-            'databaseName' => getenv('TYPO3_INSTALL_DB_DBNAME'),
-            'adminUserName' => getenv('TYPO3_INSTALL_ADMIN_USER'),
-            'adminPassword' => getenv('TYPO3_INSTALL_ADMIN_PASSWORD'),
-            'siteName' => getenv('TYPO3_INSTALL_SITE_NAME'),
-            'siteSetupType' => getenv('TYPO3_INSTALL_SITE_SETUP_TYPE'),
+            'databaseUserName' => $envValues['TYPO3_INSTALL_DB_USER'] ?? getenv('TYPO3_INSTALL_DB_USER'),
+            'databaseUserPassword' => $envValues['TYPO3_INSTALL_DB_PASSWORD'] ?? getenv('TYPO3_INSTALL_DB_PASSWORD'),
+            'databaseHostName' => $envValues['TYPO3_INSTALL_DB_HOST'] ?? getenv('TYPO3_INSTALL_DB_HOST'),
+            'databasePort' => $envValues['TYPO3_INSTALL_DB_PORT'] ?? getenv('TYPO3_INSTALL_DB_PORT'),
+            'databaseSocket' => $envValues['TYPO3_INSTALL_DB_UNIX_SOCKET'] ?? getenv('TYPO3_INSTALL_DB_UNIX_SOCKET'),
+            'databaseName' => $envValues['TYPO3_INSTALL_DB_DBNAME'] ?? getenv('TYPO3_INSTALL_DB_DBNAME'),
+            'adminUserName' => $envValues['TYPO3_INSTALL_ADMIN_USER'] ?? getenv('TYPO3_INSTALL_ADMIN_USER'),
+            'adminPassword' => $envValues['TYPO3_INSTALL_ADMIN_PASSWORD'] ?? getenv('TYPO3_INSTALL_ADMIN_PASSWORD'),
+            'siteName' => $envValues['TYPO3_INSTALL_SITE_NAME'] ?? getenv('TYPO3_INSTALL_SITE_NAME'),
+            'siteSetupType' => $envValues['TYPO3_INSTALL_SITE_SETUP_TYPE'] ?? getenv('TYPO3_INSTALL_SITE_SETUP_TYPE'),
         ];
-        $commandArguments = array_filter($arguments, function($value) {
+        $commandArguments = array_filter($arguments, function ($value) {
             return $value !== false;
         });
-        if (getenv('TYPO3_INSTALL_DB_USE_EXISTING') !== false) {
-            $commandArguments['useExistingDatabase'] = (bool)getenv('TYPO3_INSTALL_DB_USE_EXISTING');
+        $useExistingDb = $envValues['TYPO3_INSTALL_DB_USE_EXISTING'] ?? getenv('TYPO3_INSTALL_DB_USE_EXISTING');
+        if ($useExistingDb !== false) {
+            $commandArguments['useExistingDatabase'] = (bool)$useExistingDb;
         }
-        $this->restoreEnvVars();
 
         return $commandArguments;
     }
 
-    private function loadDotEnvIfPossible()
+    /**
+     * @param string $dotEnvFile
+     * @return array
+     */
+    private function getParsedEnvFileValues($dotEnvFile)
     {
-        if (class_exists(DotEnvReader::class) && file_exists($envDistFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/.env.dist')) {
-            $envBackup = $_ENV;
-            $dotEnvReader = new DotEnvReader(new Dotenv(dirname($envDistFile), basename($envDistFile)), new Cache(null, ''));
-            $dotEnvReader->read();
-            $this->modifiedEnvVars = array_keys(array_diff_assoc($_ENV, $envBackup));
+        if (!class_exists(DotEnvReader::class) || !file_exists($dotEnvFile)) {
+            return [];
         }
-    }
-
-    private function restoreEnvVars()
-    {
-        foreach ($this->modifiedEnvVars as $name) {
+        $envBackup = $_ENV;
+        $dotEnvReader = new DotEnvReader(new Dotenv(dirname($dotEnvFile), basename($dotEnvFile)), new Cache(null, ''));
+        $dotEnvReader->read();
+        $modifiedEnvVars = array_diff_assoc($_ENV, $envBackup);
+        foreach ($modifiedEnvVars as $name => $_) {
             putenv($name);
             unset($_ENV[$name], $_SERVER[$name]);
         }
+        return $modifiedEnvVars;
     }
 
     /**

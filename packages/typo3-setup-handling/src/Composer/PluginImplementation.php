@@ -23,7 +23,7 @@ namespace Helhum\TYPO3\SetupHandling\Composer;
 
 use Composer\Script\Event;
 use Helhum\TYPO3\SetupHandling\Composer\InstallerScript\PrepareTypo3;
-use Helhum\TYPO3\SetupHandling\Composer\InstallerScript\SetupDotEnv;
+use Helhum\TYPO3\SetupHandling\Composer\InstallerScript\SetupConfiguration;
 use Helhum\TYPO3\SetupHandling\Composer\InstallerScript\SetupTypo3;
 use Helhum\Typo3ConsolePlugin\ScriptDispatcher;
 
@@ -46,9 +46,9 @@ class PluginImplementation
 
     public function preAutoloadDump()
     {
-        ScriptDispatcher::addInstallerScript(PrepareTypo3::class, 21);
-        ScriptDispatcher::addInstallerScript(SetupTypo3::class, 20);
-        ScriptDispatcher::addInstallerScript(SetupDotEnv::class, 10);
+        ScriptDispatcher::addInstallerScript(SetupTypo3::class, 30);
+        ScriptDispatcher::addInstallerScript(SetupConfiguration::class, 20);
+        ScriptDispatcher::addInstallerScript(PrepareTypo3::class, 10);
     }
 
     /**
