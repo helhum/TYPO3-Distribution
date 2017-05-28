@@ -33,7 +33,6 @@ class PrepareTypo3 implements InstallerScriptInterface
      */
     public function shouldRun(ScriptEvent $event)
     {
-        return false;
         $command = $_SERVER['argv'][1];
         return $command !== 'create-project';
     }
@@ -50,6 +49,7 @@ class PrepareTypo3 implements InstallerScriptInterface
     {
         $commandDispatcher = CommandDispatcher::createFromComposerRun($event);
         $commandDispatcher->executeCommand('install:generatepackagestates');
+        $commandDispatcher->executeCommand('settings:dump', ['dev' => $event->isDevMode()]);
         $commandDispatcher->executeCommand('install:fixfolderstructure');
         $commandDispatcher->executeCommand('install:extensionsetupifpossible');
 

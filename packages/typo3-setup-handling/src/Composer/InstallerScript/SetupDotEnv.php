@@ -54,6 +54,7 @@ class SetupDotEnv implements InstallerScriptInterface
      */
     public function shouldRun(ScriptEvent $event)
     {
+        return false;
         return class_exists(DotEnvReader::class)
             && !file_exists($this->dotEnvFile)
             && file_exists($this->dotEnvDistFile);

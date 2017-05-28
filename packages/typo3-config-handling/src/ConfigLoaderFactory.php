@@ -1,68 +1,41 @@
 <?php
-namespace Helhum\TYPO3\ConfigHandling;
+namespace Helhum\Typo3ConfigHandling;
 
-/**
- * Class ConfigLoaderFactory
- */
+/***************************************************************
+ *  Copyright notice
+ *
+ *  (c) 2017 Helmut Hummel <info@helhum.io>
+ *  All rights reserved
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the text file GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
+
 class ConfigLoaderFactory
 {
     /**
      * @param string $context
-     * @param string $rootDir
-     * @param array $additionalFileWatches
-     * @param string $fixedCacheIdentifier
-     * @return \Helhum\ConfigLoader\CachedConfigurationLoader
+     * @param string $confDir
+     * @return \Helhum\ConfigLoader\ConfigurationLoader
      */
-    public static function buildLoader($context, $rootDir, $fixedCacheIdentifier = null, array $additionalFileWatches = array()) {
-        $confDir = $rootDir . '/conf';
-        $cacheDir = $rootDir . '/var/cache';
-        if ($fixedCacheIdentifier) {
-            // Freeze configuration with fixed identifier if requested
-            $cacheIdentifier = $fixedCacheIdentifier;
-        } else {
-            $fileWatches = array_merge(
-                [
-                    $rootDir . '/web/typo3conf/LocalConfiguration.php',
-                    $rootDir . '/web/typo3conf/AdditionalConfiguration.php',
-                    $rootDir . '/.env',
-                    $confDir . '/default.php',
-                    $confDir . '/' . $context . '.php',
-                    $confDir . '/override.php',
-                ],
-                $additionalFileWatches
-            );
-            $cacheIdentifier = self::getCacheIdentifier($context, $fileWatches);
-        }
-        return new \Helhum\ConfigLoader\CachedConfigurationLoader
-        (
-            $cacheDir,
-            $cacheIdentifier,
-            function() use ($confDir, $context) {
-                return new \Helhum\ConfigLoader\ConfigurationLoader(
-                    array(
-                        new \Helhum\ConfigLoader\Reader\PhpFileReader($confDir . '/default.php'),
-                        new \Helhum\ConfigLoader\Reader\PhpFileReader($confDir . '/' . $context . '.php'),
-                        new \Helhum\ConfigLoader\Reader\EnvironmentReader('TYPO3'),
-                        new \Helhum\ConfigLoader\Reader\PhpFileReader($confDir . '/override.php'),
-                    )
-                );
-            }
+    public static function buildLoader($context, $confDir = null) {
+        $confDir = $confDir ?: getenv('TYPO3_PATH_COMPOSER_ROOT') . '/conf';
+        return new \Helhum\ConfigLoader\ConfigurationLoader(
+            [
+                new \Helhum\ConfigLoader\Reader\PhpFileReader($confDir . '/settings.php'),
+                new \Helhum\ConfigLoader\Reader\PhpFileReader($confDir . '/settings.' . $context . '.php'),
+                new \Helhum\ConfigLoader\Reader\EnvironmentReader('TYPO3'),
+            ]
         );
-    }
-
-    /**
-     * @param string $context
-     * @param array $fileWatches
-     * @return string
-     */
-    protected static function getCacheIdentifier($context, array $fileWatches = array())
-    {
-        $identifier = $context;
-        foreach ($fileWatches as $fileWatch) {
-            if (file_exists($fileWatch)) {
-                $identifier .= filemtime($fileWatch);
-            }
-        }
-        return md5($identifier);
     }
 }

@@ -10,13 +10,12 @@ return [
         'systemLogLevel' => 0,
         'caching' => [
             'cacheConfigurations' => [
-                // Uncommenting the two lines below will slow down request times dramatically
-//                'cache_core' => array(
-//                    'backend' => \TYPO3\CMS\Core\Cache\Backend\NullBackend::class,
-//                ),
-//                'fluid_template' => array(
-//                    'backend' => \TYPO3\CMS\Core\Cache\Backend\NullBackend::class,
-//                ),
+                'cache_core' => array(
+                    'backend' => \TYPO3\CMS\Core\Cache\Backend\NullBackend::class,
+                ),
+                'fluid_template' => array(
+                    'backend' => \TYPO3\CMS\Core\Cache\Backend\NullBackend::class,
+                ),
                 'cache_hash' => array(
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\NullBackend::class,
                 ),

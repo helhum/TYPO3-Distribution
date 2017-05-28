@@ -28,7 +28,7 @@
         "typo3/cms-tstemplate": "^8.7",
         "typo3/cms-viewpage": "^8.7",
 
-        "helhum/typo3-console": "dev-master",
+        "helhum/typo3-console": "^4.6.1",
         "roave/security-advisories": "dev-master"
     },
     "require-dev": {
