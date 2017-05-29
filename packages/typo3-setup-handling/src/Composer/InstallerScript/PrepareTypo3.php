@@ -46,12 +46,18 @@ class PrepareTypo3 implements InstallerScriptInterface
      */
     public function run(ScriptEvent $event)
     {
+        $io = $event->getIO();
+        $io->writeError('<info>Setting up TYPO3 Environment and Extensions</info>');
+
         $commandDispatcher = CommandDispatcher::createFromComposerRun($event);
-        $commandDispatcher->executeCommand('install:generatepackagestates');
-        $commandDispatcher->executeCommand('install:fixfolderstructure');
-        $commandDispatcher->executeCommand('settings:dump', ['no-dev' => !$event->isDevMode()]);
+        $output = $commandDispatcher->executeCommand('install:generatepackagestates');
+        $io->writeError($output, true, $io::VERBOSE);
+        $output = $commandDispatcher->executeCommand('install:fixfolderstructure');
+        $io->writeError($output, true, $io::VERBOSE);
+        $output = $commandDispatcher->executeCommand('settings:dump', ['no-dev' => !$event->isDevMode()]);
         if ($event->isDevMode()) {
-            $commandDispatcher->executeCommand('install:extensionsetupifpossible');
+            $output = $commandDispatcher->executeCommand('install:extensionsetupifpossible');
+            $io->writeError($output, true, $io::VERBOSE);
         }
 
         return true;

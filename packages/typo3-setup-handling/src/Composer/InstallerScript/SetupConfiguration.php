@@ -73,9 +73,15 @@ class SetupConfiguration implements InstallerScriptInterface
      */
     public function run(ScriptEvent $event)
     {
-        $envConfig = file_get_contents($this->dotEnvDistFile);
+        $io = $event->getIO();
+        $io->writeError('<info>Setting up TYPO3 Configuration</info>');
 
-        foreach ($this->getParsedEnvFileValues($this->dotEnvInstallFile) as $envName => $envValue) {
+        $envConfig = file_get_contents($this->dotEnvDistFile);
+        $installFileValues = $this->getParsedEnvFileValues($this->dotEnvInstallFile);
+        if (!empty($installFileValues)) {
+            $io->writeError('<info>Please provide some required settings for your distribution:</info>');
+        }
+        foreach ($installFileValues as $envName => $envValue) {
             if (StringUtility::beginsWith($envName, 'TYPO3_INSTALL_PROMPT_')
                 && !StringUtility::endsWith($envName, '_DEFAULT')
             ) {
@@ -87,6 +93,7 @@ class SetupConfiguration implements InstallerScriptInterface
             }
         }
 
+        $io->writeError('Generating .env file', true, $io::VERBOSE);
         $settings = $this->getSettings();
         foreach ($this->getParsedEnvFileValues($this->dotEnvDistFile) as $envName => $envValue) {
             if (StringUtility::beginsWith($envName, 'TYPO3__')) {
@@ -99,14 +106,16 @@ class SetupConfiguration implements InstallerScriptInterface
                 }
             }
         }
-
         file_put_contents($this->dotEnvFile, $envConfig);
-        $this->storeSettings($settings);
 
+        $io->writeError('Merging project settings', true, $io::VERBOSE);
+        $this->storeSettings($settings);
         $commandDispatcher = CommandDispatcher::createFromComposerRun($event);
         $commandDispatcher->executeCommand('settings:extract');
         $commandDispatcher->executeCommand('settings:dump', ['no-dev' => !$event->isDevMode()]);
 
+        $io->writeError('<info>Your TYPO3 installation is now ready to use</info>');
+        $io->writeError(sprintf('Run <comment>%s -S 127.0.0.1:8080 -t "%s"</comment> to start the PHP builtin webserver.', PHP_BINARY, getenv('TYPO3_PATH_WEB')));
         return true;
     }
 

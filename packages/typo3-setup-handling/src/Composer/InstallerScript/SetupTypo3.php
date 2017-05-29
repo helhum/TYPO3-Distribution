@@ -68,10 +68,11 @@ class SetupTypo3 implements InstallerScriptInterface
      */
     public function run(ScriptEvent $event)
     {
-        $io = new ConsoleIo($event->getIO());
+        $io = $event->getIO();
+        $io->writeError('<info>Setting up TYPO3</info>');
 
+        $consoleIO = new ConsoleIo($event->getIO());
         $this->ensureTypo3Booted($event);
-
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $commandDispatcher = CommandDispatcher::createFromComposerRun($event);
         $setup = new CliSetupRequestHandler(
@@ -79,9 +80,9 @@ class SetupTypo3 implements InstallerScriptInterface
             $objectManager->get(CommandManager::class),
             $objectManager->get(ReflectionService::class),
             $commandDispatcher,
-            new ConsoleOutput($io->getOutput(), $io->getInput())
+            new ConsoleOutput($consoleIO->getOutput(), $consoleIO->getInput())
         );
-        $setup->setup($io->isInteractive(), $this->populateCommandArgumentsFromEnvironment());
+        $setup->setup($consoleIO->isInteractive(), $this->populateCommandArgumentsFromEnvironment());
         putenv('TYPO3_IS_SET_UP=1');
 
         return true;
