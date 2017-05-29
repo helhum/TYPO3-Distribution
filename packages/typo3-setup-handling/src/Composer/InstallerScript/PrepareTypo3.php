@@ -47,7 +47,6 @@ class PrepareTypo3 implements InstallerScriptInterface
     public function run(ScriptEvent $event)
     {
         $io = $event->getIO();
-        $io->writeError('');
         $io->writeError('<info>Setting up TYPO3 Environment and Extensions</info>');
 
         $commandDispatcher = CommandDispatcher::createFromComposerRun($event);

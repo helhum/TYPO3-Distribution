@@ -74,6 +74,7 @@ class SetupConfiguration implements InstallerScriptInterface
     public function run(ScriptEvent $event)
     {
         $io = $event->getIO();
+        $io->writeError('');
         $io->writeError('<info>Setting up TYPO3 Configuration</info>');
 
         $envConfig = file_get_contents($this->dotEnvDistFile);
@@ -114,8 +115,11 @@ class SetupConfiguration implements InstallerScriptInterface
         $commandDispatcher->executeCommand('settings:extract');
         $commandDispatcher->executeCommand('settings:dump', ['no-dev' => !$event->isDevMode()]);
 
+        $io->writeError('');
         $io->writeError('<info>Your TYPO3 installation is now ready to use</info>');
+        $io->writeError('');
         $io->writeError('Run <comment>vendor/bin/typo3cms server:run</comment> to start the PHP builtin webserver.');
+        $io->writeError('');
         return true;
     }
 
