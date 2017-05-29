@@ -21,22 +21,27 @@ namespace Helhum\Typo3ConfigHandling;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Helhum\ConfigLoader\ConfigurationLoader;
+use Helhum\ConfigLoader\Reader\EnvironmentReader;
+use Helhum\ConfigLoader\Reader\PhpFileReader;
+
 class ConfigLoaderFactory
 {
     /**
      * @param string $context
      * @param string $confDir
-     * @return \Helhum\ConfigLoader\ConfigurationLoader
+     * @return ConfigurationLoader
      */
     public static function buildLoader($context, $confDir = null)
     {
         $confDir = $confDir ?: getenv('TYPO3_PATH_COMPOSER_ROOT') . '/conf';
-        return new \Helhum\ConfigLoader\ConfigurationLoader(
+        return new ConfigurationLoader(
             [
-                new \Helhum\ConfigLoader\Reader\PhpFileReader($confDir . '/settings.php'),
-                new \Helhum\ConfigLoader\Reader\PhpFileReader($confDir . '/settings.' . $context . '.php'),
-                new \Helhum\ConfigLoader\Reader\EnvironmentReader('TYPO3'),
-                new \Helhum\ConfigLoader\Reader\PhpFileReader($confDir . '/env.php'),
+                new PhpFileReader($confDir . '/settings.php'),
+                new PhpFileReader($confDir . '/settings.' . $context . '.php'),
+                new ExtensionSettingsReader($confDir . '/extension'),
+                new EnvironmentReader('TYPO3'),
+                new PhpFileReader($confDir . '/env.php'),
             ]
         );
     }
