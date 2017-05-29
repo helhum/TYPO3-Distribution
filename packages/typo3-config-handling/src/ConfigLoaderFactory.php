@@ -36,6 +36,7 @@ class ConfigLoaderFactory
                 new \Helhum\ConfigLoader\Reader\PhpFileReader($confDir . '/settings.php'),
                 new \Helhum\ConfigLoader\Reader\PhpFileReader($confDir . '/settings.' . $context . '.php'),
                 new \Helhum\ConfigLoader\Reader\EnvironmentReader('TYPO3'),
+                new \Helhum\ConfigLoader\Reader\PhpFileReader($confDir . '/env.php'),
             ]
         );
     }
