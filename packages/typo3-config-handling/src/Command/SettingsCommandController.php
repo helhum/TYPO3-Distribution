@@ -69,7 +69,7 @@ class SettingsCommandController extends CommandController
                 dirname(dirname(__DIR__)) . '/res/AdditionalConfiguration.php',
                 getenv('TYPO3_PATH_ROOT') . '/typo3conf/AdditionalConfiguration.php'
             );
-            $localConfigurationFileContent .= 'return [];';
+            $localConfigurationFileContent .= 'return [];' . chr(10);
         }
         file_put_contents(
             $this->localConfigurationFile,

@@ -81,7 +81,7 @@ class SetupConfiguration implements InstallerScriptInterface
             ) {
                 $defaultValue = getenv($envName . '_DEFAULT') ?: null;
                 do {
-                    $answer = $event->getIO()->ask('<comment>' . $envValue . ($defaultValue ? sprintf(' (%s) :', $defaultValue): ':') . '</comment> ', $defaultValue);
+                    $answer = $event->getIO()->ask('<comment>' . $envValue . ($defaultValue ? sprintf(' (%s) :', $defaultValue) : ':') . '</comment> ', $defaultValue);
                 } while ($answer === null);
                 $envConfig = str_replace('${' . $envName . '}', $answer, $envConfig);
             }

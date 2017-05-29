@@ -52,7 +52,7 @@ class ExtensionSettingsReader implements ConfigReaderInterface
         if (!empty($extensionsSettings)) {
             return [
                 'EXT' => [
-                    'extConf' => $extensionsSettings
+                    'extConf' => $extensionsSettings,
                 ],
             ];
         }
