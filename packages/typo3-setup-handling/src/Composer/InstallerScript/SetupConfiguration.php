@@ -104,7 +104,8 @@ class SetupConfiguration implements InstallerScriptInterface
         $this->storeSettings($settings);
 
         $commandDispatcher = CommandDispatcher::createFromComposerRun($event);
-        $commandDispatcher->executeCommand('settings:dump', ['dev' => $event->isDevMode()]);
+        $commandDispatcher->executeCommand('settings:extract');
+        $commandDispatcher->executeCommand('settings:dump', ['no-dev' => !$event->isDevMode()]);
 
         return true;
     }

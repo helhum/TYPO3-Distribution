@@ -49,7 +49,7 @@ class PrepareTypo3 implements InstallerScriptInterface
         $commandDispatcher = CommandDispatcher::createFromComposerRun($event);
         $commandDispatcher->executeCommand('install:generatepackagestates');
         $commandDispatcher->executeCommand('install:fixfolderstructure');
-        $commandDispatcher->executeCommand('settings:dump', ['dev' => $event->isDevMode()]);
+        $commandDispatcher->executeCommand('settings:dump', ['no-dev' => !$event->isDevMode()]);
         if ($event->isDevMode()) {
             $commandDispatcher->executeCommand('install:extensionsetupifpossible');
         }
