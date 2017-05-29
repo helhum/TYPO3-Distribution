@@ -69,6 +69,7 @@ class SetupTypo3 implements InstallerScriptInterface
     public function run(ScriptEvent $event)
     {
         $io = $event->getIO();
+        $io->writeError('');
         $io->writeError('<info>Setting up TYPO3</info>');
 
         $consoleIO = new ConsoleIo($event->getIO());

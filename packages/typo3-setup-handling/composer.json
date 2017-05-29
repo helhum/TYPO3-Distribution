@@ -10,7 +10,8 @@
         "typo3/cms-extbase": "^8.7",
         "helhum/typo3-console": "^4.6.1",
         "helhum/dotenv-connector": "^1.1.0",
-        "helhum/typo3-config-handling": "@dev"
+        "helhum/typo3-config-handling": "@dev",
+        "helhum/typo3-console-php-server": "@dev"
     },
     "autoload": {
         "psr-4": {

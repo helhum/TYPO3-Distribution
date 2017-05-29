@@ -115,7 +115,7 @@ class SetupConfiguration implements InstallerScriptInterface
         $commandDispatcher->executeCommand('settings:dump', ['no-dev' => !$event->isDevMode()]);
 
         $io->writeError('<info>Your TYPO3 installation is now ready to use</info>');
-        $io->writeError(sprintf('Run <comment>%s -S 127.0.0.1:8080 -t "%s"</comment> to start the PHP builtin webserver.', PHP_BINARY, getenv('TYPO3_PATH_WEB')));
+        $io->writeError('Run <comment>vendor/bin/typo3cms server:run</comment> to start the PHP builtin webserver.');
         return true;
     }
 
