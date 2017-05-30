@@ -9,7 +9,8 @@
         "typo3/cms-core": "^8.7",
         "typo3/cms-extbase": "^8.7",
         "helhum/typo3-console": "^4.6.1",
-        "helhum/dotenv-connector": "^1.1.0",
+        "helhum/dotenv-connector": "^2.0",
+        "symfony/dotenv": "^3.3",
         "helhum/typo3-config-handling": "@dev",
         "helhum/typo3-console-php-server": "@dev"
     },

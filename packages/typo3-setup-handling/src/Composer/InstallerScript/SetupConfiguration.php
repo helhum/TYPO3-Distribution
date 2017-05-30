@@ -22,11 +22,9 @@ namespace Helhum\TYPO3\SetupHandling\Composer\InstallerScript;
  ***************************************************************/
 
 use Composer\Script\Event as ScriptEvent;
-use Dotenv\Dotenv;
-use Helhum\DotEnvConnector\Cache;
-use Helhum\DotEnvConnector\DotEnvReader;
 use Helhum\Typo3Console\Mvc\Cli\CommandDispatcher;
 use Helhum\Typo3ConsolePlugin\InstallerScriptInterface;
+use Symfony\Component\Dotenv\Dotenv;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
@@ -77,7 +75,7 @@ class SetupConfiguration implements InstallerScriptInterface
         $io->writeError('');
         $io->writeError('<info>Setting up TYPO3 Configuration</info>');
 
-        $envConfig = file_get_contents($this->dotEnvDistFile);
+        $dotEnvConfigContent = file_get_contents($this->dotEnvDistFile);
         $installFileValues = $this->getParsedEnvFileValues($this->dotEnvInstallFile);
         if (!empty($installFileValues)) {
             $io->writeError('<info>Please provide some required settings for your distribution:</info>');
@@ -90,7 +88,7 @@ class SetupConfiguration implements InstallerScriptInterface
                 do {
                     $answer = $event->getIO()->ask('<comment>' . $envValue . ($defaultValue ? sprintf(' (%s) :', $defaultValue) : ':') . '</comment> ', $defaultValue);
                 } while ($answer === null);
-                $envConfig = str_replace('${' . $envName . '}', $answer, $envConfig);
+                $dotEnvConfigContent = str_replace('${' . $envName . '}', $answer, $dotEnvConfigContent);
             }
         }
 
@@ -101,13 +99,13 @@ class SetupConfiguration implements InstallerScriptInterface
                 try {
                     $configPath = str_replace(['TYPO3__', '__'], ['', '/'], $envName);
                     $value = ArrayUtility::getValueByPath($settings, $configPath);
-                    $envConfig = str_replace($envName . '=""', $envName . '="' . $value . '"', $envConfig);
+                    $dotEnvConfigContent = str_replace($envName . '=""', $envName . '="' . $value . '"', $dotEnvConfigContent);
                     $settings = ArrayUtility::removeByPath($settings, $configPath);
                 } catch (\RuntimeException $e) {
                 }
             }
         }
-        file_put_contents($this->dotEnvFile, $envConfig);
+        file_put_contents($this->dotEnvFile, $dotEnvConfigContent);
 
         $io->writeError('Merging project settings', true, $io::VERBOSE);
         $this->storeSettings($settings);
@@ -132,15 +130,7 @@ class SetupConfiguration implements InstallerScriptInterface
         if (!file_exists($dotEnvFile)) {
             return [];
         }
-        $envBackup = $_ENV;
-        $dotEnvReader = new DotEnvReader(new Dotenv(dirname($dotEnvFile), basename($dotEnvFile)), new Cache(null, ''));
-        $dotEnvReader->read();
-        $modifiedEnvVars = array_diff_assoc($_ENV, $envBackup);
-        foreach ($modifiedEnvVars as $name => $_) {
-            putenv($name);
-            unset($_ENV[$name], $_SERVER[$name]);
-        }
-        return $modifiedEnvVars;
+        return (new Dotenv())->parse(file_get_contents($dotEnvFile), $dotEnvFile);
     }
 
     private function getSettings()

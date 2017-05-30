@@ -22,9 +22,6 @@ namespace Helhum\TYPO3\SetupHandling\Composer\InstallerScript;
  ***************************************************************/
 
 use Composer\Script\Event as ScriptEvent;
-use Dotenv\Dotenv;
-use Helhum\DotEnvConnector\Cache;
-use Helhum\DotEnvConnector\DotEnvReader;
 use Helhum\TYPO3\SetupHandling\Composer\ConsoleIo;
 use Helhum\Typo3Console\Core\Booting\RunLevel;
 use Helhum\Typo3Console\Core\ConsoleBootstrap;
@@ -33,6 +30,7 @@ use Helhum\Typo3Console\Mvc\Cli\CommandDispatcher;
 use Helhum\Typo3Console\Mvc\Cli\CommandManager;
 use Helhum\Typo3Console\Mvc\Cli\ConsoleOutput;
 use Helhum\Typo3ConsolePlugin\InstallerScriptInterface;
+use Symfony\Component\Dotenv\Dotenv;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
@@ -96,7 +94,7 @@ class SetupTypo3 implements InstallerScriptInterface
     {
         $envValues = [];
         if (file_exists($envInstallFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/.env.install')) {
-            $envValues = $this->getParsedEnvFileValues($envInstallFile);
+            $envValues = (new Dotenv())->parse(file_get_contents($envInstallFile), $envInstallFile);
         }
 
         $arguments = [
@@ -120,26 +118,6 @@ class SetupTypo3 implements InstallerScriptInterface
         }
 
         return $commandArguments;
-    }
-
-    /**
-     * @param string $dotEnvFile
-     * @return array
-     */
-    private function getParsedEnvFileValues($dotEnvFile)
-    {
-        if (!class_exists(DotEnvReader::class) || !file_exists($dotEnvFile)) {
-            return [];
-        }
-        $envBackup = $_ENV;
-        $dotEnvReader = new DotEnvReader(new Dotenv(dirname($dotEnvFile), basename($dotEnvFile)), new Cache(null, ''));
-        $dotEnvReader->read();
-        $modifiedEnvVars = array_diff_assoc($_ENV, $envBackup);
-        foreach ($modifiedEnvVars as $name => $_) {
-            putenv($name);
-            unset($_ENV[$name], $_SERVER[$name]);
-        }
-        return $modifiedEnvVars;
     }
 
     /**
