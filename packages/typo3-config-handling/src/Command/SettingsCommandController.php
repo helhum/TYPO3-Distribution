@@ -96,27 +96,26 @@ class SettingsCommandController extends CommandController
             $this->outputLine('<info>LocalConfiguration.php is already generated. Nothing to extract.</info>');
             return;
         }
-        $settingsFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/conf/settings.php';
+        $distExtSettingsFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/conf/settings.extension.php';
         $typo3Settings = require $this->localConfigurationFile;
-        $settings = require $settingsFile;
+        $distExtSettings = file_exists($distExtSettingsFile) ? require $distExtSettingsFile : [];
         try {
-            $extensionsSettings = ArrayUtility::getValueByPath($typo3Settings, 'EXT/extConf');
-            foreach ($extensionsSettings as $extensionKey => $extensionSettings) {
+            foreach (ArrayUtility::getValueByPath($typo3Settings, 'EXT/extConf') as $extensionKey => $typo3ExtSettings) {
                 if (
-                    !isset($settings['EXT']['extConf'][$extensionKey])
-                    || !is_array($settings['EXT']['extConf'][$extensionKey])
+                    !isset($distExtSettings[$extensionKey])
+                    || !is_array($distExtSettings[$extensionKey])
                 ) {
-                    $settings['EXT']['extConf'][$extensionKey] = [];
+                    $distExtSettings[$extensionKey] = [];
                 }
-                $settings['EXT']['extConf'][$extensionKey] = array_replace_recursive($settings['EXT']['extConf'][$extensionKey], GeneralUtility::removeDotsFromTS(unserialize($extensionSettings, [false])));
+                $distExtSettings[$extensionKey] = array_replace_recursive($distExtSettings[$extensionKey], GeneralUtility::removeDotsFromTS(unserialize($typo3ExtSettings, [false])));
             }
             $this->outputLine('<info>Extracted extension settings to conf/settings.php</info>');
             file_put_contents(
-                $settingsFile,
+                $distExtSettingsFile,
                 '<?php'
                 . chr(10)
                 . 'return '
-                . ArrayUtility::arrayExport($settings)
+                . ArrayUtility::arrayExport($distExtSettings)
                 . ';'
                 . chr(10)
             );

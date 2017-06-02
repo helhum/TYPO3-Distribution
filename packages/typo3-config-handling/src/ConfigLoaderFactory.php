@@ -30,7 +30,7 @@ class ConfigLoaderFactory
 {
     private static $pathAliases = [
         'cache' => 'SYS.caching.cacheConfigurations',
-        'extensions' => 'EXT.extConf',
+        'extension' => 'EXT.extConf',
     ];
 
     public static function buildLoader(string $context, string $confDir = null): ConfigurationLoader
