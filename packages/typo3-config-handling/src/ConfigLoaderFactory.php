@@ -64,8 +64,10 @@ class ConfigLoaderFactory
     private static function getConfigPathFromFile(string $file)
     {
         $configPath = preg_replace('/^.*settings\./', '', pathinfo($file, PATHINFO_FILENAME));
-        if (isset(self::$pathAliases[$configPath])) {
-            return self::$pathAliases[$configPath];
+        foreach (self::$pathAliases as $pathAlias => $path) {
+            if (strpos($configPath, $pathAlias) === 0) {
+                return str_replace($pathAlias, $path, $configPath);
+            }
         }
         return $configPath;
     }
