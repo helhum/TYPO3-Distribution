@@ -38,7 +38,7 @@ class ConfigLoaderFactory
         return new ConfigurationLoader(
             [
                 new PhpFileReader($confDir . '/settings.php'),
-                new PhpFileReader($confDir . '/settings.' . $context . '.php'),
+                new PhpFileReader($confDir . '/' . $context . '.settings.php'),
                 new ExtensionSettingsReader($confDir . '/extension'),
                 new EnvironmentReader('TYPO3'),
                 new PhpFileReader($confDir . '/env.php'),
