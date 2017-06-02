@@ -111,7 +111,7 @@ class SetupConfiguration implements InstallerScriptInterface
         $this->storeSettings($settings);
         $commandDispatcher = CommandDispatcher::createFromComposerRun($event);
         $commandDispatcher->executeCommand('settings:extract');
-        $commandDispatcher->executeCommand('settings:dump', ['no-dev' => !$event->isDevMode()]);
+        $commandDispatcher->executeCommand('settings:dump', ['--no-dev' => !$event->isDevMode()]);
 
         $io->writeError('');
         $io->writeError('<info>Your TYPO3 installation is now ready to use</info>');

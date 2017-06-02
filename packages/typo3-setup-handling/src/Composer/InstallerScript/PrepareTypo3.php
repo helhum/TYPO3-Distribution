@@ -54,7 +54,7 @@ class PrepareTypo3 implements InstallerScriptInterface
         $io->writeError($output, true, $io::VERBOSE);
         $output = $commandDispatcher->executeCommand('install:fixfolderstructure');
         $io->writeError($output, true, $io::VERBOSE);
-        $output = $commandDispatcher->executeCommand('settings:dump', ['no-dev' => !$event->isDevMode()]);
+        $output = $commandDispatcher->executeCommand('settings:dump', ['--no-dev' => !$event->isDevMode()]);
         if ($event->isDevMode()) {
             $output = $commandDispatcher->executeCommand('install:extensionsetupifpossible');
             $io->writeError($output, true, $io::VERBOSE);
