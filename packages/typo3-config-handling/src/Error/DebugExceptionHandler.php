@@ -64,9 +64,9 @@ class DebugExceptionHandler extends AbstractExceptionHandler
         );
         // Put the XML prologue before or after the doctype declaration according to browser
         if ($browserInfo['browser'] === 'msie' && $browserInfo['version'] < 7) {
-            $headerStart = $docType . LF . $xmlPrologue;
+            $headerStart = $docType . chr(10) . $xmlPrologue;
         } else {
-            $headerStart = $xmlPrologue . LF . $docType;
+            $headerStart = $xmlPrologue . chr(10) . $docType;
         }
         echo $headerStart . '
 			<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
@@ -139,7 +139,8 @@ class DebugExceptionHandler extends AbstractExceptionHandler
                             $preparedArgument = str_replace(
                                 [
                                     '#tripleDot#',
-                                    LF, ],
+                                    chr(10),
+                                ],
                                 [
                                     '<span style="color:white;">&hellip;</span>',
                                     '<span style="color:white;">&crarr;</span>',

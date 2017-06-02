@@ -65,9 +65,9 @@ abstract class AbstractExceptionHandler
         $exceptionCodeNumber = $exception->getCode() > 0 ? '#' . $exception->getCode() . ': ' : '';
         $this->writeLogEntries($exception, self::CONTEXT_CLI);
         echo '
-Uncaught TYPO3 Exception ' . $exceptionCodeNumber . $exception->getMessage() . LF;
-        echo 'thrown in file ' . $filePathAndName . LF;
-        echo 'in line ' . $exception->getLine() . LF . LF;
+Uncaught TYPO3 Exception ' . $exceptionCodeNumber . $exception->getMessage() . chr(10);
+        echo 'thrown in file ' . $filePathAndName . chr(10);
+        echo 'in line ' . $exception->getLine() . chr(10) . chr(10);
         die(1);
     }
 
