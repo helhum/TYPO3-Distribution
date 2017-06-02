@@ -23,39 +23,40 @@ namespace Helhum\Typo3ConfigHandling;
  ***************************************************************/
 
 use Helhum\ConfigLoader\Reader\ConfigReaderInterface;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 
-class ExtensionSettingsReader implements ConfigReaderInterface
+class NestedConfigReader implements ConfigReaderInterface
 {
+    /**
+     * @var ConfigReaderInterface
+     */
+    private $configReader;
+
     /**
      * @var string
      */
-    private $extensionSettingsDir;
+    private $path;
 
-    public function __construct(string $extensionSettingsDir)
+    /**
+     * @param ConfigReaderInterface $configReader
+     * @param string $path
+     * @internal param string $directory
+     * @internal param string $fileExtension
+     */
+    public function __construct(ConfigReaderInterface $configReader, string $path)
     {
-        $this->extensionSettingsDir = $extensionSettingsDir;
+        $this->configReader = $configReader;
+        $this->path = $path;
     }
 
     public function hasConfig()
     {
-        return is_dir($this->extensionSettingsDir);
+        return $this->configReader->hasConfig();
     }
 
     public function readConfig()
     {
-        $extensionsSettings = [];
-        $settingsFiles = glob($this->extensionSettingsDir . '/*.php');
-        foreach ($settingsFiles as $settingsFile) {
-            $extensionKey = pathinfo($settingsFile, PATHINFO_FILENAME);
-            $extensionsSettings[$extensionKey] = require $settingsFile;
-        }
-        if (!empty($extensionsSettings)) {
-            return [
-                'EXT' => [
-                    'extConf' => $extensionsSettings,
-                ],
-            ];
-        }
-        return [];
+        $config = [];
+        return ArrayUtility::setValueByPath($config, $this->path, $this->configReader->readConfig(), '.');
     }
 }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Helhum\Typo3ConfigHandling;
 
 /***************************************************************
@@ -27,25 +28,45 @@ use Helhum\ConfigLoader\Reader\PhpFileReader;
 
 class ConfigLoaderFactory
 {
-    /**
-     * @param string $context
-     * @param string $confDir
-     * @return ConfigurationLoader
-     */
-    public static function buildLoader($context, $confDir = null)
+    private static $pathAliases = [
+        'cache' => 'SYS.caching.cacheConfigurations',
+        'extensions' => 'EXT.extConf',
+    ];
+
+    public static function buildLoader(string $context, string $confDir = null): ConfigurationLoader
     {
         $confDir = $confDir ?: getenv('TYPO3_PATH_COMPOSER_ROOT') . '/conf';
+        $configReaders = [];
+
+        self::addReaderCollection($configReaders, $confDir . '/settings');
+        self::addReaderCollection($configReaders, $confDir . '/' . $context . '.settings');
+
+        $configReaders[] = new EnvironmentReader('TYPO3');
+        $configReaders[] = new PhpFileReader($confDir . '/env.php');
+
         return new ConfigurationLoader(
-            [
-                new PhpFileReader($confDir . '/settings.php'),
-                new PhpFileReader($confDir . '/' . $context . '.settings.php'),
-                new ExtensionSettingsReader($confDir . '/extension'),
-                new EnvironmentReader('TYPO3'),
-                new PhpFileReader($confDir . '/env.php'),
-            ],
+            $configReaders,
             [
                 new ExtensionSettingsSerializer(),
             ]
         );
+    }
+
+    private static function addReaderCollection(array &$readers, string $pathPrefix)
+    {
+        $readers[] = new PhpFileReader($pathPrefix . '.php');
+        $configFiles = glob($pathPrefix . '.*.php');
+        foreach ($configFiles as $settingsFile) {
+            $readers[] = new NestedConfigReader(new PhpFileReader($settingsFile), self::getConfigPathFromFile($settingsFile));
+        }
+    }
+
+    private static function getConfigPathFromFile(string $file)
+    {
+        $configPath = preg_replace('/^.*settings\./', '', pathinfo($file, PATHINFO_FILENAME));
+        if (isset(self::$pathAliases[$configPath])) {
+            return self::$pathAliases[$configPath];
+        }
+        return $configPath;
     }
 }
