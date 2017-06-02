@@ -93,6 +93,8 @@ class SetupConfiguration implements InstallerScriptInterface
         }
 
         $io->writeError('Generating .env file', true, $io::VERBOSE);
+        $commandDispatcher = CommandDispatcher::createFromComposerRun($event);
+        $commandDispatcher->executeCommand('settings:extract');
         $settings = $this->getSettings();
         foreach ($this->getParsedEnvFileValues($this->dotEnvDistFile) as $envName => $envValue) {
             if (StringUtility::beginsWith($envName, 'TYPO3__')) {
@@ -109,8 +111,6 @@ class SetupConfiguration implements InstallerScriptInterface
 
         $io->writeError('Merging project settings', true, $io::VERBOSE);
         $this->storeSettings($settings);
-        $commandDispatcher = CommandDispatcher::createFromComposerRun($event);
-        $commandDispatcher->executeCommand('settings:extract');
         $commandDispatcher->executeCommand('settings:dump', ['--no-dev' => !$event->isDevMode()]);
 
         $io->writeError('');

@@ -109,6 +109,8 @@ class SettingsCommandController extends CommandController
                 }
                 $distExtSettings[$extensionKey] = array_replace_recursive($distExtSettings[$extensionKey], GeneralUtility::removeDotsFromTS(unserialize($typo3ExtSettings, [false])));
             }
+            $commandDispatcher = CommandDispatcher::createFromCommandRun();
+            $commandDispatcher->executeCommand('configuration:remove', ['paths' => 'EXT', '--force' => true]);
             $this->outputLine('<info>Extracted extension settings to conf/settings.php</info>');
             file_put_contents(
                 $distExtSettingsFile,
