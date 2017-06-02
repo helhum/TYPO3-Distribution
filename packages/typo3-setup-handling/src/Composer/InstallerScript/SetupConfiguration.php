@@ -88,7 +88,7 @@ class SetupConfiguration implements InstallerScriptInterface
                 do {
                     $answer = $event->getIO()->ask('<comment>' . $envValue . ($defaultValue ? sprintf(' (%s) :', $defaultValue) : ':') . '</comment> ', $defaultValue);
                 } while ($answer === null);
-                $dotEnvConfigContent = str_replace('${' . $envName . '}', $answer, $dotEnvConfigContent);
+                $dotEnvConfigContent = str_replace('"${' . $envName . '}"', '\'' . $answer . '\'', $dotEnvConfigContent);
             }
         }
 
@@ -99,7 +99,7 @@ class SetupConfiguration implements InstallerScriptInterface
                 try {
                     $configPath = str_replace(['TYPO3__', '__'], ['', '/'], $envName);
                     $value = ArrayUtility::getValueByPath($settings, $configPath);
-                    $dotEnvConfigContent = str_replace($envName . '=""', $envName . '="' . $value . '"', $dotEnvConfigContent);
+                    $dotEnvConfigContent = str_replace($envName . '=""', $envName . '=\'' . $value . '\'', $dotEnvConfigContent);
                     $settings = ArrayUtility::removeByPath($settings, $configPath);
                 } catch (\RuntimeException $e) {
                 }
