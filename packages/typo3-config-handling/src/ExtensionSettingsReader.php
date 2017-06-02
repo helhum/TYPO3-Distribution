@@ -2,8 +2,6 @@
 declare(strict_types=1);
 namespace Helhum\Typo3ConfigHandling;
 
-use Helhum\ConfigLoader\Reader\ConfigReaderInterface;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -23,6 +21,8 @@ use Helhum\ConfigLoader\Reader\ConfigReaderInterface;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use Helhum\ConfigLoader\Reader\ConfigReaderInterface;
 
 class ExtensionSettingsReader implements ConfigReaderInterface
 {
@@ -47,7 +47,7 @@ class ExtensionSettingsReader implements ConfigReaderInterface
         $settingsFiles = glob($this->extensionSettingsDir . '/*.php');
         foreach ($settingsFiles as $settingsFile) {
             $extensionKey = pathinfo($settingsFile, PATHINFO_FILENAME);
-            $extensionsSettings[$extensionKey] = serialize(require $settingsFile);
+            $extensionsSettings[$extensionKey] = require $settingsFile;
         }
         if (!empty($extensionsSettings)) {
             return [

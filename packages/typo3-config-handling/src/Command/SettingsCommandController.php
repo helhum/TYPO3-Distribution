@@ -100,7 +100,7 @@ class SettingsCommandController extends CommandController
         try {
             $extensionsSettings = ArrayUtility::getValueByPath($settings, 'EXT/extConf');
             foreach ($extensionsSettings as $extensionKey => $extensionSettings) {
-                $this->extractExtensionSettings($extensionKey, unserialize($extensionSettings, [false]));
+                $this->extractExtensionSettings($extensionKey, GeneralUtility::removeDotsFromTS(unserialize($extensionSettings, [false])));
             }
             $this->outputLine('<info>Extracted extension settings to conf/extension directory</info>');
         } catch (\RuntimeException $e) {

@@ -42,6 +42,9 @@ class ConfigLoaderFactory
                 new ExtensionSettingsReader($confDir . '/extension'),
                 new EnvironmentReader('TYPO3'),
                 new PhpFileReader($confDir . '/env.php'),
+            ],
+            [
+                new ExtensionSettingsSerializer(),
             ]
         );
     }
