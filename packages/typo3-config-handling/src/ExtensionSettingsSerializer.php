@@ -29,8 +29,8 @@ class ExtensionSettingsSerializer implements ConfigProcessorInterface
 {
     /**
      * @param array $config
-     * @return array
      * @throws \InvalidArgumentException
+     * @return array
      */
     public function processConfig(array $config)
     {

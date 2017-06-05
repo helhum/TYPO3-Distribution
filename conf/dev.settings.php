@@ -1,5 +1,9 @@
 <?php
 return [
+    'imports' => [
+        ['resource' => 'settings.php', 'type' => null, 'ignore_errors' => false],
+        ['resource' => 'dev.settings.*.php', 'type' => 'glob', 'ignore_errors' => true],
+    ],
     'SYS' => [
         // Debug
         'displayErrors' => 1,

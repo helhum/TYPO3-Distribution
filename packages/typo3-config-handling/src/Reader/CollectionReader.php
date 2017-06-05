@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace Helhum\Typo3ConfigHandling;
+namespace Helhum\Typo3ConfigHandling\Reader;
 
 /***************************************************************
  *  Copyright notice
@@ -22,41 +22,40 @@ namespace Helhum\Typo3ConfigHandling;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Helhum\ConfigLoader\ConfigurationLoader;
 use Helhum\ConfigLoader\Reader\ConfigReaderInterface;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 
-class NestedConfigReader implements ConfigReaderInterface
+class CollectionReader implements ConfigReaderInterface
 {
     /**
-     * @var ConfigReaderInterface
+     * @var ConfigReaderInterface[]
      */
-    private $configReader;
+    private $readers;
 
     /**
-     * @var string
+     * @param ConfigReaderInterface[] $readers
      */
-    private $path;
-
-    /**
-     * @param ConfigReaderInterface $configReader
-     * @param string $path
-     * @internal param string $directory
-     * @internal param string $fileExtension
-     */
-    public function __construct(ConfigReaderInterface $configReader, string $path)
+    public function __construct(array $readers)
     {
-        $this->configReader = $configReader;
-        $this->path = $path;
+        $this->readers = $readers;
     }
 
+    /**
+     * @return bool
+     */
     public function hasConfig()
     {
-        return $this->configReader->hasConfig();
+        return !empty($this->readers);
     }
 
+    /**
+     * @throws \Symfony\Component\Yaml\Exception\ParseException
+     * @throws \Helhum\ConfigLoader\InvalidConfigurationFileException
+     * @return array
+     */
     public function readConfig()
     {
-        $config = [];
-        return ArrayUtility::setValueByPath($config, $this->path, $this->configReader->readConfig(), '.');
+        $configLoader = new ConfigurationLoader($this->readers);
+        return $configLoader->load();
     }
 }

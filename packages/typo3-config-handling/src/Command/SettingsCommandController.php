@@ -68,8 +68,9 @@ class SettingsCommandController extends CommandController
                 unlink($this->additionalConfigurationFile);
             }
             $localConfigurationFileContent .= 'return ' . chr(10);
-            $configLoader = \Helhum\Typo3ConfigHandling\ConfigLoaderFactory::buildLoader(
-                \TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext()->isProduction() ? 'production' : 'development'
+            $configLoader = \Helhum\Typo3ConfigHandling\ConfigLoader::create(
+                getenv('TYPO3_PATH_COMPOSER_ROOT') . '/conf/',
+                \TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext()->isProduction() ? 'prod' : 'dev'
             );
             $localConfigurationFileContent .= ArrayUtility::arrayExport($configLoader->load());
             $localConfigurationFileContent .= ';' . chr(10);
@@ -102,12 +103,12 @@ class SettingsCommandController extends CommandController
         try {
             foreach (ArrayUtility::getValueByPath($typo3Settings, 'EXT/extConf') as $extensionKey => $typo3ExtSettings) {
                 if (
-                    !isset($distExtSettings[$extensionKey])
-                    || !is_array($distExtSettings[$extensionKey])
+                    !isset($distExtSettings['EXT']['extConf'][$extensionKey])
+                    || !is_array($distExtSettings['EXT']['extConf'][$extensionKey])
                 ) {
-                    $distExtSettings[$extensionKey] = [];
+                    $distExtSettings['EXT']['extConf'][$extensionKey] = [];
                 }
-                $distExtSettings[$extensionKey] = array_replace_recursive($distExtSettings[$extensionKey], GeneralUtility::removeDotsFromTS(unserialize($typo3ExtSettings, [false])));
+                $distExtSettings['EXT']['extConf'][$extensionKey] = array_replace_recursive($distExtSettings['EXT']['extConf'][$extensionKey], GeneralUtility::removeDotsFromTS(unserialize($typo3ExtSettings, [false])));
             }
             $commandDispatcher = CommandDispatcher::createFromCommandRun();
             $commandDispatcher->executeCommand('configuration:remove', ['paths' => 'EXT', '--force' => true]);

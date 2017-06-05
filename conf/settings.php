@@ -1,6 +1,10 @@
 <?php
 // Reasonable error reporting by default
 return [
+    'imports' => [
+        ['resource' => 'settings.extension.php', 'ignore_errors' => false],
+        ['resource' => 'TYPO3', 'type' => 'env', 'ignore_errors' => true],
+    ],
     'SYS' => [
         'errorHandler' => \Helhum\Typo3ConfigHandling\Error\ErrorHandler::class,
         'productionExceptionHandler' => \Helhum\Typo3ConfigHandling\Error\ProductionExceptionHandler::class,
