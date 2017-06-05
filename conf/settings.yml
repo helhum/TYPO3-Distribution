@@ -1,0 +1,9 @@
+# Reasonable error handling by default
+SYS:
+    errorHandler: Helhum\Typo3ConfigHandling\Error\ErrorHandler
+    productionExceptionHandler: Helhum\Typo3ConfigHandling\Error\ProductionExceptionHandler
+    debugExceptionHandler: Helhum\Typo3ConfigHandling\Error\DebugExceptionHandler
+    errorHandlerErrors: 32514
+    exceptionalErrors: 4352
+    systemLogLevel: 2
+    systemLog: error_log

@@ -25,6 +25,7 @@ use Composer\Script\Event as ScriptEvent;
 use Helhum\Typo3Console\Mvc\Cli\CommandDispatcher;
 use Helhum\Typo3ConsolePlugin\InstallerScriptInterface;
 use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
@@ -142,22 +143,18 @@ class SetupConfiguration implements InstallerScriptInterface
         ) {
             $localConfValues = require $localConfFile;
         }
-        $settingsFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/conf/settings.php';
-        $settings = require $settingsFile;
+        $settingsFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/conf/settings.yaml';
+        $settings = Yaml::parse(file_get_contents($settingsFile));
 
         return array_replace_recursive($localConfValues, $settings);
     }
 
     private function storeSettings(array $settings)
     {
-        $settingsFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/conf/settings.php';
+        $settingsFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/conf/settings.yaml';
         file_put_contents(
             $settingsFile,
-            '<?php return'
-                . chr(10)
-                . ArrayUtility::arrayExport($settings)
-                . ';'
-                . chr(10)
+            Yaml::dump($settings, 5)
         );
     }
 }

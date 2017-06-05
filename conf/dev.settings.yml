@@ -1,0 +1,26 @@
+imports:
+    - { resource: settings.yml, type: null, ignore_errors: false }
+    - { resource: settings.extension.yml, ignore_errors: false }
+    - { resource: 'dev.settings.*.yml', type: glob, ignore_errors: true }
+    - { resource: TYPO3, type: env, ignore_errors: true }
+
+SYS:
+    displayErrors: 1
+    devIPmask: '*'
+    sqlDebug: 1
+    enableDeprecationLog: file
+    exceptionalErrors: 28930
+    systemLogLevel: 0
+BE:
+    debug: true
+    sessionTimeout: 31536000
+FE:
+    debug: true
+MAIL:
+    transport: mbox
+    transport_mbox_file: /Users/helmut/Sites/Kunden/TYPO3-Distribution/var/log/sent-mails.log
+LOG:
+    writerConfiguration:
+        7:
+            TYPO3\CMS\Core\Log\Writer\FileWriter:
+                - /Users/helmut/Sites/Kunden/TYPO3-Distribution/var/log/typo3-default.log

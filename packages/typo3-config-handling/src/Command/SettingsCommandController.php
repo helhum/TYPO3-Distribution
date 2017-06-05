@@ -24,6 +24,7 @@ namespace Helhum\Typo3ConfigHandling\Command;
 
 use Helhum\Typo3Console\Mvc\Cli\CommandDispatcher;
 use Helhum\Typo3Console\Mvc\Controller\CommandController;
+use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -97,9 +98,9 @@ class SettingsCommandController extends CommandController
             $this->outputLine('<info>LocalConfiguration.php is already generated. Nothing to extract.</info>');
             return;
         }
-        $distExtSettingsFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/conf/settings.extension.php';
+        $distExtSettingsFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/conf/settings.extension.yml';
         $typo3Settings = require $this->localConfigurationFile;
-        $distExtSettings = file_exists($distExtSettingsFile) ? require $distExtSettingsFile : [];
+        $distExtSettings = file_exists($distExtSettingsFile) ? Yaml::parse(file_get_contents($distExtSettingsFile)) : [];
         try {
             foreach (ArrayUtility::getValueByPath($typo3Settings, 'EXT/extConf') as $extensionKey => $typo3ExtSettings) {
                 if (
@@ -112,18 +113,13 @@ class SettingsCommandController extends CommandController
             }
             $commandDispatcher = CommandDispatcher::createFromCommandRun();
             $commandDispatcher->executeCommand('configuration:remove', ['paths' => 'EXT', '--force' => true]);
-            $this->outputLine('<info>Extracted extension settings to conf/settings.php</info>');
+            $this->outputLine('<info>Extracted extension settings to conf/settings.extensions.yaml</info>');
             file_put_contents(
                 $distExtSettingsFile,
-                '<?php'
-                . chr(10)
-                . 'return '
-                . ArrayUtility::arrayExport($distExtSettings)
-                . ';'
-                . chr(10)
+                Yaml::dump($distExtSettings, 5)
             );
         } catch (\RuntimeException $e) {
-            $this->outputLine('<warning>No extension settings wer found</warning>');
+            $this->outputLine('<warning>No extension settings were found</warning>');
         }
     }
 

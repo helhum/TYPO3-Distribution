@@ -22,13 +22,19 @@ namespace Helhum\Typo3ConfigHandling;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Helhum\ConfigLoader\CachedConfigurationLoader;
 use Helhum\ConfigLoader\ConfigurationLoader;
-use Helhum\ConfigLoader\Reader\PhpFileReader;
+use Helhum\ConfigLoader\Reader\YamlReader;
 use Helhum\Typo3ConfigHandling\Processor\ConfigFileImportProcessor;
 use Helhum\Typo3ConfigHandling\Reader\ProcessedConfigFileReader;
 
 class ConfigLoader
 {
+    /**
+     * @var string
+     */
+    private $configFile;
+
     /**
      * @var ConfigurationLoader
      */
@@ -43,19 +49,27 @@ class ConfigLoader
      */
     public static function create(string $confDir, string $context = 'prod'): self
     {
-        return new self($confDir . '/' . $context . '.settings.php');
+        return new self($confDir . '/' . $context . '.settings.yml');
     }
 
     public function __construct(string $configFile)
     {
+        $this->configFile = $configFile;
         $this->loader = $this->buildLoader($configFile);
     }
 
     public function populate()
     {
+        $cachedLoader = new CachedConfigurationLoader(
+            $this->getCacheDir(),
+            $this->getCacheIdentifier(),
+            function () {
+                return $this->loader;
+            }
+        );
         $GLOBALS['TYPO3_CONF_VARS'] = array_replace_recursive(
             $GLOBALS['TYPO3_CONF_VARS'],
-            $this->load()
+            $cachedLoader->load()
         );
     }
 
@@ -69,7 +83,7 @@ class ConfigLoader
         return new ConfigurationLoader(
             [
                 new ProcessedConfigFileReader(
-                    new PhpFileReader($configFile),
+                    new YamlReader($configFile),
                     new ConfigFileImportProcessor($configFile)
                 ),
             ],
@@ -77,5 +91,29 @@ class ConfigLoader
                 new ExtensionSettingsSerializer(),
             ]
         );
+    }
+
+    private function getCacheDir()
+    {
+        return getenv('TYPO3_PATH_COMPOSER_ROOT') . '/var/cache';
+    }
+
+    private function getCacheIdentifier()
+    {
+        $rootDir = getenv('TYPO3_PATH_COMPOSER_ROOT');
+        $confDir = dirname($this->configFile);
+        $fileWatches = array_merge(
+            [
+                $rootDir . '/.env',
+            ],
+            glob($confDir . '/*.yml')
+        );
+        $identifier = getenv('TYPO3_CONTEXT');
+        foreach ($fileWatches as $fileWatch) {
+            if (file_exists($fileWatch)) {
+                $identifier .= filemtime($fileWatch);
+            }
+        }
+        return md5($identifier);
     }
 }
