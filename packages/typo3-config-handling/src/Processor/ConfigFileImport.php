@@ -30,7 +30,7 @@ use Helhum\ConfigLoader\Reader\YamlReader;
 use Helhum\Typo3ConfigHandling\Reader\CollectionReader;
 use Helhum\Typo3ConfigHandling\Reader\ProcessedConfigFileReader;
 
-class ConfigFileImportProcessor implements ConfigProcessorInterface
+class ConfigFileImport implements ConfigProcessorInterface
 {
     /**
      * @var string

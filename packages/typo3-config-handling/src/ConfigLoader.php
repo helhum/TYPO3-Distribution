@@ -25,7 +25,8 @@ namespace Helhum\Typo3ConfigHandling;
 use Helhum\ConfigLoader\CachedConfigurationLoader;
 use Helhum\ConfigLoader\ConfigurationLoader;
 use Helhum\ConfigLoader\Reader\YamlReader;
-use Helhum\Typo3ConfigHandling\Processor\ConfigFileImportProcessor;
+use Helhum\Typo3ConfigHandling\Processor\ConfigFileImport;
+use Helhum\Typo3ConfigHandling\Processor\PlaceholderValue;
 use Helhum\Typo3ConfigHandling\Reader\ProcessedConfigFileReader;
 
 class ConfigLoader
@@ -84,10 +85,11 @@ class ConfigLoader
             [
                 new ProcessedConfigFileReader(
                     new YamlReader($configFile),
-                    new ConfigFileImportProcessor($configFile)
+                    new ConfigFileImport($configFile)
                 ),
             ],
             [
+                new PlaceholderValue(),
                 new ExtensionSettingsSerializer(),
             ]
         );

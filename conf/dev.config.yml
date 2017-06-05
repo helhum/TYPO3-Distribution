@@ -18,9 +18,9 @@ FE:
     debug: true
 MAIL:
     transport: mbox
-    transport_mbox_file: /Users/helmut/Sites/Kunden/TYPO3-Distribution/var/log/sent-mails.log
+    transport_mbox_file: %env(TYPO3_PATH_COMPOSER_ROOT)%/var/log/sent-mails.log
 LOG:
     writerConfiguration:
-        7:
+        '%constant(TYPO3\CMS\Core\Log\LogLevel::DEBUG)%':
             TYPO3\CMS\Core\Log\Writer\FileWriter:
-                - /Users/helmut/Sites/Kunden/TYPO3-Distribution/var/log/typo3-default.log
+                - %env(TYPO3_PATH_COMPOSER_ROOT)%/var/log/typo3-default.log
