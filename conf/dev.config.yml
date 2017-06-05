@@ -1,7 +1,7 @@
 imports:
-    - { resource: settings.yml, type: null, ignore_errors: false }
-    - { resource: settings.extension.yml, ignore_errors: false }
-    - { resource: 'dev.settings.*.yml', type: glob, ignore_errors: true }
+    - { resource: config.yml, type: null, ignore_errors: false }
+    - { resource: config.extension.yml, ignore_errors: false }
+    - { resource: 'dev.config.*.yml', type: glob, ignore_errors: true }
     - { resource: TYPO3, type: env, ignore_errors: true }
 
 SYS:

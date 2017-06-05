@@ -98,7 +98,7 @@ class SettingsCommandController extends CommandController
             $this->outputLine('<info>LocalConfiguration.php is already generated. Nothing to extract.</info>');
             return;
         }
-        $distExtSettingsFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/conf/settings.extension.yml';
+        $distExtSettingsFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/conf/config.extension.yml';
         $typo3Settings = require $this->localConfigurationFile;
         $distExtSettings = file_exists($distExtSettingsFile) ? Yaml::parse(file_get_contents($distExtSettingsFile)) : [];
         try {
@@ -113,7 +113,7 @@ class SettingsCommandController extends CommandController
             }
             $commandDispatcher = CommandDispatcher::createFromCommandRun();
             $commandDispatcher->executeCommand('configuration:remove', ['paths' => 'EXT', '--force' => true]);
-            $this->outputLine('<info>Extracted extension settings to conf/settings.extensions.yaml</info>');
+            $this->outputLine('<info>Extracted extension settings to conf/config.extensions.yaml</info>');
             file_put_contents(
                 $distExtSettingsFile,
                 Yaml::dump($distExtSettings, 5)

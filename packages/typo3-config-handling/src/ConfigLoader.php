@@ -49,7 +49,7 @@ class ConfigLoader
      */
     public static function create(string $confDir, string $context = 'prod'): self
     {
-        return new self($confDir . '/' . $context . '.settings.yml');
+        return new self($confDir . '/' . $context . '.config.yml');
     }
 
     public function __construct(string $configFile)

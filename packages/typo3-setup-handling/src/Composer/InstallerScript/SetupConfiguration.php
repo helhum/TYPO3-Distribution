@@ -143,7 +143,7 @@ class SetupConfiguration implements InstallerScriptInterface
         ) {
             $localConfValues = require $localConfFile;
         }
-        $settingsFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/conf/settings.yaml';
+        $settingsFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/conf/config.yaml';
         $settings = Yaml::parse(file_get_contents($settingsFile));
 
         return array_replace_recursive($localConfValues, $settings);
@@ -151,7 +151,7 @@ class SetupConfiguration implements InstallerScriptInterface
 
     private function storeSettings(array $settings)
     {
-        $settingsFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/conf/settings.yaml';
+        $settingsFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/conf/config.yaml';
         file_put_contents(
             $settingsFile,
             Yaml::dump($settings, 5)

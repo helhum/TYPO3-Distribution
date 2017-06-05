@@ -1,4 +1,0 @@
-imports:
-    - { resource: settings.yml, type: null, ignore_errors: false }
-    - { resource: settings.extension.yml, ignore_errors: false }
-    - { resource: TYPO3, type: env, ignore_errors: true }
