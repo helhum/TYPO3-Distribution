@@ -1,6 +1,6 @@
 imports:
-    - { resource: config.yml, type: null, ignore_errors: false }
-    - { resource: config.extension.yml, ignore_errors: false }
+    - { resource: config.yml }
+    - { resource: config.extension.yml }
     - { resource: 'dev.config.*.yml', type: glob, ignore_errors: true }
     - { resource: TYPO3, type: env, ignore_errors: true }
 

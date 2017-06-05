@@ -61,7 +61,8 @@ class ConfigFileImport implements ConfigProcessorInterface
                 throw new \InvalidArgumentException(sprintf('The "imports" must be an array in "%s"', $this->resourceFile), 1496583180);
             }
             $reader = $this->createReader($import['resource'], $import['type'] ?? null);
-            if (isset($import['ignore_errors']) && !$import['ignore_errors'] && !$reader->hasConfig()) {
+            $ignoreErrors = $import['type'] ?? false;
+            if (!$ignoreErrors && !$reader->hasConfig()) {
                 throw new \RuntimeException(sprintf('Could not import mandatory resource "%s" in "%s"', $import['resource'], $this->resourceFile), 1496585828);
             }
             $importedConfig = array_replace_recursive($importedConfig, $reader->readConfig());
