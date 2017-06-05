@@ -113,7 +113,7 @@ class SettingsCommandController extends CommandController
             }
             $commandDispatcher = CommandDispatcher::createFromCommandRun();
             $commandDispatcher->executeCommand('configuration:remove', ['paths' => 'EXT', '--force' => true]);
-            $this->outputLine('<info>Extracted extension settings to conf/config.extensions.yaml</info>');
+            $this->outputLine('<info>Extracted extension settings to conf/config.extensions.yml</info>');
             file_put_contents(
                 $distExtSettingsFile,
                 Yaml::dump($distExtSettings, 5)
