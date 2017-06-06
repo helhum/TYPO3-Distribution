@@ -23,9 +23,17 @@ namespace Helhum\Typo3ConfigHandling\Processor;
  ***************************************************************/
 
 use Helhum\ConfigLoader\Processor\ConfigProcessorInterface;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 class PlaceholderValue implements ConfigProcessorInterface
 {
+    const PLACEHOLDER_PATTERN = '/%(env|const|var)\(([^)]*)\)%/';
+
+    /**
+     * @var array
+     */
+    private $referenceConfig;
+
     /**
      * @param array $config
      * @throws \InvalidArgumentException
@@ -33,15 +41,15 @@ class PlaceholderValue implements ConfigProcessorInterface
      */
     public function processConfig(array $config)
     {
-        $processedConfig = $config;
+        if (null === $this->referenceConfig) {
+            $this->referenceConfig = $config;
+        }
+        $processedConfig = [];
         foreach ($config as $name => $value) {
-            if ($this->isPlaceHolder($name)) {
-                $name = $this->replacePlaceHolder($name);
-            }
             if (is_array($value)) {
-                $processedConfig[$name] = $this->processConfig($value);
-            } elseif ($this->isPlaceHolder($value)) {
-                $processedConfig[$name] = $this->replacePlaceHolder($value);
+                $processedConfig[$this->replacePlaceHolder($name)] = $this->processConfig($value);
+            } else {
+                $processedConfig[$this->replacePlaceHolder($name)] = $this->replacePlaceHolder($value);
             }
         }
 
@@ -50,35 +58,31 @@ class PlaceholderValue implements ConfigProcessorInterface
 
     private function isPlaceHolder($value)
     {
-        return is_string($value);
+        return is_string($value) && preg_match(self::PLACEHOLDER_PATTERN, $value);
     }
 
-    private function replacePlaceHolder(string $value)
+    private function replacePlaceHolder($value)
     {
-        $value = $this->replaceEnv($value);
-        $value = $this->replaceConst($value);
-        return $value;
-    }
-
-    private function replaceEnv(string $value)
-    {
-        return preg_replace_callback(
-            '/%env[(]([^)]*)[)]%/',
-            function ($matches) {
-                return getenv($matches[1]);
-            },
-            $value
-        );
-    }
-
-    private function replaceConst(string $value)
-    {
-        return preg_replace_callback(
-            '/%constant[(]([^)]*)[)]%/',
-            function ($matches) {
-                return constant($matches[1]);
-            },
-            $value
-        );
+        if (!$this->isPlaceHolder($value)) {
+            return $value;
+        }
+        preg_match(self::PLACEHOLDER_PATTERN, $value, $matches);
+        switch ($matches[1]) {
+            case 'env':
+                $replacedValue = getenv($matches[2]);
+                break;
+            case 'const':
+                $replacedValue = constant($matches[2]);
+                break;
+            case 'var':
+                $replacedValue = ArrayUtility::getValueByPath($this->referenceConfig, $matches[2], '.');
+                break;
+            default:
+                $replacedValue = $matches[0];
+        }
+        if ($value === $matches[0]) {
+            return $replacedValue;
+        }
+        return preg_replace(self::PLACEHOLDER_PATTERN, $replacedValue, $value);
     }
 }

@@ -21,6 +21,6 @@ MAIL:
     transport_mbox_file: %env(TYPO3_PATH_COMPOSER_ROOT)%/var/log/sent-mails.log
 LOG:
     writerConfiguration:
-        '%constant(TYPO3\CMS\Core\Log\LogLevel::DEBUG)%':
+        '%const(TYPO3\CMS\Core\Log\LogLevel::DEBUG)%':
             TYPO3\CMS\Core\Log\Writer\FileWriter:
                 - %env(TYPO3_PATH_COMPOSER_ROOT)%/var/log/typo3-default.log
