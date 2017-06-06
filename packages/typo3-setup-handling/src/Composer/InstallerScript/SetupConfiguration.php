@@ -23,6 +23,7 @@ namespace Helhum\TYPO3\SetupHandling\Composer\InstallerScript;
 
 use Composer\Script\Event as ScriptEvent;
 use Helhum\ConfigLoader\Config;
+use Helhum\ConfigLoader\InvalidArgumentException;
 use Helhum\Typo3Console\Mvc\Cli\CommandDispatcher;
 use Helhum\Typo3ConsolePlugin\InstallerScriptInterface;
 use Symfony\Component\Dotenv\Dotenv;
@@ -104,7 +105,7 @@ class SetupConfiguration implements InstallerScriptInterface
                     $value = Config::getValue($settings, $configPath);
                     $dotEnvConfigContent = str_replace($envName . '=""', $envName . '=\'' . $value . '\'', $dotEnvConfigContent);
                     $settings = Config::removeValue($settings, $configPath);
-                } catch (\RuntimeException $e) {
+                } catch (InvalidArgumentException $e) {
                 }
             }
         }

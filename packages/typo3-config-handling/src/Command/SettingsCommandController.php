@@ -23,6 +23,7 @@ namespace Helhum\Typo3ConfigHandling\Command;
  ***************************************************************/
 
 use Helhum\ConfigLoader\Config;
+use Helhum\ConfigLoader\InvalidArgumentException;
 use Helhum\Typo3Console\Mvc\Cli\CommandDispatcher;
 use Helhum\Typo3Console\Mvc\Controller\CommandController;
 use Symfony\Component\Yaml\Yaml;
@@ -117,7 +118,7 @@ class SettingsCommandController extends CommandController
                 $distExtSettingsFile,
                 Yaml::dump($distExtSettings, 5)
             );
-        } catch (\RuntimeException $e) {
+        } catch (InvalidArgumentException $e) {
             $this->outputLine('<warning>No extension settings were found</warning>');
         }
     }

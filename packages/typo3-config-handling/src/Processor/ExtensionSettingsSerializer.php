@@ -23,6 +23,7 @@ namespace Helhum\TYPO3\ConfigHandling\Processor;
  ***************************************************************/
 
 use Helhum\ConfigLoader\Config;
+use Helhum\ConfigLoader\InvalidArgumentException;
 use Helhum\ConfigLoader\Processor\ConfigProcessorInterface;
 
 class ExtensionSettingsSerializer implements ConfigProcessorInterface
@@ -45,7 +46,7 @@ class ExtensionSettingsSerializer implements ConfigProcessorInterface
                 }
             }
             return $config;
-        } catch (\RuntimeException $e) {
+        } catch (InvalidArgumentException $e) {
             return $config;
         }
     }
