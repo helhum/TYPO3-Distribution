@@ -22,11 +22,11 @@ namespace Helhum\TYPO3\SetupHandling\Composer\InstallerScript;
  ***************************************************************/
 
 use Composer\Script\Event as ScriptEvent;
+use Helhum\ConfigLoader\Config;
 use Helhum\Typo3Console\Mvc\Cli\CommandDispatcher;
 use Helhum\Typo3ConsolePlugin\InstallerScriptInterface;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\Yaml\Yaml;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 class SetupConfiguration implements InstallerScriptInterface
@@ -100,10 +100,10 @@ class SetupConfiguration implements InstallerScriptInterface
         foreach ($this->getParsedEnvFileValues($this->dotEnvDistFile) as $envName => $envValue) {
             if (StringUtility::beginsWith($envName, 'TYPO3__')) {
                 try {
-                    $configPath = str_replace(['TYPO3__', '__'], ['', '/'], $envName);
-                    $value = ArrayUtility::getValueByPath($settings, $configPath);
+                    $configPath = str_replace(['TYPO3__', '__'], ['', '.'], $envName);
+                    $value = Config::getValue($settings, $configPath);
                     $dotEnvConfigContent = str_replace($envName . '=""', $envName . '=\'' . $value . '\'', $dotEnvConfigContent);
-                    $settings = ArrayUtility::removeByPath($settings, $configPath);
+                    $settings = Config::removeValue($settings, $configPath);
                 } catch (\RuntimeException $e) {
                 }
             }

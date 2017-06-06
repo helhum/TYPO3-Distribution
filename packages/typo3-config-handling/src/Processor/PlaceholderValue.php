@@ -22,8 +22,8 @@ namespace Helhum\Typo3ConfigHandling\Processor;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Helhum\ConfigLoader\Config;
 use Helhum\ConfigLoader\Processor\ConfigProcessorInterface;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 class PlaceholderValue implements ConfigProcessorInterface
 {
@@ -75,7 +75,7 @@ class PlaceholderValue implements ConfigProcessorInterface
                 $replacedValue = constant($matches[2]);
                 break;
             case 'var':
-                $replacedValue = ArrayUtility::getValueByPath($this->referenceConfig, $matches[2], '.');
+                $replacedValue = Config::getValue($this->referenceConfig, $matches[2]);
                 break;
             default:
                 $replacedValue = $matches[0];

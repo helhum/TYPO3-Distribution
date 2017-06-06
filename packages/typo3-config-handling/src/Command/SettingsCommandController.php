@@ -22,10 +22,10 @@ namespace Helhum\Typo3ConfigHandling\Command;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Helhum\ConfigLoader\Config;
 use Helhum\Typo3Console\Mvc\Cli\CommandDispatcher;
 use Helhum\Typo3Console\Mvc\Controller\CommandController;
 use Symfony\Component\Yaml\Yaml;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class SettingsCommandController extends CommandController
@@ -76,7 +76,7 @@ class SettingsCommandController extends CommandController
             }
             $localConfigurationFileContent .= 'return ' . chr(10);
             $configLoader = new \Helhum\Typo3ConfigHandling\ConfigLoader($rootConfigFile);
-            $localConfigurationFileContent .= ArrayUtility::arrayExport($configLoader->load());
+            $localConfigurationFileContent .= var_export($configLoader->load(), true);
             $localConfigurationFileContent .= ';' . chr(10);
         } else {
             file_put_contents(
@@ -105,7 +105,7 @@ class SettingsCommandController extends CommandController
         $typo3Settings = require $this->localConfigurationFile;
         $distExtSettings = file_exists($distExtSettingsFile) ? Yaml::parse(file_get_contents($distExtSettingsFile)) : [];
         try {
-            foreach (ArrayUtility::getValueByPath($typo3Settings, 'EXT/extConf') as $extensionKey => $typo3ExtSettings) {
+            foreach (Config::getValue($typo3Settings, 'EXT.extConf') as $extensionKey => $typo3ExtSettings) {
                 if (
                     !isset($distExtSettings['EXT']['extConf'][$extensionKey])
                     || !is_array($distExtSettings['EXT']['extConf'][$extensionKey])
