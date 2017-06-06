@@ -24,9 +24,9 @@ namespace Helhum\TYPO3\ConfigHandling;
 
 use Helhum\ConfigLoader\CachedConfigurationLoader;
 use Helhum\ConfigLoader\ConfigurationLoader;
+use Helhum\ConfigLoader\Processor\PlaceholderValue;
 use Helhum\ConfigLoader\Reader\RootConfigFileReader;
 use Helhum\TYPO3\ConfigHandling\Processor\ExtensionSettingsSerializer;
-use Helhum\TYPO3\ConfigHandling\Processor\PlaceholderValue;
 
 class ConfigLoader
 {
