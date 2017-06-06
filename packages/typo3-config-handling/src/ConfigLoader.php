@@ -64,6 +64,8 @@ class ConfigLoader
             $GLOBALS['TYPO3_CONF_VARS'],
             $config
         );
+        // Save the file path in the environment so that it can be used by the settings::dump command
+        putenv('TYPO3_CONFIG_HANDLING_FILE=' . $this->configFile);
     }
 
     public function load(): array
