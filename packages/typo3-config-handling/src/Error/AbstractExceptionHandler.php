@@ -1,5 +1,5 @@
 <?php
-namespace Helhum\Typo3ConfigHandling\Error;
+namespace Helhum\TYPO3\ConfigHandling\Error;
 
 /***************************************************************
  *  Copyright notice

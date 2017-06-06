@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace Helhum\Typo3ConfigHandling;
+namespace Helhum\TYPO3\ConfigHandling;
 
 /***************************************************************
  *  Copyright notice
@@ -25,8 +25,8 @@ namespace Helhum\Typo3ConfigHandling;
 use Helhum\ConfigLoader\CachedConfigurationLoader;
 use Helhum\ConfigLoader\ConfigurationLoader;
 use Helhum\ConfigLoader\Reader\RootConfigFileReader;
-use Helhum\Typo3ConfigHandling\Processor\ExtensionSettingsSerializer;
-use Helhum\Typo3ConfigHandling\Processor\PlaceholderValue;
+use Helhum\TYPO3\ConfigHandling\Processor\ExtensionSettingsSerializer;
+use Helhum\TYPO3\ConfigHandling\Processor\PlaceholderValue;
 
 class ConfigLoader
 {

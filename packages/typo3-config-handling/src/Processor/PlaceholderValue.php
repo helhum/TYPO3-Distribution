@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace Helhum\Typo3ConfigHandling\Processor;
+namespace Helhum\TYPO3\ConfigHandling\Processor;
 
 /***************************************************************
  *  Copyright notice

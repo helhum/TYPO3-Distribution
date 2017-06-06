@@ -10,7 +10,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Helhum\\Typo3ConfigHandling\\": "src"
+            "Helhum\\TYPO3\\ConfigHandling\\": "src/",
+            "Helhum\\Typo3ConfigHandling\\Command\\": "src/Command"
         }
     }
 }
