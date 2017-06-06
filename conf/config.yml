@@ -7,3 +7,9 @@ SYS:
     exceptionalErrors: 4352
     systemLogLevel: 2
     systemLog: error_log
+
+LOG:
+    writerConfiguration:
+        '%const(TYPO3\CMS\Core\Log\LogLevel::WARNING)%':
+            TYPO3\CMS\Core\Log\Writer\FileWriter:
+                { logFile: '%env(TYPO3_PATH_COMPOSER_ROOT)%/var/log/typo3-warning.log' }

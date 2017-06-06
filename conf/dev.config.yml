@@ -23,4 +23,4 @@ LOG:
     writerConfiguration:
         '%const(TYPO3\CMS\Core\Log\LogLevel::DEBUG)%':
             TYPO3\CMS\Core\Log\Writer\FileWriter:
-                - %env(TYPO3_PATH_COMPOSER_ROOT)%/var/log/typo3-default.log
+                { logFile: '%env(TYPO3_PATH_COMPOSER_ROOT)%/var/log/typo3-debug.log' }

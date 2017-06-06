@@ -68,9 +68,14 @@ class ConfigLoader
                 return $this->loader;
             }
         );
+        $config = $cachedLoader->load();
+        if (!empty($config['LOG'])) {
+            // Disable default writers, to not log to places not intended to be logged to ;(
+            unset($GLOBALS['TYPO3_CONF_VARS']['LOG']);
+        }
         $GLOBALS['TYPO3_CONF_VARS'] = array_replace_recursive(
             $GLOBALS['TYPO3_CONF_VARS'],
-            $cachedLoader->load()
+            $config
         );
     }
 
