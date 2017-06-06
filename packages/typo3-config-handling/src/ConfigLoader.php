@@ -24,8 +24,9 @@ namespace Helhum\Typo3ConfigHandling;
 
 use Helhum\ConfigLoader\CachedConfigurationLoader;
 use Helhum\ConfigLoader\ConfigurationLoader;
+use Helhum\ConfigLoader\Reader\RootConfigFileReader;
+use Helhum\Typo3ConfigHandling\Processor\ExtensionSettingsSerializer;
 use Helhum\Typo3ConfigHandling\Processor\PlaceholderValue;
-use Helhum\Typo3ConfigHandling\Reader\RootConfigReader;
 
 class ConfigLoader
 {
@@ -74,7 +75,7 @@ class ConfigLoader
     {
         return new ConfigurationLoader(
             [
-                new RootConfigReader($configFile),
+                new RootConfigFileReader($configFile),
             ],
             [
                 new PlaceholderValue(),

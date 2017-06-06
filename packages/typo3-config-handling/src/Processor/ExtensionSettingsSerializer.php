@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace Helhum\Typo3ConfigHandling;
+namespace Helhum\Typo3ConfigHandling\Processor;
 
 /***************************************************************
  *  Copyright notice
@@ -32,7 +32,7 @@ class ExtensionSettingsSerializer implements ConfigProcessorInterface
      * @throws \InvalidArgumentException
      * @return array
      */
-    public function processConfig(array $config)
+    public function processConfig(array $config): array
     {
         try {
             $extensionsSettings = ArrayUtility::getValueByPath($config, 'EXT/extConf');

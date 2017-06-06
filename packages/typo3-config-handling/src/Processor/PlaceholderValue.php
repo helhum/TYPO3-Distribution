@@ -39,7 +39,7 @@ class PlaceholderValue implements ConfigProcessorInterface
      * @throws \InvalidArgumentException
      * @return array
      */
-    public function processConfig(array $config)
+    public function processConfig(array $config): array
     {
         if (null === $this->referenceConfig) {
             $this->referenceConfig = $config;

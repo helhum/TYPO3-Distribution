@@ -6,7 +6,7 @@
         "php": ">=7.0 <7.2",
         "typo3/cms-core": "^8.7",
         "helhum/typo3-console": "^4.6.1",
-        "helhum/config-loader": "^0.3"
+        "helhum/config-loader": "^0.4"
     },
     "autoload": {
         "psr-4": {
