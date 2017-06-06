@@ -25,9 +25,5 @@ SYS:
                 backend: TYPO3\CMS\Core\Cache\Backend\NullBackend
             extbase_reflection:
                 backend: TYPO3\CMS\Core\Cache\Backend\NullBackend
-            extbase_typo3dbbackend_tablecolumns:
-                backend: TYPO3\CMS\Core\Cache\Backend\NullBackend
-            extbase_typo3dbbackend_queries:
-                backend: TYPO3\CMS\Core\Cache\Backend\NullBackend
             extbase_datamapfactory_datamap:
                 backend: TYPO3\CMS\Core\Cache\Backend\NullBackend

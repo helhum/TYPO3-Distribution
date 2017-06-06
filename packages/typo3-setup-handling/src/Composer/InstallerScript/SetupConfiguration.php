@@ -152,9 +152,15 @@ class SetupConfiguration implements InstallerScriptInterface
     private function storeSettings(array $settings)
     {
         $settingsFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/conf/config.yml';
+        $fileContent = '';
+        if (!empty($settings['imports'])) {
+            $fileContent .= Yaml::dump(['imports' => $settings['imports']]) . chr(10);
+            unset($settings['imports']);
+        }
+        $fileContent .= Yaml::dump($settings, 5);
         file_put_contents(
             $settingsFile,
-            Yaml::dump($settings, 5)
+            $fileContent
         );
     }
 }

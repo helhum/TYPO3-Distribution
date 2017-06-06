@@ -1,4 +1,2 @@
 imports:
     - { resource: config.yml }
-    - { resource: config.extension.yml }
-    - { resource: TYPO3, type: env, ignore_errors: true }

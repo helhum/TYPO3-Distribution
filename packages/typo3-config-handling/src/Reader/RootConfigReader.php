@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace Helhum\Typo3ConfigHandling\Processor;
+namespace Helhum\Typo3ConfigHandling\Reader;
 
 /***************************************************************
  *  Copyright notice
@@ -22,24 +22,37 @@ namespace Helhum\Typo3ConfigHandling\Processor;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Helhum\ConfigLoader\Processor\ConfigProcessorInterface;
 use Helhum\ConfigLoader\Reader\ConfigReaderInterface;
 use Helhum\ConfigLoader\Reader\EnvironmentReader;
 use Helhum\ConfigLoader\Reader\PhpFileReader;
 use Helhum\ConfigLoader\Reader\YamlReader;
-use Helhum\Typo3ConfigHandling\Reader\CollectionReader;
-use Helhum\Typo3ConfigHandling\Reader\ProcessedConfigFileReader;
 
-class ConfigFileImport implements ConfigProcessorInterface
+class RootConfigReader implements ConfigReaderInterface
 {
+    /**
+     * @var ConfigReaderInterface
+     */
+    private $reader;
+
     /**
      * @var string
      */
     private $resourceFile;
 
-    public function __construct(string $resourceFile)
+    public function __construct(string $resourceFile, string $type = null)
     {
         $this->resourceFile = $resourceFile;
+        $this->reader = $this->createReader($resourceFile, $type);
+    }
+
+    public function hasConfig()
+    {
+        return $this->reader->hasConfig();
+    }
+
+    public function readConfig()
+    {
+        return $this->processConfig($this->reader->readConfig());
     }
 
     /**
@@ -47,7 +60,7 @@ class ConfigFileImport implements ConfigProcessorInterface
      * @throws \InvalidArgumentException
      * @return array
      */
-    public function processConfig(array $config)
+    private function processConfig(array $config)
     {
         if (!isset($config['imports'])) {
             return $config;
@@ -60,7 +73,7 @@ class ConfigFileImport implements ConfigProcessorInterface
             if (!is_array($import)) {
                 throw new \InvalidArgumentException(sprintf('The "imports" must be an array in "%s"', $this->resourceFile), 1496583180);
             }
-            $reader = $this->createReader($import['resource'], $import['type'] ?? null);
+            $reader = $this->createProcessingReader($import['resource'], $import['type'] ?? null);
             $ignoreErrors = $import['type'] ?? false;
             if (!$ignoreErrors && !$reader->hasConfig()) {
                 throw new \RuntimeException(sprintf('Could not import mandatory resource "%s" in "%s"', $import['resource'], $this->resourceFile), 1496585828);
@@ -71,29 +84,26 @@ class ConfigFileImport implements ConfigProcessorInterface
         return array_replace_recursive($config, $importedConfig);
     }
 
-    /**
-     * @param string $resource
-     * @return ConfigReaderInterface
-     */
-    private function createReader(string $resource, string $type = null)
+    private function createProcessingReader(string $resource, string $type = null): ConfigReaderInterface
+    {
+        if ($type !== 'env') {
+            $resource = $this->makeAbsolute($resource);
+        }
+        return new self($resource, $type);
+    }
+
+    private function createReader(string $resource, string $type = null): ConfigReaderInterface
     {
         $type = $type ?: pathinfo($resource, PATHINFO_EXTENSION);
-        $resourceFile = $this->makeAbsolute($resource);
         switch ($type) {
             case 'yml':
-                return new ProcessedConfigFileReader(
-                    new YamlReader($resourceFile),
-                    new self($resourceFile)
-                );
+                return new YamlReader($resource);
             case 'env':
                 return new EnvironmentReader($resource);
             case 'glob':
-                return new CollectionReader($this->createReaderCollection($resourceFile));
+                return new CollectionReader($this->createReaderCollection($resource));
             default:
-                return new ProcessedConfigFileReader(
-                    new PhpFileReader($resourceFile),
-                    new self($resourceFile)
-                );
+                return new PhpFileReader($resource);
         }
     }
 
@@ -102,7 +112,7 @@ class ConfigFileImport implements ConfigProcessorInterface
         $readers = [];
         $configFiles = glob($resource);
         foreach ($configFiles as $settingsFile) {
-            $readers[] = $this->createReader($settingsFile, $type);
+            $readers[] = $this->createProcessingReader($settingsFile, $type);
         }
         return $readers;
     }

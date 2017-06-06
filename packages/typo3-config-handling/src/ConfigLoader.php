@@ -24,10 +24,8 @@ namespace Helhum\Typo3ConfigHandling;
 
 use Helhum\ConfigLoader\CachedConfigurationLoader;
 use Helhum\ConfigLoader\ConfigurationLoader;
-use Helhum\ConfigLoader\Reader\YamlReader;
-use Helhum\Typo3ConfigHandling\Processor\ConfigFileImport;
 use Helhum\Typo3ConfigHandling\Processor\PlaceholderValue;
-use Helhum\Typo3ConfigHandling\Reader\ProcessedConfigFileReader;
+use Helhum\Typo3ConfigHandling\Reader\RootConfigReader;
 
 class ConfigLoader
 {
@@ -40,18 +38,6 @@ class ConfigLoader
      * @var ConfigurationLoader
      */
     private $loader;
-
-    /**
-     * Override this to match the config file structure you like
-     *
-     * @param string $confDir
-     * @param string $context
-     * @return ConfigLoader
-     */
-    public static function create(string $confDir, string $context = 'prod'): self
-    {
-        return new self($confDir . '/' . $context . '.config.yml');
-    }
 
     public function __construct(string $configFile)
     {
@@ -88,10 +74,7 @@ class ConfigLoader
     {
         return new ConfigurationLoader(
             [
-                new ProcessedConfigFileReader(
-                    new YamlReader($configFile),
-                    new ConfigFileImport($configFile)
-                ),
+                new RootConfigReader($configFile),
             ],
             [
                 new PlaceholderValue(),

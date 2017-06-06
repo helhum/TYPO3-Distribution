@@ -1,3 +1,7 @@
+imports:
+    - { resource: 'config.*.yml', type: glob, ignore_errors: true }
+    - { resource: TYPO3, type: env, ignore_errors: true }
+
 # Reasonable error handling by default
 SYS:
     errorHandler: Helhum\Typo3ConfigHandling\Error\ErrorHandler
