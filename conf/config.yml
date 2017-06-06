@@ -1,6 +1,6 @@
 imports:
     - { resource: 'config.*.yml', type: glob, ignore_errors: true }
-    - { resource: TYPO3, type: env, ignore_errors: true }
+    - { resource: TYPO3, type: env }
 
 # Reasonable error handling by default
 SYS:
