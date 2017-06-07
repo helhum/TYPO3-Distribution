@@ -11,8 +11,10 @@
         "helhum/typo3-console": "^4.6.1",
         "helhum/dotenv-connector": "^2.0",
         "symfony/dotenv": "^3.3",
-        "helhum/typo3-config-handling": "@dev",
-        "typo3-console/php-server-command": "@dev"
+        "helhum/typo3-config-handling": "@dev"
+    },
+    "suggest": {
+        "typo3-console/php-server-command": "Recommended for easy testing of your distribution in dev context without the need of a dedicated webserver"
     },
     "autoload": {
         "psr-4": {

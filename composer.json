@@ -10,7 +10,6 @@
         "typo3/cms": "^8.7",
         "helhum/typo3-config-handling": "@dev",
         "helhum/typo3-setup-handling": "@dev",
-        "typo3-console/php-server-command": "@dev",
 
         "typo3/cms-belog": "^8.7",
         "typo3/cms-beuser": "^8.7",
@@ -33,6 +32,7 @@
         "roave/security-advisories": "dev-master"
     },
     "require-dev": {
+        "typo3-console/php-server-command": "@dev",
         "nimut/testing-framework": "^1.1.8"
     },
     "scripts": {

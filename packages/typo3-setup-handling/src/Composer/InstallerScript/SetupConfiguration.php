@@ -29,6 +29,7 @@ use Helhum\Typo3ConsolePlugin\InstallerScriptInterface;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use Typo3Console\PhpServer\Command\ServerCommandController;
 
 class SetupConfiguration implements InstallerScriptInterface
 {
@@ -117,8 +118,10 @@ class SetupConfiguration implements InstallerScriptInterface
 
         $io->writeError('');
         $io->writeError('<info>Your TYPO3 installation is now ready to use</info>');
-        $io->writeError('');
-        $io->writeError(sprintf('Run <comment>%s server:run</comment> in your project root directory, to start the PHP builtin webserver.', substr($event->getComposer()->getConfig()->get('bin-dir') . '/typo3cms', strlen(getcwd()) + 1)));
+        if (class_exists(ServerCommandController::class)) {
+            $io->writeError('');
+            $io->writeError(sprintf('Run <comment>%s server:run</comment> in your project root directory, to start the PHP builtin webserver.', substr($event->getComposer()->getConfig()->get('bin-dir') . '/typo3cms', strlen(getcwd()) + 1)));
+        }
         $io->writeError('');
         return true;
     }
