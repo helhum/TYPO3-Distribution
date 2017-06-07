@@ -1,7 +1,7 @@
 <?php
 return [
     'controllers' => [
-        \Helhum\Typo3ConsolePhpServer\Command\ServerCommandController::class,
+        \Typo3Console\PhpServer\Command\ServerCommandController::class,
     ],
     'runLevels' => [
     ],

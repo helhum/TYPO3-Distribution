@@ -12,7 +12,7 @@
         "helhum/dotenv-connector": "^2.0",
         "symfony/dotenv": "^3.3",
         "helhum/typo3-config-handling": "@dev",
-        "helhum/typo3-console-php-server": "@dev"
+        "typo3-console/php-server-command": "@dev"
     },
     "autoload": {
         "psr-4": {

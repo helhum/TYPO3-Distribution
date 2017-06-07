@@ -1,6 +1,6 @@
 {
-    "name": "helhum/typo3-console-php-server",
-    "description" : "PHP server command",
+    "name": "typo3-console/php-server-command",
+    "description" : "PHP server command for TYPO3 Console",
     "license": "GPL-2.0+",
     "require": {
         "php": ">=7.0 <7.2",
@@ -9,7 +9,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Helhum\\Typo3ConsolePhpServer\\": "src"
+            "Typo3Console\\PhpServer\\": "src"
         }
     }
 }

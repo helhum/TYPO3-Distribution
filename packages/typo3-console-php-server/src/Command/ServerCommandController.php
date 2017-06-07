@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace Helhum\Typo3ConsolePhpServer\Command;
+namespace Typo3Console\PhpServer\Command;
 
 /***************************************************************
  *  Copyright notice
