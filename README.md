@@ -9,5 +9,45 @@
 
 ## Change configuration directory layout
 
-Edit the file `res/InitializeConfiguration.php` and adapt the line `$rootConfigPath` to match your requirements.
-Do not change anything else within this file or it might summon demons.
+Add the following section to you `composer.json` to change the configuration directory structure
+to fits your needs. Note that you only need to specify the entry point config for the two contexts,
+and inside these files you can specify imports of subsequent config files.
+
+### Default layout in this distribution is
+
+```json
+{
+    "extra": {
+        "helhum/typo3-distribution": {
+            "prod-config": "conf/config.yml",
+            "dev-config": "conf/dev.config.yml"
+        }
+    }
+}
+```
+
+### Example to match Symfony framework default layout
+
+```json
+{
+    "extra": {
+        "helhum/typo3-distribution": {
+            "prod-config": "conf/config_prod.yml",
+            "dev-config": "conf/config_dev.yml"
+        }
+    }
+}
+```
+
+### Example to match Neos Flow framework style layout
+
+```json
+{
+    "extra": {
+        "helhum/typo3-distribution": {
+            "prod-config": "Configuration/Production/Settings.yml",
+            "dev-config": "Configuration/Development/Settings.yml"
+        }
+    }
+}
+```
