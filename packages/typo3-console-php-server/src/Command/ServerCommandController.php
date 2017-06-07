@@ -30,7 +30,10 @@ class ServerCommandController extends CommandController
     /**
      * Start a PHP web server for the current project
      *
-     * @param string $address Alternative IP address and port
+     * @param string $address Alternative IP address and port (default: 127.0.0.1:8080)
+     * @throws \Symfony\Component\Process\Exception\InvalidArgumentException
+     * @throws \Symfony\Component\Process\Exception\LogicException
+     * @throws \Symfony\Component\Process\Exception\RuntimeException
      */
     public function runCommand(string $address = '127.0.0.1:8080')
     {
@@ -44,13 +47,32 @@ class ServerCommandController extends CommandController
             ]
         );
         $processBuilder->setTimeout(null);
-        $process = $processBuilder->getProcess();
-        $process->disableOutput();
-        $process->start();
+        // Store current md5 of .env file
+        $this->dotEnvChanged();
         $this->outputLine('<info>Server is running at http://%s</info>', [$address]);
         $this->outputLine('Press Ctrl-C to quit.');
-        while ($process->isRunning()) {
-            sleep(1);
+
+        do {
+            $process = $processBuilder->getProcess();
+            $process->disableOutput();
+            $process->start();
+            while ($process->isRunning()) {
+                if ($this->dotEnvChanged()) {
+                    break;
+                }
+                sleep(1);
+            }
+        } while (true);
+    }
+
+    private function dotEnvChanged(): bool
+    {
+        $dotEnfFileName = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/.env';
+        static $dotEnvMd5;
+        if (file_exists($dotEnfFileName) && $dotEnvMd5 !== md5_file($dotEnfFileName)) {
+            $dotEnvMd5 = md5_file($dotEnfFileName);
+            return true;
         }
+        return false;
     }
 }
