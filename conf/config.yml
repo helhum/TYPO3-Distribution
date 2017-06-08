@@ -16,6 +16,9 @@ GFX:
     jpg_quality: '80'
     processor: GraphicsMagick
     processor_effects: -1
+MAIL:
+    transport: sendmail
+    transport_sendmail_command: '/usr/sbin/sendmail -t -i '
 SYS:
     exceptionalErrors: 4352
     systemLogLevel: 2

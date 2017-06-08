@@ -22,9 +22,8 @@ namespace Helhum\TYPO3\ConfigHandling\Processor;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Helhum\ConfigLoader\Config;
-use Helhum\ConfigLoader\InvalidArgumentException;
 use Helhum\ConfigLoader\Processor\ConfigProcessorInterface;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 class ExtensionSettingsSerializer implements ConfigProcessorInterface
 {
@@ -36,7 +35,7 @@ class ExtensionSettingsSerializer implements ConfigProcessorInterface
     public function processConfig(array $config): array
     {
         try {
-            $extensionsSettings = Config::getValue($config, 'EXT.extConf');
+            $extensionsSettings = ArrayUtility::getValueByPath($config, 'EXT/extConf');
             if (!is_array($extensionsSettings)) {
                 return $config;
             }
@@ -46,7 +45,7 @@ class ExtensionSettingsSerializer implements ConfigProcessorInterface
                 }
             }
             return $config;
-        } catch (InvalidArgumentException $e) {
+        } catch (\RuntimeException $e) {
             return $config;
         }
     }

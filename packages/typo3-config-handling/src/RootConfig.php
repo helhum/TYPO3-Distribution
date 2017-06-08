@@ -26,10 +26,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class RootConfig
 {
-    public static function getRootConfigFile(): string
+    public static function getRootConfigFile(bool $isProduction = null): string
     {
+        $isProduction = $isProduction !== null ? $isProduction : GeneralUtility::getApplicationContext()->isProduction();
         $rootConfig = self::getRootConfig();
-        $configPath = GeneralUtility::getApplicationContext()->isProduction() ? $rootConfig['prod-config'] : $rootConfig['dev-config'];
+        $configPath = $isProduction ? $rootConfig['prod-config'] : $rootConfig['dev-config'];
         return getenv('TYPO3_PATH_COMPOSER_ROOT') . '/' . $configPath;
     }
 
