@@ -88,9 +88,9 @@ class SetupConfiguration implements InstallerScriptInterface
             if (StringUtility::beginsWith($envName, 'TYPO3_INSTALL_PROMPT_')
                 && !StringUtility::endsWith($envName, '_DEFAULT')
             ) {
-                $defaultValue = getenv($envName . '_DEFAULT') ?: null;
+                $defaultValue = $installFileValues[$envName . '_DEFAULT'] ?? null;
                 do {
-                    $answer = $event->getIO()->ask('<comment>' . $envValue . ($defaultValue ? sprintf(' (%s) :', $defaultValue) : ':') . '</comment> ', $defaultValue);
+                    $answer = $event->getIO()->ask('<comment>' . $envValue . ($defaultValue ? sprintf(' (%s):', $defaultValue) : ':') . '</comment> ', $defaultValue);
                 } while ($answer === null);
                 $dotEnvConfigContent = str_replace('"${' . $envName . '}"', '\'' . $answer . '\'', $dotEnvConfigContent);
             }
