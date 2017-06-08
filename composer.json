@@ -8,6 +8,7 @@
     "license": "GPL-2.0+",
     "require": {
         "typo3/cms": "^8.7",
+        "helhum/typo3-error-handling": "@dev",
         "helhum/typo3-config-handling": "@dev",
         "helhum/typo3-setup-handling": "@dev",
 

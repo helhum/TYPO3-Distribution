@@ -1,5 +1,6 @@
 <?php
-namespace Helhum\TYPO3\ConfigHandling\Error;
+declare(strict_types=1);
+namespace Helhum\TYPO3\ErrorHandling\Error;
 
 /***************************************************************
  *  Copyright notice
@@ -39,10 +40,10 @@ class DebugExceptionHandler extends AbstractExceptionHandler
     /**
      * Formats and echoes the exception as XHTML.
      *
-     * @param \Exception|\Throwable $exception The exception object
+     * @param \Throwable $exception The exception object
      * @return void
      */
-    public function echoExceptionWeb($exception)
+    public function echoExceptionWeb(\Throwable $exception)
     {
         $this->sendStatusHeaders($exception);
         $filePathAndName = $exception->getFile();

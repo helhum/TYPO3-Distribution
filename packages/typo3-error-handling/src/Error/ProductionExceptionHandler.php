@@ -1,5 +1,6 @@
 <?php
-namespace Helhum\TYPO3\ConfigHandling\Error;
+declare(strict_types=1);
+namespace Helhum\TYPO3\ErrorHandling\Error;
 
 /***************************************************************
  *  Copyright notice
@@ -51,10 +52,10 @@ class ProductionExceptionHandler extends AbstractExceptionHandler
     /**
      * Echoes an exception for the web.
      *
-     * @param \Exception|\Throwable $exception The exception
+     * @param \Throwable $exception The exception
      * @return void
      */
-    public function echoExceptionWeb($exception)
+    public function echoExceptionWeb(\Throwable $exception)
     {
         $this->sendStatusHeaders($exception);
         $this->writeLogEntries($exception, self::CONTEXT_WEB);

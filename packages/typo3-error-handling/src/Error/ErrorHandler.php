@@ -1,5 +1,6 @@
 <?php
-namespace Helhum\TYPO3\ConfigHandling\Error;
+declare(strict_types=1);
+namespace Helhum\TYPO3\ErrorHandling\Error;
 
 /***************************************************************
  *  Copyright notice

@@ -19,9 +19,9 @@ GFX:
 SYS:
     exceptionalErrors: 4352
     systemLogLevel: 2
-    errorHandler: Helhum\TYPO3\ConfigHandling\Error\ErrorHandler
-    productionExceptionHandler: Helhum\TYPO3\ConfigHandling\Error\ProductionExceptionHandler
-    debugExceptionHandler: Helhum\TYPO3\ConfigHandling\Error\DebugExceptionHandler
+    errorHandler: Helhum\TYPO3\ErrorHandling\Error\ErrorHandler
+    productionExceptionHandler: Helhum\TYPO3\ErrorHandling\Error\ProductionExceptionHandler
+    debugExceptionHandler: Helhum\TYPO3\ErrorHandling\Error\DebugExceptionHandler
     errorHandlerErrors: 32514
     systemLog: error_log
 LOG:
