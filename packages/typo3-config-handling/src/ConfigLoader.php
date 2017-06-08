@@ -96,6 +96,7 @@ class ConfigLoader
         $fileWatches = array_merge(
             [
                 $rootDir . '/.env',
+                $rootDir . '/composer.json',
             ],
             glob($confDir . '/*.yml')
         );
