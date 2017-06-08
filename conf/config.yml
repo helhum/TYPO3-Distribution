@@ -3,17 +3,29 @@ imports:
     - { resource: TYPO3, type: env }
 
 # Reasonable error handling by default
+BE:
+    explicitADmode: explicitAllow
+    loginSecurityLevel: rsa
+DB:
+    Connections:
+        Default:
+            charset: utf8
+FE:
+    loginSecurityLevel: rsa
+GFX:
+    jpg_quality: '80'
+    processor: GraphicsMagick
+    processor_effects: -1
 SYS:
+    exceptionalErrors: 4352
+    systemLogLevel: 2
     errorHandler: Helhum\TYPO3\ConfigHandling\Error\ErrorHandler
     productionExceptionHandler: Helhum\TYPO3\ConfigHandling\Error\ProductionExceptionHandler
     debugExceptionHandler: Helhum\TYPO3\ConfigHandling\Error\DebugExceptionHandler
     errorHandlerErrors: 32514
-    exceptionalErrors: 4352
-    systemLogLevel: 2
     systemLog: error_log
-
 LOG:
     writerConfiguration:
         '%const(TYPO3\CMS\Core\Log\LogLevel::WARNING)%':
             TYPO3\CMS\Core\Log\Writer\FileWriter:
-                { logFile: '%env(TYPO3_PATH_COMPOSER_ROOT)%/var/log/typo3-warning.log' }
+                logFile: '%env(TYPO3_PATH_COMPOSER_ROOT)%/var/log/typo3-warning.log'
