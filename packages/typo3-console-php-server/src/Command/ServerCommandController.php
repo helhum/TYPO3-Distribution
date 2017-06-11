@@ -58,6 +58,7 @@ class ServerCommandController extends CommandController
             $process->start();
             while ($process->isRunning()) {
                 if ($this->dotEnvChanged()) {
+                    $process->stop();
                     break;
                 }
                 sleep(1);
