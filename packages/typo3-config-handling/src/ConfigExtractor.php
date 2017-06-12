@@ -52,12 +52,12 @@ class ConfigExtractor
         $this->configLoader = $configLoader ?: new ConfigLoader(RootConfig::getRootConfigFile());
     }
 
-    public function extractExtensionConfig(array $config, string $extensionConfigFile = 'conf/config.extension.yml'): bool
+    public function extractExtensionConfig(array $config, string $extensionConfigFile = null): bool
     {
         if (empty($config['EXT']['extConf'])) {
             return false;
         }
-        $extensionConfigFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/' . $extensionConfigFile;
+        $extensionConfigFile = $extensionConfigFile ?: RootConfig::getExtensionConfigFile();
         if ($extensionConfig = $this->getExtensionConfig($config['EXT']['extConf'], $extensionConfigFile)) {
             $this->configDumper->dumpToFile($extensionConfig, $extensionConfigFile);
             return true;
@@ -65,9 +65,9 @@ class ConfigExtractor
         return false;
     }
 
-    public function extractMainConfig(array $config, array $defaultConfig, string $mainConfigFile = 'conf/config.yml'): bool
+    public function extractMainConfig(array $config, array $defaultConfig, string $mainConfigFile = null): bool
     {
-        $mainConfigFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/' . $mainConfigFile;
+        $mainConfigFile = $mainConfigFile ?: RootConfig::getMainConfigFile();
         $configToExtract = $this->getMainConfig($config, $defaultConfig, $mainConfigFile);
         if (!empty($configToExtract)) {
             $this->configDumper->dumpToFile($configToExtract, $mainConfigFile);

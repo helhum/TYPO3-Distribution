@@ -28,38 +28,49 @@ class RootConfig
 {
     public static function getRootConfigFile(bool $isProduction = null): string
     {
-        $isProduction = $isProduction !== null ? $isProduction : GeneralUtility::getApplicationContext()->isProduction();
-        $rootConfig = self::getRootConfig();
-        $configPath = $isProduction ? $rootConfig['prod-config'] : $rootConfig['dev-config'];
-        return getenv('TYPO3_PATH_COMPOSER_ROOT') . '/' . $configPath;
+        $isProduction = $isProduction ?? GeneralUtility::getApplicationContext()->isProduction();
+        return $isProduction ? self::getRootConfig()['prod-config'] : self::getRootConfig()['dev-config'];
+    }
+
+    public static function getMainConfigFile(): string
+    {
+        return self::getRootConfig()['main-config'];
+    }
+
+    public static function getExtensionConfigFile(): string
+    {
+        return self::getRootConfig()['ext-config'];
     }
 
     public static function getInitConfigFileContent(): string
     {
-        $rootConfig = self::getRootConfig();
-        return <<<EOF
+        return <<<'EOF'
 (new \Helhum\TYPO3\ConfigHandling\ConfigLoader(
-    getenv('TYPO3_PATH_COMPOSER_ROOT')
-    . '/'
-    . (\TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext()->isProduction() ? '${rootConfig['prod-config']}' : '${rootConfig['dev-config']}')
+    \Helhum\TYPO3\ConfigHandling\RootConfig::getRootConfigFile()
 ))->populate();
-
 EOF;
     }
 
     private static function getRootConfig(): array
     {
-        $rootConfig = [
-            'prod-config' => 'conf/config.yml',
-            'dev-config' => 'conf/dev.config.yml',
-        ];
         $composerRoot = getenv('TYPO3_PATH_COMPOSER_ROOT');
+        $rootConfig = [
+            'prod-config' => $composerRoot . '/conf/config.yml',
+            'dev-config' => $composerRoot . '/conf/dev.config.yml',
+            'main-config' => null,
+            'ext-config' => null,
+        ];
         $composerConfig = \json_decode(file_get_contents($composerRoot . '/composer.json'), true);
-        if (!empty($composerConfig['extra']['helhum/typo3-distribution']['prod-config'])) {
-            $rootConfig['prod-config'] = $composerConfig['extra']['helhum/typo3-distribution']['prod-config'];
+        foreach ($rootConfig as $name => $defaultValue) {
+            if (!empty($composerConfig['extra']['helhum/typo3-config-handling'][$name])) {
+                $rootConfig[$name] = $composerRoot . '/' . $composerConfig['extra']['helhum/typo3-config-handling'][$name];
+            }
         }
-        if (!empty($composerConfig['extra']['helhum/typo3-distribution']['dev-config'])) {
-            $rootConfig['dev-config'] = $composerConfig['extra']['helhum/typo3-distribution']['dev-config'];
+        if (empty($rootConfig['main-config'])) {
+            $rootConfig['main-config'] = $rootConfig['prod-config'];
+        }
+        if (empty($rootConfig['ext-config'])) {
+            $rootConfig['ext-config'] = $rootConfig['main-config'];
         }
         return $rootConfig;
     }

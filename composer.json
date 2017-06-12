@@ -42,6 +42,9 @@
         ]
     },
     "extra": {
+        "helhum/typo3-config-handling": {
+            "ext-config": "conf/config.extension.yml"
+        },
         "helhum/typo3-console": {
             "install-extension-dummy": false
         },
