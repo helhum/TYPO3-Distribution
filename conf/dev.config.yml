@@ -12,6 +12,8 @@ SYS:
     Objects:
         TYPO3\CMS\Core\Configuration\ConfigurationManager:
             className: 'Helhum\TYPO3\ConfigHandling\Xclass\ConfigurationManager'
+        TYPO3\CMS\Install\Controller\Action\Tool\AllConfiguration:
+            className: 'Helhum\TYPO3\ConfigHandling\Xclass\AllConfiguration'
 
 BE:
     debug: true
