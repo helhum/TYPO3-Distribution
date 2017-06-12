@@ -23,6 +23,7 @@ namespace Typo3Console\PhpServer\Command;
  ***************************************************************/
 
 use Helhum\Typo3Console\Mvc\Controller\CommandController;
+use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\Process\ProcessBuilder;
 
 class ServerCommandController extends CommandController
@@ -55,6 +56,7 @@ class ServerCommandController extends CommandController
         do {
             $process = $processBuilder->getProcess();
             $process->disableOutput();
+            $this->cleanDotEnvVarsForSubProcess();
             $process->start();
             while ($process->isRunning()) {
                 if ($this->dotEnvChanged()) {
@@ -75,5 +77,18 @@ class ServerCommandController extends CommandController
             return true;
         }
         return false;
+    }
+
+    private function cleanDotEnvVarsForSubProcess()
+    {
+        $dotEnfFileName = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/.env';
+        if (!class_exists(Dotenv::class) || !file_exists($dotEnfFileName)) {
+            return;
+        }
+        $dotEnv = new Dotenv();
+        foreach ($dotEnv->parse(file_get_contents($dotEnfFileName), $dotEnfFileName) as $name => $_) {
+            putenv($name);
+            unset($_ENV[$name], $_SERVER[$name]);
+        }
     }
 }
