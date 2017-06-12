@@ -27,6 +27,7 @@ use Helhum\ConfigLoader\ConfigurationLoader;
 use Helhum\ConfigLoader\Processor\PlaceholderValue;
 use Helhum\ConfigLoader\Reader\RootConfigFileReader;
 use Helhum\TYPO3\ConfigHandling\Processor\ExtensionSettingsSerializer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ConfigLoader
 {
@@ -98,9 +99,9 @@ class ConfigLoader
                 $rootDir . '/.env',
                 $rootDir . '/composer.json',
             ],
-            glob($confDir . '/*.yml')
+            glob($confDir . '/*.*')
         );
-        $identifier = getenv('TYPO3_CONTEXT');
+        $identifier = GeneralUtility::getApplicationContext();
         foreach ($fileWatches as $fileWatch) {
             if (file_exists($fileWatch)) {
                 $identifier .= filemtime($fileWatch);
