@@ -24,10 +24,11 @@ namespace Helhum\TYPO3\ConfigHandling;
 
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ConfigDumper
 {
-    public function dumpToFile(array $config, string $file, string $comment = '')
+    public function dumpToFile(array $config, string $file, string $comment = ''): bool
     {
         $type = pathinfo($file, PATHINFO_EXTENSION);
         $fileContent = '';
@@ -51,10 +52,10 @@ return $exportedConfig;
 
 EOF;
         }
-
-        file_put_contents(
+        return GeneralUtility::writeFile(
             $file,
-            $fileContent
+            $fileContent,
+            true
         );
     }
 

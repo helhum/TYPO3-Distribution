@@ -9,6 +9,10 @@ SYS:
     enableDeprecationLog: file
     exceptionalErrors: 28930
     systemLogLevel: 0
+    Objects:
+        TYPO3\CMS\Core\Configuration\ConfigurationManager:
+            className: 'Helhum\TYPO3\ConfigHandling\Xclass\ConfigurationManager'
+
 BE:
     debug: true
     sessionTimeout: 31536000

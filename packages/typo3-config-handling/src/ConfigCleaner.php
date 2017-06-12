@@ -22,6 +22,8 @@ namespace Helhum\TYPO3\ConfigHandling;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+
 class ConfigCleaner
 {
     /**
@@ -63,7 +65,9 @@ class ConfigCleaner
                 [
                 'imports' => $imports,
                 ],
-                $config
+                ArrayUtility::renumberKeysToAvoidLeapsIfKeysAreAllNumeric(
+                    ArrayUtility::sortByKeyRecursive($config)
+                )
             );
         }
         return $config;

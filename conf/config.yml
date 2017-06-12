@@ -16,19 +16,19 @@ GFX:
     jpg_quality: '80'
     processor: GraphicsMagick
     processor_effects: -1
-MAIL:
-    transport: sendmail
-    transport_sendmail_command: '/usr/sbin/sendmail -t -i '
-SYS:
-    exceptionalErrors: 4352
-    systemLogLevel: 2
-    errorHandler: Helhum\TYPO3\ErrorHandling\Error\ErrorHandler
-    productionExceptionHandler: Helhum\TYPO3\ErrorHandling\Error\ProductionExceptionHandler
-    debugExceptionHandler: Helhum\TYPO3\ErrorHandling\Error\DebugExceptionHandler
-    errorHandlerErrors: 32514
-    systemLog: error_log
 LOG:
     writerConfiguration:
         '%const(TYPO3\CMS\Core\Log\LogLevel::WARNING)%':
             TYPO3\CMS\Core\Log\Writer\FileWriter:
                 logFile: '%env(TYPO3_PATH_COMPOSER_ROOT)%/var/log/typo3-warning.log'
+MAIL:
+    transport: sendmail
+    transport_sendmail_command: '/usr/sbin/sendmail -t -i '
+SYS:
+    debugExceptionHandler: Helhum\TYPO3\ErrorHandling\Error\DebugExceptionHandler
+    errorHandler: Helhum\TYPO3\ErrorHandling\Error\ErrorHandler
+    errorHandlerErrors: 32514
+    exceptionalErrors: 4352
+    productionExceptionHandler: Helhum\TYPO3\ErrorHandling\Error\ProductionExceptionHandler
+    systemLog: error_log
+    systemLogLevel: 2

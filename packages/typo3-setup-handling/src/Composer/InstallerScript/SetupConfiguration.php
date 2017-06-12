@@ -23,11 +23,15 @@ namespace Helhum\TYPO3\SetupHandling\Composer\InstallerScript;
 
 use Composer\Script\Event as ScriptEvent;
 use Helhum\ConfigLoader\Reader\RootConfigFileReader;
+use Helhum\TYPO3\ConfigHandling\ConfigCleaner;
 use Helhum\TYPO3\ConfigHandling\ConfigDumper;
+use Helhum\TYPO3\ConfigHandling\ConfigExtractor;
+use Helhum\TYPO3\ConfigHandling\ConfigLoader;
 use Helhum\TYPO3\ConfigHandling\RootConfig;
 use Helhum\Typo3Console\Mvc\Cli\CommandDispatcher;
 use Helhum\Typo3ConsolePlugin\InstallerScriptInterface;
 use Symfony\Component\Dotenv\Dotenv;
+use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use Typo3Console\PhpServer\Command\ServerCommandController;
@@ -95,11 +99,11 @@ class SetupConfiguration implements InstallerScriptInterface
                 $dotEnvConfigContent = str_replace('"${' . $envName . '}"', '\'' . $answer . '\'', $dotEnvConfigContent);
             }
         }
-
         $io->writeError('Generating .env file', true, $io::VERBOSE);
-        $commandDispatcher = CommandDispatcher::createFromComposerRun($event);
-        $commandDispatcher->executeCommand('settings:extract');
-        $settings = (new RootConfigFileReader(RootConfig::getRootConfigFile()))->readConfig();
+        $configurationManager = new ConfigurationManager();
+        $configCleaner = new ConfigCleaner();
+        // We are not interested in any settings that match the default configuration
+        $settings = $configCleaner->cleanConfig($configurationManager->getLocalConfiguration(), $configurationManager->getDefaultConfiguration());
         foreach ($this->getParsedEnvFileValues($this->dotEnvDistFile) as $envName => $envValue) {
             if (StringUtility::beginsWith($envName, 'TYPO3__')) {
                 try {
@@ -114,7 +118,14 @@ class SetupConfiguration implements InstallerScriptInterface
         file_put_contents($this->dotEnvFile, $dotEnvConfigContent);
 
         $io->writeError('Merging project settings', true, $io::VERBOSE);
-        $this->storeSettings($settings);
+        $configExtractor = new ConfigExtractor(
+            new ConfigDumper(),
+            $configCleaner,
+            new ConfigLoader(RootConfig::getRootConfigFile(true))
+        );
+        $configExtractor->extractExtensionConfig($settings);
+        $configExtractor->extractMainConfig($settings, $configurationManager->getDefaultConfiguration());
+        $commandDispatcher = CommandDispatcher::createFromComposerRun($event);
         $commandDispatcher->executeCommand('settings:dump', ['--no-dev' => !$event->isDevMode()]);
 
         $io->writeError('');
@@ -137,12 +148,5 @@ class SetupConfiguration implements InstallerScriptInterface
             return [];
         }
         return (new Dotenv())->parse(file_get_contents($dotEnvFile), $dotEnvFile);
-    }
-
-    private function storeSettings(array $settings)
-    {
-        $configDumper = new ConfigDumper();
-        $settingsFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/conf/config.yml';
-        $configDumper->dumpToFile($settings, $settingsFile);
     }
 }
