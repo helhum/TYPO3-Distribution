@@ -40,7 +40,7 @@ class ConfigCleaner
         foreach ($referenceConfigs as $referenceConfig) {
             $cleanedConfig = $this->removeIdenticalValues($cleanedConfig, $referenceConfig);
         }
-        return $this->sortImports($cleanedConfig);
+        return $this->sortConfig($cleanedConfig);
     }
 
     private function removeIdenticalValues(array $baseConfig, array $referenceConfig): array
@@ -56,20 +56,18 @@ class ConfigCleaner
         return array_filter($cleanedBaseConfig);
     }
 
-    private function sortImports(array $config): array
+    private function sortConfig(array $config): array
     {
+        $imports = [];
         if (isset($config['imports'])) {
-            $imports = $config['imports'];
+            $imports = ['imports' => $config['imports']];
             unset($config['imports']);
-            return array_merge(
-                [
-                'imports' => $imports,
-                ],
-                ArrayUtility::renumberKeysToAvoidLeapsIfKeysAreAllNumeric(
-                    ArrayUtility::sortByKeyRecursive($config)
-                )
-            );
         }
-        return $config;
+        return array_merge(
+            $imports,
+            ArrayUtility::renumberKeysToAvoidLeapsIfKeysAreAllNumeric(
+                ArrayUtility::sortByKeyRecursive($config)
+            )
+        );
     }
 }
