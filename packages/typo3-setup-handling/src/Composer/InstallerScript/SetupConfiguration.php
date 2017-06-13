@@ -27,6 +27,7 @@ use Helhum\TYPO3\ConfigHandling\ConfigCleaner;
 use Helhum\TYPO3\ConfigHandling\ConfigDumper;
 use Helhum\TYPO3\ConfigHandling\ConfigExtractor;
 use Helhum\TYPO3\ConfigHandling\ConfigLoader;
+use Helhum\TYPO3\ConfigHandling\EnvConfigFinder;
 use Helhum\TYPO3\ConfigHandling\RootConfig;
 use Helhum\Typo3Console\Mvc\Cli\CommandDispatcher;
 use Helhum\Typo3ConsolePlugin\InstallerScriptInterface;
@@ -83,48 +84,72 @@ class SetupConfiguration implements InstallerScriptInterface
         $io->writeError('');
         $io->writeError('<info>Setting up TYPO3 Configuration</info>');
 
-        $dotEnvConfigContent = file_get_contents($this->dotEnvDistFile);
-        $installFileValues = $this->getParsedEnvFileValues($this->dotEnvInstallFile);
-        if (!empty($installFileValues)) {
-            $io->writeError('<info>Please provide some required settings for your distribution:</info>');
-        }
-        foreach ($installFileValues as $envName => $envValue) {
-            if (StringUtility::beginsWith($envName, 'TYPO3_INSTALL_PROMPT_')
-                && !StringUtility::endsWith($envName, '_DEFAULT')
-            ) {
-                $defaultValue = $installFileValues[$envName . '_DEFAULT'] ?? null;
-                do {
-                    $answer = $event->getIO()->ask('<comment>' . $envValue . ($defaultValue ? sprintf(' (%s):', $defaultValue) : ':') . '</comment> ', $defaultValue);
-                } while ($answer === null);
-                $dotEnvConfigContent = str_replace('"${' . $envName . '}"', '\'' . $answer . '\'', $dotEnvConfigContent);
-            }
-        }
-        $io->writeError('Generating .env file', true, $io::VERBOSE);
+        $config = (new RootConfigFileReader(RootConfig::getRootConfigFile()))->readConfig();
+        $foundEnvVarsInConfig = (new EnvConfigFinder())->findEnvVars($config);
+        $foundEnvVarsInDotEnvFile = $this->getParsedEnvFileValues($this->dotEnvDistFile);
+        $installationDefaults = $this->getParsedEnvFileValues($this->dotEnvInstallFile);
+
         $configurationManager = new ConfigurationManager();
         $configCleaner = new ConfigCleaner();
         // We are not interested in any settings that match the default configuration
-        $settings = $configCleaner->cleanConfig($configurationManager->getLocalConfiguration(), $configurationManager->getDefaultConfiguration());
-        foreach ($this->getParsedEnvFileValues($this->dotEnvDistFile) as $envName => $envValue) {
-            if (StringUtility::beginsWith($envName, 'TYPO3__')) {
-                try {
-                    $configPath = str_replace(['TYPO3__', '__'], ['', '/'], $envName);
-                    $value = ArrayUtility::getValueByPath($settings, $configPath);
-                    $dotEnvConfigContent = str_replace($envName . '=""', $envName . '=\'' . $value . '\'', $dotEnvConfigContent);
-                    $settings = ArrayUtility::removeByPath($settings, $configPath);
-                } catch (\RuntimeException $e) {
+        $typo3InstallConfig = $configCleaner->cleanConfig($configurationManager->getLocalConfiguration(), $configurationManager->getDefaultConfiguration());
+
+        $dotEnvConfig = [
+            'TYPO3_CONTEXT' => 'Development'
+        ];
+        foreach ($foundEnvVarsInConfig as $name => $places) {
+            try {
+                if (!empty($places['paths'])) {
+                    foreach ($places['paths'] as $path) {
+                        $foundValue = ArrayUtility::getValueByPath($typo3InstallConfig, $path, '.');
+                        $typo3InstallConfig = ArrayUtility::removeByPath($typo3InstallConfig, $path, '.');
+                    }
                 }
+            } catch (\RuntimeException $e) {
             }
+            if (isset($foundValue)) {
+                $dotEnvConfig[$name] = $foundValue;
+                unset($foundValue);
+            } else {
+                if (false !== getenv($name)) {
+                    $io->writeError(sprintf('Skipping "%s" env var, as it is already set. You may need to put it into your .env file though.', $name), true, $io::VERBOSE);
+                    continue;
+                }
+                if (strpos($name, 'TYPO3_INSTALL_DB_') !== false) {
+                    // Skip DB connection values that were stripped out from LocalConfiguration.php by TYPO
+                    // as they are not needed in this system
+                    $dotEnvConfig[$name] = '';
+                    continue;
+                }
+                if (empty($infoShown)) {
+                    $io->writeError('<info>Please provide some required settings for your distribution:</info>');
+                }
+                $infoShown = true;
+                $question = empty($foundEnvVarsInDotEnvFile[$name]) ? $name : $foundEnvVarsInDotEnvFile[$name];
+                $defaultValue = $installationDefaults[$name] ?? null;
+                do {
+                    $answer = $event->getIO()->ask('<comment>' . $question . ($defaultValue ? sprintf(' (%s):', $defaultValue) : ':') . '</comment> ', $defaultValue);
+                } while ($answer === null);
+                $dotEnvConfig[$name] = $answer;
+            }
+        }
+
+        $io->writeError('Generating .env file', true, $io::VERBOSE);
+        $missingEnvVars = array_diff_key($foundEnvVarsInDotEnvFile, $dotEnvConfig);
+        $dotEnvConfigContent = '';
+        foreach ($dotEnvConfig as $name => $value) {
+            $dotEnvConfigContent .= "$name='$value'\n";
         }
         file_put_contents($this->dotEnvFile, $dotEnvConfigContent);
 
-        $io->writeError('Merging project settings', true, $io::VERBOSE);
+        $io->writeError('Merging installed TYPO3 config with project settings', true, $io::VERBOSE);
         $configExtractor = new ConfigExtractor(
             new ConfigDumper(),
             $configCleaner,
             new ConfigLoader(RootConfig::getRootConfigFile(true))
         );
-        $configExtractor->extractExtensionConfig($settings);
-        $configExtractor->extractMainConfig($settings, $configurationManager->getDefaultConfiguration());
+        $configExtractor->extractExtensionConfig($typo3InstallConfig);
+        $configExtractor->extractMainConfig($typo3InstallConfig, $configurationManager->getDefaultConfiguration());
         $commandDispatcher = CommandDispatcher::createFromComposerRun($event);
         $commandDispatcher->executeCommand('settings:dump', ['--no-dev' => !$event->isDevMode()]);
 
