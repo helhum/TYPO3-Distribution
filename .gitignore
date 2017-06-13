@@ -10,6 +10,7 @@
 !/var/storage/.gitkeep
 /conf/env.php
 /.env
+/.installed
 /.php_cs.cache
 
 /web/typo3conf/*

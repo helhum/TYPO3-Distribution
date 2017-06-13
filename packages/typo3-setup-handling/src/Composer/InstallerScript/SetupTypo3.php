@@ -40,11 +40,15 @@ class SetupTypo3 implements InstallerScriptInterface
     /**
      * @var string
      */
-    private $dotEnvFile;
+    private $installedFile;
 
     public function __construct()
     {
-        $this->dotEnvFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/.env';
+        if (class_exists(Dotenv::class)) {
+            $this->installedFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/.env';
+        } else {
+            $this->installedFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/.installed';
+        }
     }
 
     /**
@@ -53,7 +57,7 @@ class SetupTypo3 implements InstallerScriptInterface
      */
     public function shouldRun(ScriptEvent $event)
     {
-        return $event->isDevMode() && !file_exists($this->dotEnvFile);
+        return $event->isDevMode() && !file_exists($this->installedFile);
     }
 
     /**
