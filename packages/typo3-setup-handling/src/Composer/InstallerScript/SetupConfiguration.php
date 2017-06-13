@@ -180,6 +180,7 @@ class SetupConfiguration implements InstallerScriptInterface
             }
         }
         $missingEnvVars = array_diff_key($foundEnvVarsInDotEnvFile, $dotEnvConfig);
+        $dotEnvConfig = array_merge($dotEnvConfig, $missingEnvVars);
         $dotEnvConfigContent = '';
         foreach ($dotEnvConfig as $name => $value) {
             $dotEnvConfigContent .= "$name='$value'\n";
