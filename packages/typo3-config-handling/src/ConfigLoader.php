@@ -99,7 +99,8 @@ class ConfigLoader
                 $rootDir . '/.env',
                 $rootDir . '/composer.json',
             ],
-            glob($confDir . '/*.*')
+            glob($confDir . '/*.*'),
+            glob($rootDir . '/packages/*/Configuration/Distribution/*.yml')
         );
         $identifier = GeneralUtility::getApplicationContext();
         foreach ($fileWatches as $fileWatch) {

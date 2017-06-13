@@ -97,6 +97,7 @@ class ConfigExtractor
 
     private function getMainConfig(array $config, array $defaultConfig, string $mainConfigFile): array
     {
+        unset($config['EXT']['extConf']);
         $mainConfig = $this->configCleaner->cleanConfig(
             $config,
             $this->configLoader->load()

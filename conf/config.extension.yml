@@ -1,11 +1,11 @@
 EXT:
     extConf:
         backend:
-            loginLogo: ''
-            loginHighlightColor: ''
-            loginBackgroundImage: ''
-            backendLogo: ''
             backendFavicon: ''
+            backendLogo: ''
+            loginBackgroundImage: ''
+            loginHighlightColor: ''
+            loginLogo: ''
         extensionmanager:
             automaticInstallation: '1'
             offlineMode: '0'
@@ -13,18 +13,18 @@ EXT:
             temporaryDirectory: ''
         saltedpasswords:
             BE:
-                saltedPWHashingMethod: TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt
                 forceSalted: 0
                 onlyAuthService: 0
+                saltedPWHashingMethod: TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt
                 updatePasswd: 1
             FE:
                 enabled: 1
-                saltedPWHashingMethod: TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt
                 forceSalted: 0
                 onlyAuthService: 0
+                saltedPWHashingMethod: TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt
                 updatePasswd: 1
         scheduler:
-            maxLifetime: '1440'
             enableBELog: '1'
+            maxLifetime: '1440'
             showSampleTasks: '1'
             useAtdaemon: '0'
