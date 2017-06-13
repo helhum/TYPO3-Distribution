@@ -139,9 +139,6 @@ class SetupTypo3 implements InstallerScriptInterface
     {
         if (!$this->hasTypo3Booted()) {
             $_SERVER['argv'][0] = 'typo3';
-            if (file_exists($dotEnvFile = $event->getComposer()->getConfig()->get('vendor-dir') . '/helhum/dotenv-include.php')) {
-                require $dotEnvFile;
-            }
             $bootstrap = ConsoleBootstrap::create('Production');
             $bootstrap->initialize(new \Composer\Autoload\ClassLoader());
             /** @var RunLevel $runLevel */
