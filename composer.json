@@ -34,7 +34,7 @@
         "roave/security-advisories": "dev-master"
     },
     "require-dev": {
-        "typo3-console/php-server-command": "@dev",
+        "typo3-console/php-server-command": "^0.1.0",
         "helhum/dotenv-connector": "^2.0",
         "nimut/testing-framework": "^1.1.8"
     },
