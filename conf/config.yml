@@ -1,46 +1,32 @@
 imports:
     - { resource: 'config.*.yml', type: glob, ignore_errors: true }
     - { resource: '../packages/*/Configuration/Distribution/*.yml', type: glob, ignore_errors: true }
+    - { resource: 'config-env.yml' }
 
 # Reasonable error handling by default
 BE:
     explicitADmode: explicitAllow
-    installToolPassword: '%env(TYPO3_INSTALL_TOOL_PASSWORD)%'
     loginSecurityLevel: rsa
 DB:
     Connections:
         Default:
             charset: utf8
-            dbname: '%env(TYPO3_INSTALL_DB_DBNAME)%'
-            driver: '%env(TYPO3_INSTALL_DB_DRIVER)%'
-            host: '%env(TYPO3_INSTALL_DB_HOST)%'
-            password: '%env(TYPO3_INSTALL_DB_PASSWORD)%'
-            port: '%env(TYPO3_INSTALL_DB_PORT)%'
-            unix_socket: '%env(TYPO3_INSTALL_DB_UNIX_SOCKET)%'
-            user: '%env(TYPO3_INSTALL_DB_USER)%'
 FE:
     loginSecurityLevel: rsa
 GFX:
     jpg_quality: '80'
     processor: GraphicsMagick
     processor_effects: -1
-    processor_path: '%env(TYPO3_GFX_PROCESSOR_PATH)%'
-    processor_path_lzw: '%env(TYPO3_GFX_PROCESSOR_PATH)%'
 LOG:
     writerConfiguration:
         '%const(TYPO3\CMS\Core\Log\LogLevel::WARNING)%':
             TYPO3\CMS\Core\Log\Writer\FileWriter:
                 logFile: '%env(TYPO3_PATH_COMPOSER_ROOT)%/var/log/typo3-warning.log'
-MAIL:
-    transport: sendmail
-    transport_sendmail_command: '/usr/sbin/sendmail -t -i '
 SYS:
     debugExceptionHandler: Helhum\TYPO3\ErrorHandling\Error\DebugExceptionHandler
-    encryptionKey: '%env(TYPO3_ENCRYPTION_KEY)%'
     errorHandler: Helhum\TYPO3\ErrorHandling\Error\ErrorHandler
     errorHandlerErrors: 32514
     exceptionalErrors: 4352
     productionExceptionHandler: Helhum\TYPO3\ErrorHandling\Error\ProductionExceptionHandler
-    sitename: '%env(TYPO3_INSTALL_SITE_NAME)%'
     systemLog: error_log
     systemLogLevel: 2
