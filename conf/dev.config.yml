@@ -1,6 +1,6 @@
 imports:
     - { resource: config.yml }
-    - { resource: 'dev.config.*.yml', type: glob, ignore_errors: true }
+    - { resource: 'dev.config.*.yml', type: glob }
 
 SYS:
     displayErrors: 1

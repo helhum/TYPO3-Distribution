@@ -1,5 +1,5 @@
 imports:
-    - { resource: 'config.*.yml', type: glob, ignore_errors: true }
+    - { resource: 'config.*.yml', type: glob }
     - { resource: '../packages/*/Configuration/Distribution/*.yml', type: glob, ignore_errors: true }
     - { resource: 'config-env.yml' }
 
