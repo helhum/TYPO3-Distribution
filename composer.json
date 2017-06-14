@@ -35,6 +35,7 @@
     },
     "require-dev": {
         "typo3-console/php-server-command": "@dev",
+        "helhum/dotenv-connector": "^2.0",
         "nimut/testing-framework": "^1.1.8"
     },
     "scripts": {

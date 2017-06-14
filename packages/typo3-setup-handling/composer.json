@@ -9,11 +9,11 @@
         "typo3/cms-core": "^8.7",
         "typo3/cms-extbase": "^8.7",
         "helhum/typo3-console": "^4.6.1",
-        "helhum/dotenv-connector": "^2.0",
-        "symfony/dotenv": "^3.3",
         "helhum/typo3-config-handling": "@dev"
     },
     "suggest": {
+        "symfony/dotenv": "Recommended for easily setting environment specific configuration in dev context",
+        "helhum/dotenv-connector": "Recommended for easily setting environment specific configuration in dev context",
         "typo3-console/php-server-command": "Recommended for easy testing of your distribution in dev context without the need of a dedicated webserver"
     },
     "autoload": {
