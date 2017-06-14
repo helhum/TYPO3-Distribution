@@ -57,7 +57,7 @@ class SetupTypo3 implements InstallerScriptInterface
      */
     public function shouldRun(ScriptEvent $event)
     {
-        return $event->isDevMode() && !file_exists($this->installedFile);
+        return !file_exists($this->installedFile);
     }
 
     /**
