@@ -97,7 +97,7 @@ class SetupTypo3 implements InstallerScriptInterface
     protected function populateCommandArgumentsFromEnvironment()
     {
         $envValues = [];
-        if (file_exists($envInstallFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/.env.install')) {
+        if (class_exists(Dotenv::class) && file_exists($envInstallFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/.env.install')) {
             $envValues = (new Dotenv())->parse(file_get_contents($envInstallFile), $envInstallFile);
         }
 
