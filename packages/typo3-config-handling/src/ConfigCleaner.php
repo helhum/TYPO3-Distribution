@@ -55,7 +55,7 @@ class ConfigCleaner
         }
         return array_filter(
             $cleanedBaseConfig,
-            function($value) {
+            function ($value) {
                 return !(is_array($value) && empty($value));
             }
         );

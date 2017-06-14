@@ -28,7 +28,6 @@ use Helhum\TYPO3\ConfigHandling\ConfigExtractor;
 use Helhum\TYPO3\ConfigHandling\ConfigLoader;
 use Helhum\TYPO3\ConfigHandling\RootConfig;
 use Helhum\TYPO3\ConfigHandling\Xclass\ConfigurationManager;
-use Helhum\Typo3Console\Mvc\Cli\CommandDispatcher;
 use Helhum\Typo3Console\Mvc\Controller\CommandController;
 
 class SettingsCommandController extends CommandController

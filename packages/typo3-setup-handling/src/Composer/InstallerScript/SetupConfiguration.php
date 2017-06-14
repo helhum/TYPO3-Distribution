@@ -35,7 +35,6 @@ use Helhum\Typo3ConsolePlugin\InstallerScriptInterface;
 use Symfony\Component\Dotenv\Dotenv;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use Typo3Console\PhpServer\Command\ServerCommandController;
 
 class SetupConfiguration implements InstallerScriptInterface
@@ -76,8 +75,8 @@ class SetupConfiguration implements InstallerScriptInterface
      *
      * @param ScriptEvent $event
      * @throws \RuntimeException
-     * @return bool
      * @throws \Helhum\Typo3Console\Mvc\Cli\FailedSubProcessCommandException
+     * @return bool
      * @internal
      */
     public function run(ScriptEvent $event)
@@ -124,8 +123,8 @@ class SetupConfiguration implements InstallerScriptInterface
     /**
      * @param IOInterface $io
      * @param $typo3InstallConfig
-     * @return array
      * @throws \RuntimeException
+     * @return array
      */
     private function generateDotEnvFile(IOInterface $io, $typo3InstallConfig): array
     {
@@ -137,7 +136,7 @@ class SetupConfiguration implements InstallerScriptInterface
         $installationDefaults = $this->getParsedEnvFileValues($this->dotEnvInstallFile);
 
         $dotEnvConfig = [
-            'TYPO3_CONTEXT' => 'Development'
+            'TYPO3_CONTEXT' => 'Development',
         ];
         foreach ($foundEnvVarsInConfig as $name => $places) {
             try {

@@ -66,7 +66,7 @@ EOF;
         }
         return implode(
             chr(10),
-            array_map(function($line) use ($commentChar) {
+            array_map(function ($line) use ($commentChar) {
                 return $commentChar . ' ' . $line;
             }, explode(chr(10), $comment))
         );

@@ -71,7 +71,7 @@ class ConfigExtractor
         $extractedConfig = false;
         $mainConfig = $this->cleanFromAlreadyActiveValues($config);
         $extensionConfig = array_intersect_key($mainConfig, ['EXT' => ['extConf' => []]]);
-        $mainConfig = array_diff_key($mainConfig,  ['EXT' => ['extConf' => []]]);
+        $mainConfig = array_diff_key($mainConfig, ['EXT' => ['extConf' => []]]);
 
         if (!empty($mainConfig)) {
             $this->configDumper->dumpToFile(
