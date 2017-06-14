@@ -8,6 +8,9 @@
         "helhum/typo3-console": "^4.6.1",
         "helhum/config-loader": "^0.5"
     },
+    "suggest": {
+        "typo3/cms-install": "If you want to update distribution configuration with Extension Manager or Install Tool UI"
+    },
     "autoload": {
         "psr-4": {
             "Helhum\\TYPO3\\ConfigHandling\\": "src/",
