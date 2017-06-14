@@ -203,8 +203,7 @@ class SetupConfiguration implements InstallerScriptInterface
             new ConfigCleaner(),
             new ConfigLoader(RootConfig::getRootConfigFile(true))
         );
-        $configExtractor->extractExtensionConfig($typo3InstallConfig);
-        $configExtractor->extractMainConfig($typo3InstallConfig, (new ConfigurationManager())->getDefaultConfiguration());
+        $configExtractor->extractConfig($typo3InstallConfig, (new ConfigurationManager())->getDefaultConfiguration());
         $commandDispatcher = CommandDispatcher::createFromComposerRun($event);
         $commandDispatcher->executeCommand('settings:dump', ['--no-dev' => !$event->isDevMode()]);
     }
