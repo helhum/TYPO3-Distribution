@@ -196,13 +196,15 @@ class SetupConfiguration implements InstallerScriptInterface
      */
     private function extractConfig(ScriptEvent $event, IOInterface $io, $typo3InstallConfig)
     {
-        $io->writeError('Merging installed TYPO3 config with project settings', true, $io::VERBOSE);
-        $configExtractor = new ConfigExtractor(
-            new ConfigDumper(),
-            new ConfigCleaner(),
-            new ConfigLoader(RootConfig::getRootConfigFile(true))
-        );
-        $configExtractor->extractConfig($typo3InstallConfig, (new ConfigurationManager())->getDefaultConfiguration());
+// TODO: I have no idea how to get reasonable results in such a process, so it is disabled for now
+// TODO: It works very well with the defaults currently committed, so we only need to look at this for TYPO3 9 again.
+//        $io->writeError('Merging installed TYPO3 config with project settings', true, $io::VERBOSE);
+//        $configExtractor = new ConfigExtractor(
+//            new ConfigDumper(),
+//            new ConfigCleaner(),
+//            new ConfigLoader(RootConfig::getRootConfigFile(true))
+//        );
+//        $configExtractor->extractConfig($typo3InstallConfig, (new ConfigurationManager())->getDefaultConfiguration());
         $commandDispatcher = CommandDispatcher::createFromComposerRun($event);
         $commandDispatcher->executeCommand('settings:dump', ['--no-dev' => !$event->isDevMode()]);
     }
