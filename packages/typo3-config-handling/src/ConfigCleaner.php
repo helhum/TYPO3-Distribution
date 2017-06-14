@@ -53,7 +53,12 @@ class ConfigCleaner
                 $cleanedBaseConfig[$key] = $value;
             }
         }
-        return array_filter($cleanedBaseConfig);
+        return array_filter(
+            $cleanedBaseConfig,
+            function($value) {
+                return !(is_array($value) && empty($value));
+            }
+        );
     }
 
     private function sortConfig(array $config): array
