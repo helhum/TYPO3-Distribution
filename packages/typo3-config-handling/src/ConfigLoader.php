@@ -47,16 +47,20 @@ class ConfigLoader
         $this->loader = $this->buildLoader($configFile);
     }
 
-    public function populate()
+    public function populate(bool $enableCache = false)
     {
-        $cachedLoader = new CachedConfigurationLoader(
-            $this->getCacheDir(),
-            $this->getCacheIdentifier(),
-            function () {
-                return $this->loader;
-            }
-        );
-        $config = $cachedLoader->load();
+        if ($enableCache) {
+            $cachedLoader = new CachedConfigurationLoader(
+                $this->getCacheDir(),
+                $this->getCacheIdentifier(),
+                function () {
+                    return $this->loader;
+                }
+            );
+            $config = $cachedLoader->load();
+        } else {
+            $config = $this->load();
+        }
         if (!empty($config['LOG'])) {
             // Disable default writers, to not log to places not intended to be logged to ;(
             unset($GLOBALS['TYPO3_CONF_VARS']['LOG']);
@@ -99,8 +103,7 @@ class ConfigLoader
                 $rootDir . '/.env',
                 $rootDir . '/composer.json',
             ],
-            glob($confDir . '/*.*'),
-            glob($rootDir . '/packages/*/Configuration/Distribution/*.yml')
+            glob($confDir . '/*.*')
         );
         $identifier = GeneralUtility::getApplicationContext();
         foreach ($fileWatches as $fileWatch) {
