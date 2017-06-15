@@ -12,6 +12,7 @@
 /.env
 /.installed
 /.php_cs.cache
+/.remotes
 
 /web/typo3conf/*
 !/web/typo3conf/l10n

@@ -12,6 +12,7 @@
         "helhum/typo3-config-handling": "@dev",
         "helhum/typo3-setup-handling": "@dev",
         "helhum/site-package": "@dev",
+        "typo3-console/remote-command": "@dev",
 
         "typo3/cms-belog": "^8.7",
         "typo3/cms-beuser": "^8.7",

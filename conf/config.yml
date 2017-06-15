@@ -1,9 +1,9 @@
 imports:
     - { resource: 'config.*.yml', type: glob }
     - { resource: '../packages/*/Configuration/Distribution/*.yml', type: glob, ignore_errors: true }
-    - { resource: 'config-env.yml' }
+    - { resource: 'env.yml' }
     # Fetch environment configuration on deploy targets if it exists
-    - { resource: '../../../shared/Configuration/config-env.yml', ignore_errors: true }
+    - { resource: '../../../shared/Configuration/env.yml', ignore_errors: true }
 
 # Reasonable error handling by default
 BE:
@@ -26,6 +26,7 @@ LOG:
                 logFile: '%env(TYPO3_PATH_COMPOSER_ROOT)%/var/log/typo3-warning.log'
 SYS:
     debugExceptionHandler: Helhum\TYPO3\ErrorHandling\Error\DebugExceptionHandler
+    displayErrors: 0
     errorHandler: Helhum\TYPO3\ErrorHandling\Error\ErrorHandler
     errorHandlerErrors: 32514
     exceptionalErrors: 4352
