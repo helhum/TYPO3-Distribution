@@ -1,7 +1,7 @@
 {
     "repositories": [
-        { "type": "composer", "url": "https://composer.typo3.org/" },
-        { "type": "path", "url": "packages/*" }
+        { "type": "path", "url": "packages/*" },
+        { "type": "composer", "url": "https://composer.typo3.org/" }
     ],
     "name": "helhum/typo3-distribution",
     "description" : "TYPO3 CMS Distribution with console and .env support",
