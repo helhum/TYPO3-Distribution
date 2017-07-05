@@ -92,8 +92,8 @@ class RemoteCommandController extends CommandController
             (new ProcessBuilder(['mkdir', '-p', $deploymentPath . '/shared/Configuration']))->getProcess()->getCommandLine()
         );
 
-        $environmentConfig = (new RootConfigFileReader(RootConfig::getRootConfigFile()))->readConfig();
-        $envVars = (new EnvConfigFinder())->findEnvVars($environmentConfig);
+        $envVars = (new EnvConfigFinder())->findEnvVars((new RootConfigFileReader(RootConfig::getRootConfigFile()))->readConfig());
+        $environmentConfig = [];
         foreach ($envVars as $envName => $finds) {
             if ($envName === 'TYPO3_PATH_COMPOSER_ROOT') {
                 continue;
