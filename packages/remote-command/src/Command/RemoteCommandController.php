@@ -99,6 +99,9 @@ class RemoteCommandController extends CommandController
                 continue;
             }
             $value = $this->output->ask($envName . ': ');
+            if ($value === null) {
+                continue;
+            }
             foreach ($finds['paths'] as $path) {
                 $environmentConfig = ArrayUtility::setValueByPath($environmentConfig, $path, $value, '.');
             }
