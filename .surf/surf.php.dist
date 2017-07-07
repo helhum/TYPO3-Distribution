@@ -72,24 +72,30 @@ $deployment->onInitialize(function() use ($deployment) {
     $workflow = $deployment->getWorkflow();
     $workflow->setEnableRollback(FALSE);
 
-    $workflow->defineTask('Helhum\\TYPO3\\Distribution\\DefinedTask\\MarkInstalled', 'TYPO3\\Surf\\Task\\LocalShellTask', array(
+    $workflow->defineTask('Helhum\\TYPO3\\Distribution\\DefinedTask\\MarkInstalled', 'TYPO3\\Surf\\Task\\LocalShellTask', [
         'command' => 'touch {workspacePath}/.installed',
-    ));
-    $workflow->defineTask('Helhum\\TYPO3\\Distribution\\DefinedTask\\CopyIndexPhp', 'TYPO3\\Surf\\Task\\ShellTask', array(
-        'command' => array(
+    ]);
+    $workflow->defineTask('Helhum\\TYPO3\\Distribution\\DefinedTask\\CopyIndexPhp', 'TYPO3\\Surf\\Task\\ShellTask', [
+        'command' => [
             "rm {releasePath}/web/index.php",
             "cp {releasePath}/vendor/typo3/cms/index.php {releasePath}/web/index.php",
-        )
-    ));
-    $workflow->defineTask('Helhum\\TYPO3\\Distribution\\DefinedTask\\DumpConfiguration', 'TYPO3\\Surf\\Task\\TYPO3\\CMS\\RunCommandTask', array(
+        ],
+    ]);
+    $workflow->defineTask('Helhum\\TYPO3\\Distribution\\DefinedTask\\DumpConfiguration', 'TYPO3\\Surf\\Task\\TYPO3\\CMS\\RunCommandTask', [
         'command' => 'settings:dump',
-        'arguments' => array(
+        'arguments' => [
             '--no-dev',
-        )
-    ));
-    $workflow->defineTask('Helhum\\TYPO3\\Distribution\\DefinedTask\\UpdateDBSchema', 'TYPO3\\Surf\\Task\\TYPO3\\CMS\\RunCommandTask', array(
+        ],
+    ]);
+    $workflow->defineTask('Helhum\\TYPO3\\Distribution\\DefinedTask\\UpdateDBSchema', 'TYPO3\\Surf\\Task\\TYPO3\\CMS\\RunCommandTask', [
         'command' => 'database:updateschema',
-    ));
+    ]);
+    $workflow->defineTask('Helhum\\TYPO3\\Distribution\\DefinedTask\\FlushFileCaches', 'TYPO3\\Surf\\Task\\TYPO3\\CMS\\RunCommandTask', [
+        'command' => 'cache:flush',
+        'arguments' => [
+            '--files-only',
+        ],
+    ]);
 
     $workflow->removeTask('TYPO3\\Surf\\Task\\TYPO3\\CMS\\CopyConfigurationTask');
     $workflow->removeTask('TYPO3\\Surf\\Task\\TYPO3\\CMS\\CreatePackageStatesTask');
@@ -98,5 +104,5 @@ $deployment->onInitialize(function() use ($deployment) {
     $workflow->afterStage('transfer', 'Helhum\\TYPO3\\Distribution\\DefinedTask\\CopyIndexPhp');
     $workflow->afterStage('transfer', 'Helhum\\TYPO3\\Distribution\\DefinedTask\\DumpConfiguration');
     $workflow->beforeTask('TYPO3\\Surf\\Task\\TYPO3\\CMS\\SetUpExtensionsTask', 'Helhum\\TYPO3\\Distribution\\DefinedTask\\UpdateDBSchema');
-    $workflow->afterTask('Helhum\\TYPO3\\Distribution\\DefinedTask\\UpdateDBSchema', 'TYPO3\\Surf\\Task\\TYPO3\\CMS\\FlushCachesTask');
+    $workflow->afterTask('Helhum\\TYPO3\\Distribution\\DefinedTask\\UpdateDBSchema', 'Helhum\\TYPO3\\Distribution\\DefinedTask\\FlushFileCaches');
 });
