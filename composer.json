@@ -41,10 +41,10 @@
     },
     "scripts": {
         "package-states": [
-            "typo3cms install:generatepackagestates"
+            "@php vendor/helhum/typo3-console/Scripts/typo3cms install:generatepackagestates"
         ],
         "folder-structure": [
-            "typo3cms install:fixfolderstructure"
+            "@php vendor/helhum/typo3-console/Scripts/typo3cms install:fixfolderstructure"
         ],
         "pre-deploy": [
             "# Scripts here will be executed by Surf after composer install"
