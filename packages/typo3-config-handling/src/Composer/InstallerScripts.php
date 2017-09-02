@@ -24,6 +24,7 @@ namespace Helhum\TYPO3\ConfigHandling\Composer;
 
 use Composer\Script\Event;
 use Helhum\TYPO3\ConfigHandling\Composer\InstallerScript\SetupConfiguration;
+use Helhum\Typo3ComposerSetup\Composer\InstallerScript\ConsoleCommand;
 use TYPO3\CMS\Composer\Plugin\Core\InstallerScriptsRegistration;
 use TYPO3\CMS\Composer\Plugin\Core\ScriptDispatcher;
 
@@ -32,5 +33,9 @@ class InstallerScripts implements InstallerScriptsRegistration
     public static function register(Event $event, ScriptDispatcher $scriptDispatcher)
     {
         $scriptDispatcher->addInstallerScript(new SetupConfiguration(), 68);
+        $scriptDispatcher->addInstallerScript(
+            new ConsoleCommand('settings:dump', ['--no-dev' => !$event->isDevMode()]),
+            61
+        );
     }
 }
