@@ -57,7 +57,8 @@ class SetupTypo3 implements InstallerScript
      */
     private function shouldRun(ScriptEvent $event): bool
     {
-        return !file_exists($this->installedFile);
+        return $event->isDevMode()
+            && !file_exists($this->installedFile);
     }
 
     /**
@@ -90,6 +91,7 @@ class SetupTypo3 implements InstallerScript
         );
         $setup->setup($consoleIO->isInteractive(), $this->populateCommandArgumentsFromEnvironment());
         putenv('TYPO3_IS_SET_UP=1');
+        file_put_contents($this->installedFile, '');
 
         return true;
     }

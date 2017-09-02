@@ -72,9 +72,6 @@ $deployment->onInitialize(function() use ($deployment) {
     $workflow = $deployment->getWorkflow();
     $workflow->setEnableRollback(FALSE);
 
-    $workflow->defineTask('Helhum\\TYPO3\\Distribution\\DefinedTask\\MarkInstalled', 'TYPO3\\Surf\\Task\\LocalShellTask', [
-        'command' => 'touch {workspacePath}/.installed',
-    ]);
     $workflow->defineTask('Helhum\\TYPO3\\Distribution\\DefinedTask\\CopyIndexPhp', 'TYPO3\\Surf\\Task\\ShellTask', [
         'command' => [
             "rm {releasePath}/web/index.php",
@@ -100,7 +97,6 @@ $deployment->onInitialize(function() use ($deployment) {
     $workflow->removeTask('TYPO3\\Surf\\Task\\TYPO3\\CMS\\CopyConfigurationTask');
     $workflow->removeTask('TYPO3\\Surf\\Task\\TYPO3\\CMS\\CreatePackageStatesTask');
 
-    $workflow->afterTask('TYPO3\\Surf\\Task\\Package\\GitTask', 'Helhum\\TYPO3\\Distribution\\DefinedTask\\MarkInstalled');
     $workflow->afterStage('transfer', 'Helhum\\TYPO3\\Distribution\\DefinedTask\\CopyIndexPhp');
     $workflow->afterStage('transfer', 'Helhum\\TYPO3\\Distribution\\DefinedTask\\DumpConfiguration');
     $workflow->beforeTask('TYPO3\\Surf\\Task\\TYPO3\\CMS\\SetUpExtensionsTask', 'Helhum\\TYPO3\\Distribution\\DefinedTask\\UpdateDBSchema');
