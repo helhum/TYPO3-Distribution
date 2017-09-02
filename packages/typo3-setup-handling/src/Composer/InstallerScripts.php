@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Helhum\TYPO3\SetupHandling\Composer;
 
 /***************************************************************
@@ -23,38 +24,15 @@ namespace Helhum\TYPO3\SetupHandling\Composer;
 
 use Composer\Script\Event;
 use Helhum\TYPO3\SetupHandling\Composer\InstallerScript\PrepareTypo3;
-use Helhum\TYPO3\SetupHandling\Composer\InstallerScript\SetupConfiguration;
 use Helhum\TYPO3\SetupHandling\Composer\InstallerScript\SetupTypo3;
-use Helhum\Typo3ConsolePlugin\ScriptDispatcher;
+use TYPO3\CMS\Composer\Plugin\Core\InstallerScriptsRegistration;
+use TYPO3\CMS\Composer\Plugin\Core\ScriptDispatcher;
 
-class PluginImplementation
+class InstallerScripts implements InstallerScriptsRegistration
 {
-    /**
-     * @var Event
-     */
-    private $event;
-
-    /**
-     * PluginImplementation constructor.
-     *
-     * @param Event $event
-     */
-    public function __construct(Event $event)
+    public static function register(Event $event, ScriptDispatcher $scriptDispatcher)
     {
-        $this->event = $event;
-    }
-
-    public function preAutoloadDump()
-    {
-        ScriptDispatcher::addInstallerScript(SetupTypo3::class, 30);
-        ScriptDispatcher::addInstallerScript(SetupConfiguration::class, 20);
-        ScriptDispatcher::addInstallerScript(PrepareTypo3::class, 10);
-    }
-
-    /**
-     * Action called after autoload dump
-     */
-    public function postAutoloadDump()
-    {
+        $scriptDispatcher->addInstallerScript(new SetupTypo3(), 69);
+        $scriptDispatcher->addInstallerScript(new PrepareTypo3(), 65);
     }
 }

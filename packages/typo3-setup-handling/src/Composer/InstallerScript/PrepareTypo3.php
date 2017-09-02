@@ -23,15 +23,15 @@ namespace Helhum\TYPO3\SetupHandling\Composer\InstallerScript;
 
 use Composer\Script\Event as ScriptEvent;
 use Helhum\Typo3Console\Mvc\Cli\CommandDispatcher;
-use Helhum\Typo3ConsolePlugin\InstallerScriptInterface;
+use TYPO3\CMS\Composer\Plugin\Core\InstallerScript;
 
-class PrepareTypo3 implements InstallerScriptInterface
+class PrepareTypo3 implements InstallerScript
 {
     /**
      * @param ScriptEvent $event
      * @return bool
      */
-    public function shouldRun(ScriptEvent $event)
+    private function shouldRun(ScriptEvent $event): bool
     {
         return !getenv('TYPO3_IS_SET_UP');
     }
@@ -44,8 +44,11 @@ class PrepareTypo3 implements InstallerScriptInterface
      * @return bool
      * @internal
      */
-    public function run(ScriptEvent $event)
+    public function run(ScriptEvent $event): bool
     {
+        if (!$this->shouldRun($event)) {
+            return true;
+        }
         $io = $event->getIO();
         $io->writeError('<info>Setting up TYPO3 Environment and Extensions</info>');
 

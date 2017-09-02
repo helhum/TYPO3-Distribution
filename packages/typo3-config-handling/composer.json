@@ -5,8 +5,9 @@
     "require": {
         "php": ">=7.0 <7.2",
         "typo3/cms-core": "^8.7",
-        "helhum/typo3-console": "^4.6.1",
-        "helhum/config-loader": "^0.5"
+        "helhum/typo3-console": "^4.7.0",
+        "helhum/config-loader": "^0.5",
+        "typo3/cms-composer-installers": "^1.4.2"
     },
     "suggest": {
         "typo3/cms-install": "If you want to update distribution configuration with Extension Manager or Install Tool UI"

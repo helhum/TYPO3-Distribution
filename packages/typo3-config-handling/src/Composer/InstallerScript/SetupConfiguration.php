@@ -1,5 +1,5 @@
 <?php
-namespace Helhum\TYPO3\SetupHandling\Composer\InstallerScript;
+namespace Helhum\TYPO3\ConfigHandling\Composer\InstallerScript;
 
 /***************************************************************
  *  Copyright notice
@@ -25,19 +25,16 @@ use Composer\IO\IOInterface;
 use Composer\Script\Event as ScriptEvent;
 use Helhum\ConfigLoader\Reader\RootConfigFileReader;
 use Helhum\TYPO3\ConfigHandling\ConfigCleaner;
-use Helhum\TYPO3\ConfigHandling\ConfigDumper;
-use Helhum\TYPO3\ConfigHandling\ConfigExtractor;
-use Helhum\TYPO3\ConfigHandling\ConfigLoader;
 use Helhum\TYPO3\ConfigHandling\EnvConfigFinder;
 use Helhum\TYPO3\ConfigHandling\RootConfig;
 use Helhum\Typo3Console\Mvc\Cli\CommandDispatcher;
-use Helhum\Typo3ConsolePlugin\InstallerScriptInterface;
 use Symfony\Component\Dotenv\Dotenv;
+use TYPO3\CMS\Composer\Plugin\Core\InstallerScript;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use Typo3Console\PhpServer\Command\ServerCommandController;
 
-class SetupConfiguration implements InstallerScriptInterface
+class SetupConfiguration implements InstallerScript
 {
     /**
      * @var string
@@ -65,13 +62,13 @@ class SetupConfiguration implements InstallerScriptInterface
      * @param ScriptEvent $event
      * @return bool
      */
-    public function shouldRun(ScriptEvent $event)
+    private function shouldRun(ScriptEvent $event): bool
     {
         return getenv('TYPO3_IS_SET_UP');
     }
 
     /**
-     * Call the TYPO3 setup
+     * Set up TYPO3 configuration
      *
      * @param ScriptEvent $event
      * @throws \RuntimeException
@@ -79,8 +76,11 @@ class SetupConfiguration implements InstallerScriptInterface
      * @return bool
      * @internal
      */
-    public function run(ScriptEvent $event)
+    public function run(ScriptEvent $event): bool
     {
+        if (!$this->shouldRun($event)) {
+            return true;
+        }
         $io = $event->getIO();
         $io->writeError('');
         $io->writeError('<info>Setting up TYPO3 Configuration</info>');

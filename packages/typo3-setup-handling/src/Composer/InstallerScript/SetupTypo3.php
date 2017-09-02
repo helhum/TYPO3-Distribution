@@ -29,13 +29,13 @@ use Helhum\Typo3Console\Install\CliSetupRequestHandler;
 use Helhum\Typo3Console\Mvc\Cli\CommandDispatcher;
 use Helhum\Typo3Console\Mvc\Cli\CommandManager;
 use Helhum\Typo3Console\Mvc\Cli\ConsoleOutput;
-use Helhum\Typo3ConsolePlugin\InstallerScriptInterface;
 use Symfony\Component\Dotenv\Dotenv;
+use TYPO3\CMS\Composer\Plugin\Core\InstallerScript;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
-class SetupTypo3 implements InstallerScriptInterface
+class SetupTypo3 implements InstallerScript
 {
     /**
      * @var string
@@ -55,7 +55,7 @@ class SetupTypo3 implements InstallerScriptInterface
      * @param ScriptEvent $event
      * @return bool
      */
-    public function shouldRun(ScriptEvent $event)
+    private function shouldRun(ScriptEvent $event): bool
     {
         return !file_exists($this->installedFile);
     }
@@ -68,8 +68,11 @@ class SetupTypo3 implements InstallerScriptInterface
      * @return bool
      * @internal
      */
-    public function run(ScriptEvent $event)
+    public function run(ScriptEvent $event): bool
     {
+        if (!$this->shouldRun($event)) {
+            return true;
+        }
         $io = $event->getIO();
         $io->writeError('');
         $io->writeError('<info>Setting up TYPO3</info>');
