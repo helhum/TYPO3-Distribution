@@ -19,7 +19,6 @@
         "typo3/cms-beuser": "^8.7",
         "typo3/cms-context-help": "^8.7",
         "typo3/cms-fluid-styled-content": "^8.7",
-        "typo3/cms-felogin": "^8.7",
         "typo3/cms-impexp": "^8.7",
         "typo3/cms-info": "^8.7",
         "typo3/cms-info-pagetsconfig": "^8.7",
