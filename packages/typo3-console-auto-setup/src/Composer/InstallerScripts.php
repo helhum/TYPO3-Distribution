@@ -23,6 +23,7 @@ namespace Typo3Console\AutoSetup\Composer;
  ***************************************************************/
 
 use Composer\Script\Event;
+use Typo3Console\AutoSetup\Composer\InstallerScript\ConsoleCommand;
 use Typo3Console\AutoSetup\Composer\InstallerScript\SetupTypo3;
 use TYPO3\CMS\Composer\Plugin\Core\InstallerScriptsRegistration;
 use TYPO3\CMS\Composer\Plugin\Core\ScriptDispatcher;
@@ -32,5 +33,38 @@ class InstallerScripts implements InstallerScriptsRegistration
     public static function register(Event $event, ScriptDispatcher $scriptDispatcher)
     {
         $scriptDispatcher->addInstallerScript(new SetupTypo3(), 69);
+
+        $isSetupRunClosure = function () {
+            return !getenv('TYPO3_IS_SET_UP');
+        };
+        $scriptDispatcher->addInstallerScript(
+            new ConsoleCommand(
+                'install:generatepackagestates',
+                [],
+                '',
+                $isSetupRunClosure
+            ),
+            65
+        );
+        $scriptDispatcher->addInstallerScript(
+            new ConsoleCommand(
+                'install:fixfolderstructure',
+                [],
+                '',
+                $isSetupRunClosure
+            ),
+            65
+        );
+        if ($event->isDevMode()) {
+            $scriptDispatcher->addInstallerScript(
+                new ConsoleCommand(
+                    'install:extensionsetupifpossible',
+                    [],
+                    'Setting up TYPO3 environment and extensions.',
+                    $isSetupRunClosure
+                ),
+                61
+            );
+        }
     }
 }

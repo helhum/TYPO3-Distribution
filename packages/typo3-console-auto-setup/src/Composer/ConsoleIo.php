@@ -40,7 +40,7 @@ class ConsoleIo extends \Composer\IO\ConsoleIO
     /**
      * @return InputInterface
      */
-    public function getInput()
+    public function getInput(): InputInterface
     {
         return $this->consoleIO->input;
     }
@@ -48,7 +48,7 @@ class ConsoleIo extends \Composer\IO\ConsoleIO
     /**
      * @return OutputInterface
      */
-    public function getOutput()
+    public function getOutput(): OutputInterface
     {
         return $this->consoleIO->output;
     }
