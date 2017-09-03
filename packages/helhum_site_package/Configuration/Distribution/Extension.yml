@@ -1,0 +1,8 @@
+EXT:
+    extConf:
+        backend:
+            backendFavicon: 'EXT:helhum_site_package/Resources/Public/Images/favicon-96x96.png'
+            backendLogo: 'EXT:helhum_site_package/Resources/Public/Images/t3console-backend-logo.svg'
+            loginBackgroundImage: 'EXT:helhum_site_package/Resources/Public/Images/background.jpg'
+            loginHighlightColor: '#515151'
+            loginLogo: 'EXT:helhum_site_package/Resources/Public/Images/login.png'

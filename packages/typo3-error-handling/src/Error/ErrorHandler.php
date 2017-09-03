@@ -1,5 +1,26 @@
 <?php
-namespace Helhum\TYPO3\Distribution\Error;
+declare(strict_types=1);
+namespace Helhum\TYPO3\ErrorHandling\Error;
+
+/***************************************************************
+ *  Copyright notice
+ *
+ *  (c) 2017 Helmut Hummel <info@helhum.io>
+ *  All rights reserved
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the text file GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 use TYPO3\CMS\Core\Error\ErrorHandlerInterface;
 use TYPO3\CMS\Core\Error\Exception;
@@ -15,7 +36,7 @@ class ErrorHandler implements ErrorHandlerInterface
      *
      * @var array
      */
-    protected $exceptionalErrors = array();
+    protected $exceptionalErrors = [];
 
     /**
      * Registers this class as default error handler
@@ -27,7 +48,7 @@ class ErrorHandler implements ErrorHandlerInterface
         $excludedErrors = E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR;
         // reduces error types to those a custom error handler can process
         $errorHandlerErrors = $errorHandlerErrors & ~$excludedErrors;
-        set_error_handler(array($this, 'handleError'), $errorHandlerErrors);
+        set_error_handler([$this, 'handleError'], $errorHandlerErrors);
     }
 
     /**
@@ -52,9 +73,9 @@ class ErrorHandler implements ErrorHandlerInterface
      * @param string $errorMessage The error message
      * @param string $errorFile Name of the file the error occurred in
      * @param int $errorLine Line number where the error occurred
-     * @return bool
      * @throws Exception with the data passed to this method if the error is registered as exceptionalError
      * @throws \Exception with the data passed to this method if the error is registered as exceptionalError
+     * @return bool
      */
     public function handleError($errorLevel, $errorMessage, $errorFile, $errorLine)
     {
@@ -62,7 +83,7 @@ class ErrorHandler implements ErrorHandlerInterface
         if (error_reporting() === 0) {
             return true;
         }
-        $errorLevels = array(
+        $errorLevels = [
             E_WARNING => 'Warning',
             E_NOTICE => 'Notice',
             E_USER_ERROR => 'User Error',
@@ -70,13 +91,13 @@ class ErrorHandler implements ErrorHandlerInterface
             E_USER_NOTICE => 'User Notice',
             E_STRICT => 'Runtime Notice',
             E_RECOVERABLE_ERROR => 'Catchable Fatal Error',
-            E_DEPRECATED => 'Runtime Deprecation Notice'
-        );
+            E_DEPRECATED => 'Runtime Deprecation Notice',
+        ];
         $message = 'PHP ' . $errorLevels[$errorLevel] . ': ' . $errorMessage . ' in ' . $errorFile . ' line ' . $errorLine;
         if ($errorLevel & $this->exceptionalErrors) {
             throw new Exception($message, 1);
-        } else {
-            switch ($errorLevel) {
+        }
+        switch ($errorLevel) {
                 case E_USER_ERROR:
                 case E_RECOVERABLE_ERROR:
                     $severity = 2;
@@ -88,10 +109,9 @@ class ErrorHandler implements ErrorHandlerInterface
                 default:
                     $severity = 0;
             }
-            $logTitle = 'Core: Error handler (' . TYPO3_MODE . ')';
-            $message = $logTitle . ': ' . $message;
-            GeneralUtility::sysLog($message, 'core', $severity + 1);
-            return true;
-        }
+        $logTitle = 'Core: Error handler (' . TYPO3_MODE . ')';
+        $message = $logTitle . ': ' . $message;
+        GeneralUtility::sysLog($message, 'core', $severity + 1);
+        return true;
     }
 }

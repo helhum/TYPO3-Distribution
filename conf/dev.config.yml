@@ -1,0 +1,30 @@
+imports:
+    - { resource: config.yml }
+    - { resource: 'dev.config.*.yml', type: glob }
+
+SYS:
+    displayErrors: 1
+    devIPmask: '*'
+    sqlDebug: 1
+    enableDeprecationLog: file
+    exceptionalErrors: 28930
+    systemLogLevel: 0
+    Objects:
+        TYPO3\CMS\Core\Configuration\ConfigurationManager:
+            className: 'Helhum\TYPO3\ConfigHandling\Xclass\ConfigurationManager'
+        TYPO3\CMS\Install\Controller\Action\Tool\AllConfiguration:
+            className: 'Helhum\TYPO3\ConfigHandling\Xclass\AllConfiguration'
+
+BE:
+    debug: true
+    sessionTimeout: 31536000
+FE:
+    debug: true
+MAIL:
+    transport: mbox
+    transport_mbox_file: %env(TYPO3_PATH_COMPOSER_ROOT)%/var/log/sent-mails.log
+LOG:
+    writerConfiguration:
+        '%const(TYPO3\CMS\Core\Log\LogLevel::DEBUG)%':
+            TYPO3\CMS\Core\Log\Writer\FileWriter:
+                { logFile: '%env(TYPO3_PATH_COMPOSER_ROOT)%/var/log/typo3-debug.log' }

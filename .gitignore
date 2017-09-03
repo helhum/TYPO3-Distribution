@@ -1,29 +1,21 @@
 .DS_Store
 /.idea
 /nbproject
-/vendor/*
+/vendor
 /var/log/*
 !/var/log/.gitkeep
 /var/cache/*
 !/var/cache/.gitkeep
 /var/storage/*
 !/var/storage/.gitkeep
-/bin
-/typo3cms
 /.env
+/.installed
+/.php_cs.cache
+/.remotes
 
-/web/typo3conf/*
-!/web/typo3conf/LocalConfiguration.php
-!/web/typo3conf/AdditionalConfiguration.php
-!/web/typo3conf/ext
-!/web/typo3conf/l10n
-/web/typo3conf/ext/*
-# !/web/typo3conf/ext/<your_site_package>
+/typo3/*
+!/typo3/typo3conf
+/typo3/typo3conf/*
+!/typo3/typo3conf/l10n
 
-/web/FIRST_INSTALL
-/web/fileadmin
-/web/uploads
-/web/typo3temp
-/web/typo3
-/web/index.php
-
+/web

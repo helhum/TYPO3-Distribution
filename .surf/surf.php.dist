@@ -1,0 +1,104 @@
+<?php
+/** @var \TYPO3\Surf\Domain\Model\Deployment $deployment */
+
+use TYPO3\Surf\Domain\Model\Node;
+use TYPO3\Surf\Domain\Model\SimpleWorkflow;
+
+// Mandatory settings
+//$projectName = '{$projectName}';
+//$deploymentPath = '{$deploymentPath}';
+//$deploymentHost = '{$deploymentHost}';
+
+// Set this if you do not have a remote repository
+//$repositoryUrl = '{$repositoryUrl}';
+
+// Set this if you want to deploy a different branch than master
+//$repositoryBranch = 'master';
+
+// Set this if your composer command is not available in PATH
+//$localComposerCommandPath = 'composer';
+
+// Set this, if on remote host the correct PHP binary is not available in PATH
+//$remotePhpBinary = '/usr/local/bin/php5-56LATEST-CLI';
+
+//================================================================
+// No changes are required in the default case below this point.
+//================================================================
+
+if (!isset($projectName, $deploymentPath, $deploymentHost)) {
+    echo '$projectName, $deploymentPath, $deploymentHost need to be set in your deployment script!' . PHP_EOL;
+    exit(1);
+}
+
+$application = new \TYPO3\Surf\Application\TYPO3\CMS();
+$deployment->addApplication($application);
+
+// Set default config values
+if (!isset($repositoryUrl)) {
+    $repositoryUrl = 'file://' . dirname(__DIR__);
+}
+if (!isset($repositoryBranch)) {
+    $repositoryBranch = getenv('DEPLOY_BRANCH') ?: 'master';
+}
+if (!isset($localComposerCommandPath)) {
+    $localComposerCommandPath = 'composer';
+}
+if (!isset($remotePhpBinary)) {
+    $remotePhpBinary = 'php';
+}
+
+$node = new Node($deploymentHost);
+$node->setHostname($deploymentHost);
+
+$application->addNode($node);
+
+$application->setOption('projectName', $projectName);
+$application->setOption('repositoryUrl', $repositoryUrl);
+$application->setOption('branch', $repositoryBranch);
+
+$application->setDeploymentPath($deploymentPath);
+$application->setOption('keepReleases', 1);
+$application->setOption('composerCommandPath', $localComposerCommandPath);
+
+$deployment->setOption('phpBinaryPathAndFilename', $remotePhpBinary);
+
+// Make sure we build from a clean state
+// This is only required if no composer.lock file is committed, which is not recommended
+//$application->setOption('TYPO3\\Surf\\Task\\Package\\GitTask[hardClean]', true);
+$application->setContext('Production');
+
+$deployment->onInitialize(function() use ($deployment) {
+    /** @var SimpleWorkflow $workflow */
+    $workflow = $deployment->getWorkflow();
+    $workflow->setEnableRollback(FALSE);
+
+    $workflow->defineTask('Helhum\\TYPO3\\Distribution\\DefinedTask\\CopyIndexPhp', 'TYPO3\\Surf\\Task\\ShellTask', [
+        'command' => [
+            "rm {releasePath}/web/index.php",
+            "cp {releasePath}/vendor/typo3/cms/index.php {releasePath}/web/index.php",
+        ],
+    ]);
+    $workflow->defineTask('Helhum\\TYPO3\\Distribution\\DefinedTask\\DumpConfiguration', 'TYPO3\\Surf\\Task\\TYPO3\\CMS\\RunCommandTask', [
+        'command' => 'settings:dump',
+        'arguments' => [
+            '--no-dev',
+        ],
+    ]);
+    $workflow->defineTask('Helhum\\TYPO3\\Distribution\\DefinedTask\\UpdateDBSchema', 'TYPO3\\Surf\\Task\\TYPO3\\CMS\\RunCommandTask', [
+        'command' => 'database:updateschema',
+    ]);
+    $workflow->defineTask('Helhum\\TYPO3\\Distribution\\DefinedTask\\FlushFileCaches', 'TYPO3\\Surf\\Task\\TYPO3\\CMS\\RunCommandTask', [
+        'command' => 'cache:flush',
+        'arguments' => [
+            '--files-only',
+        ],
+    ]);
+
+    $workflow->removeTask('TYPO3\\Surf\\Task\\TYPO3\\CMS\\CopyConfigurationTask');
+    $workflow->removeTask('TYPO3\\Surf\\Task\\TYPO3\\CMS\\CreatePackageStatesTask');
+
+    $workflow->afterStage('transfer', 'Helhum\\TYPO3\\Distribution\\DefinedTask\\CopyIndexPhp');
+    $workflow->afterStage('transfer', 'Helhum\\TYPO3\\Distribution\\DefinedTask\\DumpConfiguration');
+    $workflow->beforeTask('TYPO3\\Surf\\Task\\TYPO3\\CMS\\SetUpExtensionsTask', 'Helhum\\TYPO3\\Distribution\\DefinedTask\\UpdateDBSchema');
+    $workflow->afterTask('Helhum\\TYPO3\\Distribution\\DefinedTask\\UpdateDBSchema', 'Helhum\\TYPO3\\Distribution\\DefinedTask\\FlushFileCaches');
+});

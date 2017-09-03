@@ -1,0 +1,14 @@
+{
+    "name": "helhum/typo3-error-handling",
+    "description" : "Error handling classes for TYPO3 CMS",
+    "license": "GPL-2.0+",
+    "require": {
+        "php": ">=7.0 <7.2",
+        "typo3/cms-core": "^8.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Helhum\\TYPO3\\ErrorHandling\\": "src/"
+        }
+    }
+}

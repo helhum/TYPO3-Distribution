@@ -1,0 +1,31 @@
+imports:
+    - { resource: 'config.*.yml', type: glob }
+    - { resource: '../packages/*/Configuration/Distribution/*.yml', type: glob, ignore_errors: true }
+    - { resource: 'env.yml' }
+    # Fetch environment configuration on deploy targets if it exists
+    - { resource: '../../../shared/Configuration/env.yml', ignore_errors: true }
+
+# Reasonable error handling by default
+BE:
+    explicitADmode: explicitAllow
+    loginSecurityLevel: normal
+DB:
+    Connections:
+        Default:
+            charset: utf8
+FE:
+    loginSecurityLevel: normal
+GFX:
+    jpg_quality: '80'
+    processor: GraphicsMagick
+    processor_effects: -1
+LOG:
+    writerConfiguration:
+        '%const(TYPO3\CMS\Core\Log\LogLevel::WARNING)%':
+            TYPO3\CMS\Core\Log\Writer\FileWriter:
+                logFile: '%env(TYPO3_PATH_COMPOSER_ROOT)%/var/log/typo3-warning.log'
+SYS:
+    displayErrors: 0
+    errorHandlerErrors: 32514
+    exceptionalErrors: 4352
+    systemLogLevel: 2

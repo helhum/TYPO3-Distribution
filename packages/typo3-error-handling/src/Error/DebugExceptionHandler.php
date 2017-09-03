@@ -1,5 +1,26 @@
 <?php
-namespace Helhum\TYPO3\Distribution\Error;
+declare(strict_types=1);
+namespace Helhum\TYPO3\ErrorHandling\Error;
+
+/***************************************************************
+ *  Copyright notice
+ *
+ *  (c) 2017 Helmut Hummel <info@helhum.io>
+ *  All rights reserved
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the text file GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
  * A basic but solid exception handler which catches everything which
@@ -13,16 +34,16 @@ class DebugExceptionHandler extends AbstractExceptionHandler
      */
     public function __construct()
     {
-        set_exception_handler(array($this, 'handleException'));
+        set_exception_handler([$this, 'handleException']);
     }
 
     /**
      * Formats and echoes the exception as XHTML.
      *
-     * @param \Exception|\Throwable $exception The exception object
+     * @param \Throwable $exception The exception object
      * @return void
      */
-    public function echoExceptionWeb($exception)
+    public function echoExceptionWeb(\Throwable $exception)
     {
         $this->sendStatusHeaders($exception);
         $filePathAndName = $exception->getFile();
@@ -44,9 +65,9 @@ class DebugExceptionHandler extends AbstractExceptionHandler
         );
         // Put the XML prologue before or after the doctype declaration according to browser
         if ($browserInfo['browser'] === 'msie' && $browserInfo['version'] < 7) {
-            $headerStart = $docType . LF . $xmlPrologue;
+            $headerStart = $docType . chr(10) . $xmlPrologue;
         } else {
-            $headerStart = $xmlPrologue . LF . $docType;
+            $headerStart = $xmlPrologue . chr(10) . $docType;
         }
         echo $headerStart . '
 			<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
@@ -117,13 +138,14 @@ class DebugExceptionHandler extends AbstractExceptionHandler
                                 ? $argument
                                 : substr($argument, 0, 50) . '#tripleDot#' . substr($argument, -50);
                             $preparedArgument = str_replace(
-                                array(
+                                [
                                     '#tripleDot#',
-                                    LF),
-                                array(
+                                    chr(10),
+                                ],
+                                [
                                     '<span style="color:white;">&hellip;</span>',
-                                    '<span style="color:white;">&crarr;</span>'
-                                ),
+                                    '<span style="color:white;">&crarr;</span>',
+                                ],
                                 htmlspecialchars($preparedArgument)
                             );
                             $arguments .= '"<span style="color:#FF8700;" title="' . htmlspecialchars($argument) . '">'
