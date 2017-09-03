@@ -9,7 +9,7 @@
     "require": {
         "typo3/cms": "^8.7",
         "helhum/typo3-error-handling": "@dev",
-        "helhum/typo3-config-handling": "@dev",
+        "helhum/typo3-config-handling": "^0.1",
         "typo3-console/composer-auto-setup": "^0.1",
         "helhum/typo3-secure-web": "^0.2",
         "helhum/site-package": "@dev",
