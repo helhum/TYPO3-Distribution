@@ -13,7 +13,6 @@
         "typo3-console/composer-auto-setup": "^0.1",
         "helhum/typo3-secure-web": "^0.2",
         "helhum/site-package": "@dev",
-        "typo3-console/remote-command": "@dev",
 
         "typo3/cms-belog": "^8.7",
         "typo3/cms-beuser": "^8.7",
@@ -34,6 +33,7 @@
     },
     "require-dev": {
         "typo3-console/php-server-command": "^0.1.0",
+        "typo3-console/remote-command": "@dev",
         "helhum/dotenv-connector": "^2.0",
         "nimut/testing-framework": "^1.1.8"
     },
