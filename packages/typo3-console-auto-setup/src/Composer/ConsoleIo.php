@@ -1,6 +1,5 @@
 <?php
-declare(strict_types=1);
-namespace Helhum\TYPO3\SetupHandling\Composer;
+namespace Typo3Console\AutoSetup\Composer;
 
 /***************************************************************
  *  Copyright notice
@@ -22,16 +21,35 @@ namespace Helhum\TYPO3\SetupHandling\Composer;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Composer\Script\Event;
-use Helhum\TYPO3\SetupHandling\Composer\InstallerScript\PrepareTypo3;
-use Helhum\TYPO3\SetupHandling\Composer\InstallerScript\SetupTypo3;
-use TYPO3\CMS\Composer\Plugin\Core\InstallerScriptsRegistration;
-use TYPO3\CMS\Composer\Plugin\Core\ScriptDispatcher;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
-class InstallerScripts implements InstallerScriptsRegistration
+class ConsoleIo extends \Composer\IO\ConsoleIO
 {
-    public static function register(Event $event, ScriptDispatcher $scriptDispatcher)
+    /**
+     * @var \Composer\IO\ConsoleIO
+     */
+    private $consoleIO;
+
+    public function __construct(\Composer\IO\ConsoleIO $consoleIO)
     {
-        $scriptDispatcher->addInstallerScript(new SetupTypo3(), 69);
+        $this->consoleIO = $consoleIO;
+        parent::__construct($consoleIO->input, $consoleIO->output, $consoleIO->helperSet);
+    }
+
+    /**
+     * @return InputInterface
+     */
+    public function getInput()
+    {
+        return $this->consoleIO->input;
+    }
+
+    /**
+     * @return OutputInterface
+     */
+    public function getOutput()
+    {
+        return $this->consoleIO->output;
     }
 }

@@ -1,5 +1,5 @@
 <?php
-namespace Helhum\TYPO3\SetupHandling\Composer\InstallerScript;
+namespace Typo3Console\AutoSetup\Composer\InstallerScript;
 
 /***************************************************************
  *  Copyright notice
@@ -22,7 +22,7 @@ namespace Helhum\TYPO3\SetupHandling\Composer\InstallerScript;
  ***************************************************************/
 
 use Composer\Script\Event as ScriptEvent;
-use Helhum\TYPO3\SetupHandling\Composer\ConsoleIo;
+use Typo3Console\AutoSetup\Composer\ConsoleIo;
 use Helhum\Typo3Console\Core\Booting\RunLevel;
 use Helhum\Typo3Console\Core\ConsoleBootstrap;
 use Helhum\Typo3Console\Install\CliSetupRequestHandler;

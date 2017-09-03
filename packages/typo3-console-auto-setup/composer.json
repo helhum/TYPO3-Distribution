@@ -1,23 +1,22 @@
 {
-    "name": "helhum/typo3-setup-handling",
+    "name": "typo3-console/auto-setup",
     "type": "library",
-    "description" : "Setup handling for TYPO3 CMS",
+    "description" : "Automatically set up TYPO3 on 'composer install' using TYPO3 Console commands",
     "license": "GPL-2.0+",
     "require": {
         "php": ">=7.0 <7.2",
-        "typo3/cms-core": "^8.7",
-        "typo3/cms-extbase": "^8.7",
+        "helhum/typo3-composer-setup": "^0.3.0",
         "helhum/typo3-console": "^4.7.0",
-        "typo3/cms-composer-installers": "^1.4.2"
+        "typo3/cms-composer-installers": "^1.4.2",
+        "typo3/cms-core": "^8.7"
     },
     "suggest": {
-        "symfony/dotenv": "Recommended for easily setting environment specific configuration in dev context",
         "helhum/dotenv-connector": "Recommended for easily setting environment specific configuration in dev context",
         "typo3-console/php-server-command": "Recommended for easy testing of your distribution in dev context without the need of a dedicated webserver"
     },
     "autoload": {
         "psr-4": {
-            "Helhum\\TYPO3\\SetupHandling\\": "src"
+            "Typo3Console\\AutoSetup\\": "src"
         }
     },
     "extra": {
