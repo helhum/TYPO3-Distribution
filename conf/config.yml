@@ -8,13 +8,13 @@ imports:
 # Reasonable error handling by default
 BE:
     explicitADmode: explicitAllow
-    loginSecurityLevel: rsa
+    loginSecurityLevel: normal
 DB:
     Connections:
         Default:
             charset: utf8
 FE:
-    loginSecurityLevel: rsa
+    loginSecurityLevel: normal
 GFX:
     jpg_quality: '80'
     processor: GraphicsMagick

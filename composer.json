@@ -26,7 +26,6 @@
         "typo3/cms-info-pagetsconfig": "^8.7",
         "typo3/cms-lowlevel": "^8.7",
         "typo3/cms-reports": "^8.7",
-        "typo3/cms-rsaauth": "^8.7",
         "typo3/cms-rte-ckeditor": "^8.7",
         "typo3/cms-setup": "^8.7",
         "typo3/cms-tstemplate": "^8.7",
