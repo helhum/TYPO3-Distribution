@@ -1,6 +1,6 @@
 {
     "name": "helhum/typo3-config-handling",
-    "description" : "Configuration handling for TYPO3 CMS",
+    "description" : "Simple but powerful configuration handling for TYPO3 CMS",
     "license": "GPL-2.0+",
     "require": {
         "php": ">=7.0 <7.2",
