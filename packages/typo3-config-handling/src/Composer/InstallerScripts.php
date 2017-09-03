@@ -26,7 +26,7 @@ use Composer\Script\Event;
 use Helhum\TYPO3\ConfigHandling\Composer\InstallerScript\SetupConfiguration;
 use TYPO3\CMS\Composer\Plugin\Core\InstallerScriptsRegistration;
 use TYPO3\CMS\Composer\Plugin\Core\ScriptDispatcher;
-use Typo3Console\AutoSetup\Composer\InstallerScript\ConsoleCommand;
+use Typo3Console\ComposerAutoSetup\Composer\InstallerScript\ConsoleCommand;
 
 class InstallerScripts implements InstallerScriptsRegistration
 {

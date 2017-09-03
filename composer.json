@@ -10,7 +10,7 @@
         "typo3/cms": "^8.7",
         "helhum/typo3-error-handling": "@dev",
         "helhum/typo3-config-handling": "@dev",
-        "typo3-console/auto-setup": "@dev",
+        "typo3-console/composer-auto-setup": "^0.1",
         "helhum/typo3-secure-web": "^0.2",
         "helhum/site-package": "@dev",
         "typo3-console/remote-command": "@dev",
