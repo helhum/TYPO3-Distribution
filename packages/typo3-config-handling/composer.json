@@ -18,5 +18,10 @@
             "Helhum\\TYPO3\\ConfigHandling\\": "src/",
             "Helhum\\Typo3ConfigHandling\\Command\\": "src/Command"
         }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        }
     }
 }
