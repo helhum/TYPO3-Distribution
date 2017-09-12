@@ -52,8 +52,8 @@
         },
         "typo3/cms": {
             "cms-package-dir": "{$vendor-dir}/typo3/cms",
-            "root-dir": "typo3",
-            "web-dir": "web"
+            "root-dir": "private",
+            "web-dir": "public"
         }
     }
 }
