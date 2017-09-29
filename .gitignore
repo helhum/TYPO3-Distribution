@@ -13,9 +13,9 @@
 /.php_cs.cache
 /.remotes
 
-/typo3/*
-!/typo3/typo3conf
-/typo3/typo3conf/*
-!/typo3/typo3conf/l10n
+/private/*
+!/private/typo3conf
+/private/typo3conf/*
+!/private/typo3conf/l10n
 
-/web
+/public

@@ -5,7 +5,7 @@
     "require": {
         "php": ">=7.0 <7.2",
         "symfony/yaml": "^3.0",
-        "helhum/typo3-console": "^4.6.1"
+        "helhum/typo3-console": "^5.0@dev"
     },
     "autoload": {
         "psr-4": {
