@@ -7,11 +7,10 @@
     "description" : "TYPO3 CMS Distribution with console and .env support",
     "license": "GPL-2.0+",
     "require": {
-        "helhum/typo3-error-handling": "@dev",
         "helhum/typo3-config-handling": "^0.2.2",
-        "helhum/typo3-console": "^5.0",
+        "helhum/typo3-console": "^5.0.1",
         "helhum/typo3-secure-web": "^0.2.7",
-        "typo3-console/composer-auto-setup": "^0.3.4",
+        "typo3-console/composer-auto-setup": "^0.3.5",
 
         "roave/security-advisories": "dev-master",
 
@@ -29,6 +28,7 @@
         "typo3/cms-tstemplate": "^8.7.9",
         "typo3/cms-viewpage": "^8.7.9",
 
+        "helhum/typo3-error-handling": "@dev",
         "helhum/site-package": "@dev"
     },
     "require-dev": {
