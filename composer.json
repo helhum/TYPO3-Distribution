@@ -33,7 +33,7 @@
     "require-dev": {
         "helhum/dotenv-connector": "^2.0",
         "typo3/testing-framework": "^1.2.2 || ^2.0.1",
-        "typo3-console/php-server-command": "^0.1.3"
+        "typo3-console/php-server-command": "^0.2"
     },
     "extra": {
         "helhum/typo3-config-handling": {
