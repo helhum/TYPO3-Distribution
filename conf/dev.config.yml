@@ -1,5 +1,5 @@
 imports:
-    - { resource: config.yml }
+    - { resource: config.yml, exclude: [LOG] }
     - { resource: 'dev.config.*.yml', type: glob }
 
 SYS:

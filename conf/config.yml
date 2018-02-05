@@ -1,4 +1,5 @@
 imports:
+    - { resource: 'DefaultConfiguration', type: typo3, exclude: [LOG] }
     - { resource: 'config.*.yml', type: glob }
     - { resource: '../packages/*/Configuration/Distribution/*.yml', type: glob, ignore_errors: true }
     - { resource: 'env.yml' }
