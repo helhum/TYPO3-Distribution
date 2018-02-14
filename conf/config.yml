@@ -8,17 +8,17 @@ imports:
 
 # Reasonable error handling by default
 BE:
-    explicitADmode: explicitAllow
-    loginSecurityLevel: normal
+    explicitADmode: 'explicitAllow'
+    loginSecurityLevel: 'normal'
 DB:
     Connections:
         Default:
-            charset: utf8
+            charset: 'utf8'
 FE:
-    loginSecurityLevel: normal
+    loginSecurityLevel: 'normal'
 GFX:
     jpg_quality: '80'
-    processor: GraphicsMagick
+    processor: 'GraphicsMagick'
     processor_effects: -1
 LOG:
     writerConfiguration:

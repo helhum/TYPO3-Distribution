@@ -14,7 +14,7 @@ EXTCONF:
         default.tld:
             init:
                 enableCHashCache: true
-                appendMissingSlash: ifNotFile
+                appendMissingSlash: 'ifNotFile'
                 adminJumpToBackend: true
                 enableUrlDecodeCache: true
                 enableUrlEncodeCache: true
@@ -23,12 +23,12 @@ EXTCONF:
             pagePath:
                 rootpage_id: '1'
                 type: user
-                userFunc: Tx\Realurl\UriGeneratorAndResolver->main
+                userFunc: 'Tx\Realurl\UriGeneratorAndResolver->main'
                 spaceCharacter: '-'
-                languageGetVar: L
+                languageGetVar: 'L'
                 expireDays: 3
                 dontResolveShortcuts: false
             fileName:
                 defaultToHTMLsuffixOnPrev: false
-        '%env(TYPO3_ROUTING_HOSTNAME_EN)%': default.tld
-        '%env(TYPO3_ROUTING_HOSTNAME_DEFAULT)%': default.tld
+        '%env(TYPO3_ROUTING_HOSTNAME_EN)%': 'default.tld'
+        '%env(TYPO3_ROUTING_HOSTNAME_DEFAULT)%': 'default.tld'

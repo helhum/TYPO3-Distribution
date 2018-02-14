@@ -15,13 +15,13 @@ EXT:
             BE:
                 forceSalted: 0
                 onlyAuthService: 0
-                saltedPWHashingMethod: TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt
+                saltedPWHashingMethod: 'TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt'
                 updatePasswd: 1
             FE:
                 enabled: 1
                 forceSalted: 0
                 onlyAuthService: 0
-                saltedPWHashingMethod: TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt
+                saltedPWHashingMethod: 'TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt'
                 updatePasswd: 1
         scheduler:
             enableBELog: '1'
