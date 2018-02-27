@@ -19,3 +19,5 @@
 !/private/typo3conf/l10n
 
 /public
+
+/conf/host.yml

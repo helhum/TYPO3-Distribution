@@ -3,8 +3,8 @@ imports:
     - { resource: 'config.*.yml', type: glob }
     - { resource: '../packages/*/Configuration/Distribution/*.yml', type: glob, ignore_errors: true }
     - { resource: 'env.yml' }
-    # Fetch environment configuration on deploy targets if it exists
-    - { resource: '../../../shared/Configuration/env.yml', ignore_errors: true }
+    # Add or override configuration on deploy targets
+    - { resource: 'host.yml', ignore_errors: true }
 
 # Reasonable error handling by default
 BE:
