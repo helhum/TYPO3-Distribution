@@ -5,7 +5,7 @@
     ],
     "name": "helhum/typo3-distribution",
     "description" : "TYPO3 CMS Distribution with console and .env support",
-    "license": "GPL-2.0+",
+    "license": "GPL-2.0-or-later",
     "require": {
         "helhum/typo3-config-handling": "^0.6.1",
         "helhum/typo3-secure-web": "^0.2.7",
