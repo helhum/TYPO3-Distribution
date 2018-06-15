@@ -1,10 +1,10 @@
 imports:
     - { resource: 'DefaultConfiguration', type: typo3, exclude: [LOG] }
-    - { resource: 'config.*.yml', type: glob }
-    - { resource: '../packages/*/Configuration/Distribution/*.yml', type: glob, ignore_errors: true }
-    - { resource: 'env.yml' }
+    - { resource: 'settings.*.yaml', type: glob }
+    - { resource: '../packages/*/Configuration/Distribution/*.yaml', type: glob, ignore_errors: true }
+    - { resource: 'env.yaml' }
     # Add or override configuration on deploy targets
-    - { resource: 'host.yml', ignore_errors: true }
+    - { resource: 'host.yaml', ignore_errors: true }
 
 # Reasonable error handling by default
 BE:

@@ -36,9 +36,6 @@
         "typo3-console/php-server-command": "^0.2"
     },
     "extra": {
-        "helhum/typo3-config-handling": {
-            "ext-config": "conf/config.extension.yml"
-        },
         "typo3/cms": {
             "root-dir": "private",
             "web-dir": "public"

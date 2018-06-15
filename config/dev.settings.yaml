@@ -1,6 +1,6 @@
 imports:
-    - { resource: config.yml, exclude: [LOG] }
-    - { resource: 'dev.config.*.yml', type: glob }
+    - { resource: settings.yaml, exclude: [LOG] }
+    - { resource: 'dev.settings.*.yaml', type: glob }
 
 SYS:
     displayErrors: 1
