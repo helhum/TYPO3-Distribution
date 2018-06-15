@@ -20,4 +20,4 @@
 
 /public
 
-/conf/host.yml
+/config/local.settings.yaml

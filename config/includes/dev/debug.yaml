@@ -1,0 +1,16 @@
+SYS:
+    displayErrors: 1
+    devIPmask: '*'
+    sqlDebug: 1
+    enableDeprecationLog: file
+    exceptionalErrors: 28930
+    systemLogLevel: 0
+BE:
+    debug: true
+FE:
+    debug: true
+LOG:
+    writerConfiguration:
+        '%const(TYPO3\CMS\Core\Log\LogLevel::DEBUG)%':
+            TYPO3\CMS\Core\Log\Writer\FileWriter:
+                { logFile: '%env(TYPO3_PATH_COMPOSER_ROOT)%/var/log/typo3-debug.log' }

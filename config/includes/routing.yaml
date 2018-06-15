@@ -2,13 +2,13 @@ EXTCONF:
     realurl:
         _DOMAINS:
             encode:
-                - { GETvar: L, value: '0', useConfiguration: default.tld, urlPrepend: 'http://%env(TYPO3_ROUTING_HOSTNAME_DEFAULT)%' }
-                - { GETvar: L, value: '1', useConfiguration: default.tld, urlPrepend: 'http://%env(TYPO3_ROUTING_HOSTNAME_EN)%' }
+                - { GETvar: L, value: '0', useConfiguration: default.tld, urlPrepend: 'http://%conf(EXTCONF.helhum_site_package.defaultLanguageDomain)%' }
+                - { GETvar: L, value: '1', useConfiguration: default.tld, urlPrepend: 'http://%conf(EXTCONF.helhum_site_package.englishDomain)%' }
             decode:
-                '%env(TYPO3_ROUTING_HOSTNAME_DEFAULT)%':
+                '%conf(EXTCONF.helhum_site_package.defaultLanguageDomain)%':
                     GETvars: { L: '0' }
                     useConfiguration: default.tld
-                '%env(TYPO3_ROUTING_HOSTNAME_EN)%':
+                '%conf(EXTCONF.helhum_site_package.englishDomain)%':
                     GETvars: { L: '1' }
                     useConfiguration: default.tld
         default.tld:
@@ -30,5 +30,5 @@ EXTCONF:
                 dontResolveShortcuts: false
             fileName:
                 defaultToHTMLsuffixOnPrev: false
-        '%env(TYPO3_ROUTING_HOSTNAME_EN)%': 'default.tld'
-        '%env(TYPO3_ROUTING_HOSTNAME_DEFAULT)%': 'default.tld'
+        '%conf(EXTCONF.helhum_site_package.englishDomain)%': 'default.tld'
+        '%conf(EXTCONF.helhum_site_package.defaultLanguageDomain)%': 'default.tld'
