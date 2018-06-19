@@ -1,6 +1,20 @@
 imports:
     - { resource: 'InstallSteps.yaml', type: console }
 
+databaseData:
+    arguments:
+        adminUserName:
+            value: 'admin'
+        adminPassword:
+            value: 'password'
+        siteName:
+            default: 'Helhum''s awesome TYPO3 Composer Distribution'
+
+defaultConfiguration:
+    arguments:
+        siteSetupType:
+            value: no
+
 setupProject:
     type: Helhum\TYPO3\ConfigHandling\Install\Action\SetupConfigurationAction
     description: 'Set up project settings'
@@ -8,12 +22,14 @@ setupProject:
         arguments:
             defaultLanguageDomain:
                 type: string
+                value: '%env(TYPO3_INSTALL_DEFAULT_DOMAIN)%'
                 description: 'Domain name for default language website'
                 configPath: 'EXTCONF.helhum_site_package.defaultLanguageDomain'
                 default: 'awesome-typo3.test'
 
             englishDomain:
                 type: string
+                value: '%env(TYPO3_INSTALL_ENGLISH_DOMAIN)%'
                 description: 'Domain name for English website'
                 configPath: 'EXTCONF.helhum_site_package.englishDomain'
                 default: 'en.awesome-typo3.test'
