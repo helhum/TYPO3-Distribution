@@ -6,14 +6,20 @@
     "name": "helhum/typo3-distribution",
     "description" : "TYPO3 CMS Distribution with console and .env support",
     "license": "GPL-2.0-or-later",
+    "config": {
+        "sort-packages": true,
+        "platform": {
+            "php": "7.1.3"
+        }
+    },
     "require": {
+        "helhum/site-package": "@dev",
         "helhum/typo3-config-handling": "^0.7",
         "helhum/typo3-console": "^5.4",
-        "typo3-console/composer-auto-commands": "^0.1.0",
+        "helhum/typo3-error-handling": "@dev",
         "helhum/typo3-secure-web": "^0.2.7",
-
         "roave/security-advisories": "dev-master",
-
+        "typo3-console/composer-auto-commands": "^0.1",
         "typo3/cms-belog": "^8.7.9",
         "typo3/cms-beuser": "^8.7.9",
         "typo3/cms-context-help": "^8.7.9",
@@ -26,16 +32,13 @@
         "typo3/cms-rte-ckeditor": "^8.7.9",
         "typo3/cms-setup": "^8.7.9",
         "typo3/cms-tstemplate": "^8.7.9",
-        "typo3/cms-viewpage": "^8.7.9",
-
-        "helhum/typo3-error-handling": "@dev",
-        "helhum/site-package": "@dev"
+        "typo3/cms-viewpage": "^8.7.9"
     },
     "require-dev": {
-        "typo3-console/composer-typo3-auto-install": "^0.1.0",
         "helhum/dotenv-connector": "^2.0",
-        "typo3/testing-framework": "^1.2.2 || ^2.0.1",
-        "typo3-console/php-server-command": "^0.2"
+        "typo3-console/composer-typo3-auto-install": "^0.1.0",
+        "typo3-console/php-server-command": "^0.2",
+        "typo3/testing-framework": "^1.2.2 || ^2.0.1"
     },
     "extra": {
         "typo3/cms": {
