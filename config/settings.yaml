@@ -1,11 +1,8 @@
 imports:
     - { resource: 'DefaultConfiguration', type: typo3, exclude: [LOG] }
     - { resource: 'includes/*.yaml', type: glob }
-    - { resource: '../packages/*/Configuration/Distribution/*.yaml', type: glob, ignore_errors: true }
-    # Overriding/ adding settings for the current environment
-    - { resource: 'local.settings.yaml' }
+    - { resource: '../packages/*/Configuration/Distribution/*.yaml', type: glob, optional: true }
 
-# Reasonable error handling by default
 BE:
     explicitADmode: 'explicitAllow'
     loginSecurityLevel: 'normal'
@@ -28,4 +25,7 @@ SYS:
     displayErrors: 0
     errorHandlerErrors: 32514
     exceptionalErrors: 4352
+    Objects:
+        TYPO3\CMS\Core\Configuration\SiteConfiguration:
+            className: Helhum\TYPO3\ConfigHandling\Typo3SiteConfiguration
     systemLogLevel: 2

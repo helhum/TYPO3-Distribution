@@ -21,8 +21,6 @@ SYS:
                 backend: 'TYPO3\CMS\Core\Cache\Backend\NullBackend'
             l10n:
                 backend: 'TYPO3\CMS\Core\Cache\Backend\NullBackend'
-            extbase_object:
-                backend: 'TYPO3\CMS\Core\Cache\Backend\NullBackend'
             extbase_reflection:
                 backend: 'TYPO3\CMS\Core\Cache\Backend\NullBackend'
             extbase_datamapfactory_datamap:

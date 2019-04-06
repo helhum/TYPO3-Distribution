@@ -1,0 +1,33 @@
+imports:
+    - { resource: 'InstallSteps.yaml', type: console }
+
+databaseData:
+    arguments:
+        adminUserName:
+            value: 'admin'
+        adminPassword:
+            value: 'password'
+        siteName:
+            default: 'Helhum''s awesome TYPO3 Composer Distribution'
+
+defaultConfiguration:
+    arguments:
+        siteSetupType:
+            value: site
+
+setupProject:
+    type: Helhum\TYPO3\ConfigHandling\Install\Action\SetupConfigurationAction
+    description: 'Set up project settings'
+    customOverrideSettings: 'install.override.settings.yaml'
+    customSettings:
+        arguments:
+            defaultLanguageDomain:
+                type: string
+                value: '%env(TYPO3_INSTALL_SITE_URL)%'
+                description: 'Website URL (including scheme, host, port)'
+                configPath: 'Site.main.base'
+                default: 'https://awesome-typo3.test/'
+
+fixSiteConfig:
+    type: Helhum\TYPO3\ConfigHandling\Install\Action\FixupSiteConfigAction
+    description: 'Finishing up project settings'

@@ -2,22 +2,15 @@
 /.idea
 /nbproject
 /vendor
-/var/log/*
-!/var/log/.gitkeep
-/var/cache/*
-!/var/cache/.gitkeep
-/var/storage/*
-!/var/storage/.gitkeep
+/var/*
 /.env
-/.installed
 /.php_cs.cache
-/.remotes
 
+/config/override.settings.yaml
 /private/*
 !/private/typo3conf
 /private/typo3conf/*
 !/private/typo3conf/l10n
 
-/public
-
-/config/local.settings.yaml
+/public/*
+!/public/.htaccess
