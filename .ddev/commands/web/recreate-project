@@ -1,0 +1,5 @@
+#!/bin/bash
+
+mysql -e 'DROP DATABASE IF EXISTS db; CREATE DATABASE db;'
+rm config/override.settings.yaml private/typo3conf/LocalConfiguration.php
+composer install

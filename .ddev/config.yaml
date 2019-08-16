@@ -1,0 +1,24 @@
+APIVersion: v1.10.2
+name: awesome.typo3
+type: php
+docroot: public
+php_version: "7.2"
+webserver_type: apache-fpm
+router_http_port: "80"
+router_https_port: "443"
+xdebug_enabled: false
+additional_hostnames: []
+additional_fqdns:
+- awesome-typo3.test
+mariadb_version: "10.2"
+nfs_mount_enabled: false
+provider: default
+hooks:
+  post-start:
+  - exec: composer install
+upload_dir: private/fileadmin
+working_dir:
+  web: /var/www/html
+omit_containers: [dba, ddev-ssh-agent]
+use_dns_when_possible: true
+timezone: Europe/Berlin

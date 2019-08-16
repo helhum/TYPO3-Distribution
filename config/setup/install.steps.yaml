@@ -18,7 +18,7 @@ defaultConfiguration:
 setupProject:
     type: Helhum\TYPO3\ConfigHandling\Install\Action\SetupConfigurationAction
     description: 'Set up project settings'
-    customOverrideSettings: 'install.override.settings.yaml'
+    customOverrideSettings: '%env(TYPO3_INSTALL_OVERRIDE_SETTINGS_FILE)%'
     customSettings:
         arguments:
             defaultLanguageDomain:
