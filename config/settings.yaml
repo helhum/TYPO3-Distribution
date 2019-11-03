@@ -21,6 +21,18 @@ LOG:
         '%const(TYPO3\CMS\Core\Log\LogLevel::WARNING)%':
             TYPO3\CMS\Core\Log\Writer\FileWriter:
                 logFile: '%env(TYPO3_PATH_COMPOSER_ROOT)%/var/log/typo3-warning.log'
+    TYPO3:
+        CMS:
+            deprecations:
+                writerConfiguration:
+                    '%const(TYPO3\CMS\Core\Log\LogLevel::EMERGENCY)%':
+                        TYPO3\CMS\Core\Log\Writer\NullWriter: [ ]
+            Extbase:
+                SignalSlot:
+                    Dispatcher:
+                        writerConfiguration:
+                            '%const(TYPO3\CMS\Core\Log\LogLevel::EMERGENCY)%':
+                                TYPO3\CMS\Core\Log\Writer\NullWriter: [ ]
 SYS:
     displayErrors: 0
     errorHandlerErrors: 32514
