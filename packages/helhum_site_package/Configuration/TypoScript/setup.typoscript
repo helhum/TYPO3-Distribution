@@ -1,0 +1,2 @@
+@import 'EXT:fluid_styled_content/Configuration/TypoScript/setup.typoscript'
+@import 'EXT:helhum_site_package/Configuration/TypoScript/Libraries/*.typoscript'
