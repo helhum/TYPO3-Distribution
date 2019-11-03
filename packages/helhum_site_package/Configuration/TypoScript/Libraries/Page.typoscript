@@ -9,3 +9,6 @@ page.10.value (
    </div>
 )
 page.100 =< styles.content.get
+
+#page.10 >
+#page.10 = FLUIDTEMPLATE
