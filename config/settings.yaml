@@ -18,8 +18,10 @@ GFX:
     processor_effects: -1
 LOG:
     writerConfiguration:
+        '%const(TYPO3\CMS\Core\Log\LogLevel::DEBUG)%':
+            Helhum\SentryTypo3\Log\Writer\SentryBreadcrumbWriter: [ ]
         '%const(TYPO3\CMS\Core\Log\LogLevel::WARNING)%':
-            TYPO3\CMS\Core\Log\Writer\FileWriter:
+            Helhum\SentryTypo3\Log\Writer\SentryWriter:
                 logFile: '%env(TYPO3_PATH_COMPOSER_ROOT)%/var/log/typo3-warning.log'
     TYPO3:
         CMS:
