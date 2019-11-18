@@ -1,1 +1,0 @@
-config.contentObjectExceptionHandler = Helhum\SentryTypo3\ContentObject\Exception\ExceptionHandler
