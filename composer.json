@@ -13,7 +13,6 @@
         }
     },
     "require": {
-        "helhum/sentry-typo3": "^0.1",
         "helhum/site-package": "@dev",
         "helhum/typo3-config-handling": "^1.0@beta",
         "helhum/typo3-console": "^5.7",
@@ -25,7 +24,6 @@
         "typo3/cms-belog": "^9.5.7",
         "typo3/cms-beuser": "^9.5.7",
         "typo3/cms-context-help": "^9.5.7",
-        "typo3/cms-felogin": "*",
         "typo3/cms-fluid-styled-content": "^9.5.7",
         "typo3/cms-impexp": "^9.5.7",
         "typo3/cms-info": "^9.5.7",
