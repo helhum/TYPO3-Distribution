@@ -14,20 +14,12 @@ defaultConfiguration:
     arguments:
         siteSetupType:
             value: site
+        siteUrl:
+            description: 'Specify the site base url (including scheme, host, port)'
+            default: 'http://127.0.0.1:8080/'
 
 setupProject:
     type: Helhum\TYPO3\ConfigHandling\Install\Action\SetupConfigurationAction
     description: 'Set up project settings'
     customOverrideSettings: '%env(TYPO3_INSTALL_OVERRIDE_SETTINGS_FILE)%'
-    customSettings:
-        arguments:
-            defaultLanguageDomain:
-                type: string
-                value: '%env(TYPO3_INSTALL_SITE_URL)%'
-                description: 'Website URL (including scheme, host, port)'
-                configPath: 'Site.main.base'
-                default: 'http://127.0.0.1:8080/'
-
-fixSiteConfig:
-    type: Helhum\TYPO3\ConfigHandling\Install\Action\FixupSiteConfigAction
-    description: 'Finishing up project settings'
+    customSettings: []

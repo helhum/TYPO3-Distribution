@@ -1,7 +1,6 @@
 {
     "repositories": [
-        { "type": "path", "url": "packages/*" },
-        { "type": "composer", "url": "https://composer.typo3.org/" }
+        { "type": "path", "url": "packages/*" }
     ],
     "name": "helhum/typo3-distribution",
     "description" : "TYPO3 CMS Distribution with console and .env support",
@@ -9,37 +8,38 @@
     "config": {
         "sort-packages": true,
         "platform": {
-            "php": "7.2.0"
+            "php": "7.2.5"
         }
     },
     "require": {
         "helhum/site-package": "@dev",
         "helhum/typo3-config-handling": "^1.0@beta",
-        "helhum/typo3-console": "^5.7",
+        "helhum/typo3-console": "^6.3",
         "helhum/typo3-error-handling": "@dev",
-        "helhum/typo3-secure-web": "^0.2.7",
+        "helhum/typo3-secure-web": "^0.2.9",
         "roave/security-advisories": "dev-master",
-        "typo3-console/composer-auto-commands": "^0.3",
-        "typo3/cms-adminpanel": "^9.5.7",
-        "typo3/cms-belog": "^9.5.7",
-        "typo3/cms-beuser": "^9.5.7",
-        "typo3/cms-context-help": "^9.5.7",
-        "typo3/cms-fluid-styled-content": "^9.5.7",
-        "typo3/cms-impexp": "^9.5.7",
-        "typo3/cms-info": "^9.5.7",
-        "typo3/cms-info-pagetsconfig": "^9.5.7",
-        "typo3/cms-lowlevel": "^9.5.7",
-        "typo3/cms-reports": "^9.5.7",
-        "typo3/cms-rte-ckeditor": "^9.5.7",
-        "typo3/cms-setup": "^9.5.7",
-        "typo3/cms-tstemplate": "^9.5.7",
-        "typo3/cms-viewpage": "^9.5.7"
+        "typo3-console/composer-auto-commands": "^0.4",
+        "typo3/cms-adminpanel": "^10.4",
+        "typo3/cms-belog": "^10.4",
+        "typo3/cms-beuser": "^10.4",
+        "typo3/cms-context-help": "^10.4",
+        "typo3/cms-fluid-styled-content": "^10.4",
+        "typo3/cms-impexp": "^10.4",
+        "typo3/cms-info": "^10.4",
+        "typo3/cms-info-pagetsconfig": "^10.4",
+        "typo3/cms-lowlevel": "^10.4",
+        "typo3/minimal": "^10.4",
+        "typo3/cms-reports": "^10.4",
+        "typo3/cms-rte-ckeditor": "^10.4",
+        "typo3/cms-setup": "^10.4",
+        "typo3/cms-tstemplate": "^10.4",
+        "typo3/cms-viewpage": "^10.4"
     },
     "require-dev": {
-        "helhum/dotenv-connector": "^2.0",
-        "typo3-console/composer-typo3-auto-install": "^0.3",
+        "helhum/dotenv-connector": "^2.2",
+        "typo3-console/composer-typo3-auto-install": "^0.4",
         "typo3-console/php-server-command": "^0.2",
-        "typo3/testing-framework": "^3 || ^4"
+        "typo3/testing-framework": "^5"
     },
     "extra": {
         "typo3/cms": {

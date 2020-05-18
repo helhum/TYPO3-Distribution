@@ -18,7 +18,7 @@ services:
             - TYPO3_INSTALL_SITE_NAME=$DDEV_SITENAME (on DDEV)
             - TYPO3_INSTALL_SITE_SETUP_TYPE=site
             - TYPO3_INSTALL_WEB_SERVER_CONFIG=apache
-            - TYPO3_INSTALL_SITE_URL=https://awesome-typo3.test/
+            - TYPO3_INSTALL_SITE_BASE_URL=https://awesome-typo3.test/
             - TYPO3_INSTALL_OVERRIDE_SETTINGS_FILE=install.override.settings.yaml
     db:
         environment:

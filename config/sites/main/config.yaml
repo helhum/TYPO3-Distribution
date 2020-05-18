@@ -1,11 +1,11 @@
 rootPageId: 1
-base: /
+base: 'https://awesome-typo3.test/'
 languages:
     -
         title: English
         enabled: true
         languageId: 0
-        base: /en/
+        base: /
         typo3Language: default
         locale: en_US.UTF-8
         iso-639-1: en
