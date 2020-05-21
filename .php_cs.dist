@@ -71,10 +71,6 @@ return PhpCsFixer\Config::create()
     ])
     ->setFinder(
         PhpCsFixer\Finder::create()
-            ->in(__DIR__)
-            ->exclude('.surf')
-            ->exclude('var')
-            ->exclude('vendor')
-            ->exclude('web')
+            ->in(__DIR__ . '/packages')
             ->notName('ext_emconf.php')
     );

@@ -18,7 +18,6 @@ namespace Helhum\TYPO3\ErrorHandling\Error;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 
-
 /**
  * A basic but solid exception handler which catches everything which
  * falls through the other exception handlers and provides useful debugging
