@@ -22,10 +22,27 @@ namespace Helhum\TYPO3\ErrorHandling\Error;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * A quiet exception handler which catches but ignores any exception.
- */
-class ProductionExceptionHandler extends \TYPO3\CMS\Core\Error\ProductionExceptionHandler
+use Helhum\Typo3Console\Error\ExceptionRenderer;
+use Symfony\Component\Console\Output\ConsoleOutput;
+
+trait ExceptionHandlerTrait
 {
-    use ExceptionHandlerTrait;
+    /**
+     * Formats and echoes the exception for the command line
+     *
+     * @param \Throwable $exception The throwable object.
+     */
+    public function echoExceptionCLI(\Throwable $exception): void
+    {
+        $exceptionRenderer = new ExceptionRenderer();
+        $output = new ConsoleOutput();
+        $output->setVerbosity($output::VERBOSITY_DEBUG);
+        $exceptionRenderer->render($exception, $output);
+        die(1);
+    }
+
+    protected function writeLog($logMessage)
+    {
+        // Don't write to sys_log database table
+    }
 }

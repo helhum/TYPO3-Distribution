@@ -1,0 +1,7 @@
+SYS:
+    debugExceptionHandler: Helhum\TYPO3\ErrorHandling\Error\DebugExceptionHandler
+    productionExceptionHandler: Helhum\TYPO3\ErrorHandling\Error\ProductionExceptionHandler
+EXTCONF:
+    exceptionHandling:
+        pathMapping: [ ]
+        editor: 'phpstorm'

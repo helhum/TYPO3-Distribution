@@ -40,4 +40,3 @@ SYS:
     Objects:
         TYPO3\CMS\Core\Configuration\SiteConfiguration:
             className: Helhum\TYPO3\ConfigHandling\Typo3SiteConfiguration
-    systemLogLevel: 2

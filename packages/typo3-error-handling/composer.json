@@ -4,6 +4,8 @@
     "license": "GPL-2.0-or-later",
     "require": {
         "php": "^7",
+        "filp/whoops": "^2.7",
+        "helhum/typo3-console": "^6.0",
         "typo3/cms-core": "^10.4"
     },
     "autoload": {
