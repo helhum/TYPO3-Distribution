@@ -1,5 +1,15 @@
 #!/bin/bash
 
 mysql -e 'DROP DATABASE IF EXISTS db; CREATE DATABASE db;'
-rm config/override.settings.yaml private/typo3conf/LocalConfiguration.php
-composer install
+rm -rf var/cache var/log var/lock var/session var/transient config/override.settings.yaml
+echo '';
+echo 'Fetching vendor code…';
+composer install > /dev/null 2>&1
+rm private/typo3conf/LocalConfiguration.php
+echo 'Setting up TYPO3…';
+TYPO3_CONTEXT=Production vendor/bin/typo3cms install:setup --no-interaction
+[[ -f .ddev/import-db/live-db.sql.gz ]] || [[ -f res/content-master.sql.gz ]] && echo 'Importing content master…' && zcat res/content-master.sql.gz | mysql
+[[ -f .ddev/import-db/live-db.sql.gz ]] && echo 'Importing live DB…' && zcat .ddev/import-db/live-db.sql.gz | mysql
+
+echo ''
+echo 'Your project has been recreated';

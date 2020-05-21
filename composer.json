@@ -13,7 +13,7 @@
     },
     "require": {
         "helhum/site-package": "@dev",
-        "helhum/typo3-config-handling": "^1.0@beta",
+        "helhum/typo3-config-handling": "^1.0@rc",
         "helhum/typo3-console": "^6.3",
         "helhum/typo3-error-handling": "@dev",
         "helhum/typo3-secure-web": "^0.2.9",

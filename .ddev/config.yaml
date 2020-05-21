@@ -13,7 +13,7 @@ mariadb_version: "10.2"
 provider: default
 hooks:
   post-start:
-  - exec: composer install
+  - exec: res/scripts/setup.sh
 upload_dir: private/fileadmin
 working_dir:
   web: /var/www/html

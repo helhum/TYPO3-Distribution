@@ -1,3 +1,6 @@
 #!/bin/bash
 
+## Description: Run TYPO3 Console CLI binary
+## Usage: typo3cms <command> [options]
+
 vendor/bin/typo3cms $@

@@ -5,6 +5,8 @@ services:
         environment:
             - TZ=Europe/Berlin
             - PHP_IDE_CONFIG=serverName=awesome-typo3.test
+            - TYPO3_IS_SET_UP=1
+            - TYPO3_INSTALL_SETUP_STEPS=/var/www/html/config/setup/install.steps.yaml
             - TYPO3_INSTALL_DB_USER=db
             - TYPO3_INSTALL_DB_PASSWORD=db
             - TYPO3_INSTALL_DB_HOST=db

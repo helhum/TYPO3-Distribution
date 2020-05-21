@@ -23,3 +23,7 @@ setupProject:
     description: 'Set up project settings'
     customOverrideSettings: '%env(TYPO3_INSTALL_OVERRIDE_SETTINGS_FILE)%'
     customSettings: []
+    removeSettings:
+      - LOG
+      - SYS.caching
+      - SYS.features
