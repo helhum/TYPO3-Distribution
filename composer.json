@@ -36,10 +36,10 @@
         "typo3/cms-viewpage": "^10.4"
     },
     "require-dev": {
-        "helhum/dotenv-connector": "^2.2",
-        "typo3-console/composer-typo3-auto-install": "^0.4",
-        "typo3-console/php-server-command": "^0.2",
-        "typo3/testing-framework": "^5"
+        "helhum/dotenv-connector": "^2.3.1",
+        "typo3-console/composer-typo3-auto-install": "^0.4.1",
+        "typo3-console/php-server-command": "^0.2.4",
+        "typo3/testing-framework": "^5.0.16"
     },
     "extra": {
         "typo3/cms": {
