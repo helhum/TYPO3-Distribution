@@ -12,7 +12,9 @@
             "Helhum\\SitePackage\\": "Classes/"
         }
     },
-    "replace": {
-        "helhum_site_package": "self.version"
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "helhum_site_package"
+        }
     }
 }
